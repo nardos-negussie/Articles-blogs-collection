@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://www.tensorflow.org/tutorials/estimators/cnn -->
+<html lang="en" class=""><style type="text/css" id="night-mode-pro-style"></style><link type="text/css" rel="stylesheet" id="night-mode-pro-link"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/linkid.js"></script><script async="" src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/analytics.js"></script><script>var a=window.devsite||{};window.devsite=a;a.readyCallbacks=[];window.devsite.readyCallbacks=a.readyCallbacks;a.ready=function(b){a.readyCallbacks.push(b)};window.devsite.ready=a.ready;
+</script><meta name="xsrf_token" content="WfTrNueo1TRXnBppzBOqmdkgWe6RagsU8l3T2rxsmyk6MTUzOTA3Mzc5MDA3ODAwMg"><link rel="canonical" href="https://www.tensorflow.org/tutorials/estimators/cnn"><link rel="alternate" href="https://www.tensorflow.org/tutorials/estimators/cnn" hreflang="en"><link rel="alternate" href="https://tensorflow.google.cn/tutorials/estimators/cnn" hreflang="en-cn"><link rel="alternate" href="https://www.tensorflow.org/tutorials/estimators/cnn" hreflang="x-default"><link rel="shortcut icon" href="https://www.tensorflow.org/_static/1e1304016d/images/tensorflow/favicon.png"><link rel="apple-touch-icon" href="https://www.tensorflow.org/images/apple-touch-icon-180x180.png"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/css"><link rel="stylesheet" href="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/devsite-tensorflow-orange.css"><link rel="search" type="application/opensearchdescription+xml" title="TensorFlow" href="https://www.tensorflow.org/s/opensearch.xml"><script src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/jquery-bundle.js"></script><meta property="og:site_name" content="TensorFlow"><meta property="og:type" content="website"><meta property="og:url" content="https://www.tensorflow.org/tutorials/estimators/cnn"><meta property="og:locale" content="en"><script>
+    var ___gcfg = ___gcfg || {};
+    ___gcfg.lang = 'en';
+  </script><title>Build a Convolutional Neural Network using Estimators &nbsp;|&nbsp; TensorFlow</title><meta property="og:title" content="Build a Convolutional Neural Network using Estimators  |  TensorFlow"><meta property="og:image" content="https://www.tensorflow.org/images/tf_logo_social.png"><meta property="og:image:secure_url" content="https://www.tensorflow.org/images/tf_logo_social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="675"><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover, .MJXp-munder {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > *, .MJXp-munder > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head><body class="
+               devsite-doc-page
+               
+               
+               
+               
+               " id="top_of_page"><div id="MathJax_Message" style="display: none;"></div><div class="devsite-wrapper" style="margin-top: 0px;"><div class="devsite-top-section-wrapper
+            "><header class="devsite-top-section nocontent devsite-top-section-pinned"><div class="devsite-top-logo-row-wrapper-wrapper" style="position: relative;"><div class="devsite-top-logo-row-wrapper"><div class="devsite-top-logo-row devsite-full-site-width"><button type="button" class="devsite-expand-section-nav devsite-header-icon-button
+                                       button-flat material-icons gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Hamburger menu"></button><div class="devsite-product-name-wrapper"><a href="https://www.tensorflow.org/" class="devsite-site-logo-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Site logo" track-type="globalNav" track-name="tensorflow" track-metadata-eventdetail="nav" track-metadata-position="nav"><img src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/lockup.png" class="devsite-site-logo" alt="TensorFlow"><span class="devsite-site-name devsite-product-name">TensorFlow</span></a></div><div class="devsite-header-upper-tabs"><nav class="devsite-doc-set-nav devsite-nav devsite-overflow-tabs-scroll-wrapper"><ul class="devsite-doc-set-nav-tab-list devsite-overflow-tabs-scroll" style="min-width: 489px; left: 0px;"><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/install/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Install">
+          Install
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/tutorials/" class="devsite-doc-set-nav-active devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" aria-label="Develop, selected" data-category="Site-Wide Custom Events" data-label="Tab: Develop">
+          Develop
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/community/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Community">
+          Community
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 devsite-dropdown-menu-container"><a href="https://www.tensorflow.org/api_docs/python/tf" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: API">
+          API
+        </a><span class="devsite-menu-toggle devsite-nav-tab material-icons"></span><div class="devsite-dropdown-menu-wrapper" style="left: 533.188px;"><div class="devsite-dropdown-menu"><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          API
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/api_docs/python/tf"><span>
+                          r1.<wbr>11 (stable)
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.10/api_docs/python/tf"><span>
+                          r1.<wbr>10
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.9/api_docs/python/tf"><span>
+                          r1.<wbr>9
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.8/api_docs/python/tf"><span>
+                          r1.<wbr>8
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.7/api_docs/python/tf"><span>
+                          r1.<wbr>7
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.6/api_docs/python/tf"><span>
+                          r1.<wbr>6
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/"><span>
+                          More…
+                        </span></a></li></ul></div></div></div></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 devsite-dropdown-menu-container"><a href="https://www.tensorflow.org/ecosystem/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Ecosystem">
+          Ecosystem
+        </a><span class="devsite-menu-toggle devsite-nav-tab material-icons"></span><div class="devsite-dropdown-menu-wrapper" style="left: 602.203px;"><div class="devsite-dropdown-menu"><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          Projects
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/serving/"><span>
+                          Serving
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/hub/"><span>
+                          Hub
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/tfx"><span>
+                          TFX
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/probability/"><span>
+                          Probability
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/ecosystem/"><span>
+                          More…
+                        </span></a></li></ul></div><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          Implementations
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://js.tensorflow.org/"><span>
+                          TensorFlow.<wbr>js
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/lite/"><span>
+                          TensorFlow Lite
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/swift/"><span>
+                          Swift for TensorFlow
+                        </span></a></li></ul></div><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          Research
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/tfrc/"><span>
+                          Research Cloud
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://github.com/tensorflow/models"><span>
+                          Model Garden
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://magenta.tensorflow.org/"><span>
+                          Magenta
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://github.com/google/nucleus"><span>
+                          Nucleus
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://colab.research.google.com/notebooks/welcome.ipynb"><span>
+                          Colab
+                        </span></a></li></ul></div></div></div></li></ul><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-forward devsite-hidden"></button><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-back devsite-hidden"></button></nav></div><form class="devsite-search-form" action="https://www.tensorflow.org/s/results/" method="GET" id="top-search" search-placeholder="Search"><div id="searchbox" class="devsite-searchbox"><input placeholder="Search" type="text" class="devsite-search-field devsite-search-query" name="q" value="" autocomplete="off" aria-label="Search box"><div class="devsite-search-image material-icons"></div></div><input type="hidden" name="p" id="search_project" value="/" data-project-name="TensorFlow" data-project-path="/" data-query-match=""><input type="hidden" class="suggest-project" value="TensorFlow"><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Android Developers"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Android Open Source Project"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Apigee Docs"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Google Cloud"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Dialogflow"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Firebase"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Android Developers"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Link.app"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Nest Developers"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="OpenThread"></div><div class="suggest-project-metadata" data-home_url="https://www.orbitera.com/" data-path="/" data-name="Orbitera"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="TensorFlow"></div><div class="devsite-popout devsite-popout-closed"><div class="devsite-suggest-results" style="display: none;"></div></div></form><a class="devsite-header-link devsite-top-button button gc-analytics-event" href="https://github.com/tensorflow" data-category="Site-Wide Custom Events" data-label="Site header link" track-type="globalNav" track-name="github" track-metadata-position="nav" track-metadata-eventdetail="nav"><div class="devsite-header-link-label">GitHub</div></a><button type="button" class="devsite-search-button devsite-header-icon-button button-flat
+                                       material-icons"></button></div></div></div><div class="devsite-collapsible-section" style="margin-top: -68px;"><div class="devsite-header-background devsite-full-site-width"><div class="devsite-product-id-row devsite-full-site-width" style="visibility: hidden;"><div class="devsite-product-description-row"><ul class="devsite-breadcrumb-list"><li class="devsite-breadcrumb-item">
+    
+    
+    
+      Develop
+    
+    
+  </li></ul></div></div><div class="devsite-doc-set-nav-row devsite-full-site-width"><nav class="devsite-doc-set-nav devsite-nav devsite-overflow-tabs-scroll-wrapper"><ul class="devsite-doc-set-nav-tab-list devsite-overflow-tabs-scroll" style="min-width: 585px; left: 0px;"><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/tutorials/" class="devsite-doc-set-nav-active devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" aria-label="Tutorials, selected" data-category="Site-Wide Custom Events" data-label="Tab: Tutorials">
+          Tutorials
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/guide/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Guide">
+          Guide
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/deploy/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Deploy">
+          Deploy
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/performance/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Performance">
+          Performance
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/extend/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Extend">
+          Extend
+        </a></li></ul><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-forward devsite-hidden"></button><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-back devsite-hidden"></button></nav></div></div></div></header><script>
+    if (window.jQuery) {
+      $(document).ready(function() {
+        if (window.devsite && window.devsite.search) {
+          
+          window.devsite.search.init('en')
+        }
+      });
+    }
+  </script></div><div id="gc-wrapper" itemscope="" itemtype="http://schema.org/Article"><input class="google-analytics-id-json" type="hidden" value="{&quot;dimensions&quot;: {&quot;dimension6&quot;: &quot;en&quot;, &quot;dimension4&quot;: &quot;TensorFlow&quot;, &quot;dimension5&quot;: &quot;en&quot;, &quot;dimension3&quot;: false, &quot;dimension1&quot;: &quot;Signed out&quot;, &quot;dimension8&quot;: null}, &quot;gaid&quot;: &quot;UA-69864048-1&quot;}"><script>
+      var dataLayer = [{"freeTrialEligibleUser": "False", "userCountry": "ET", "language": {"requested": "en", "served": "en"}, "projectName": "TensorFlow", "scriptsafe": null, "signedIn": "False", "internalUser": "False"}];
+    </script>
+
+      
+        <div class="devsite-site-mask"></div>
+        
+  
+
+
+<nav class="devsite-nav-responsive devsite-nav nocontent" tabindex="0" style="left: -256px;">
+  
+  <div class="devsite-nav-responsive-tabs-panel devsite-nav-responsive-transition devsite-nav-responsive-transform" style="display: none;">
+    
+      
+        
+
+
+
+<nav class="devsite-nav-responsive-tabs devsite-nav">
+  <ul class="devsite-nav-list">
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/install/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Install"><span>
+          Install
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/tutorials/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  devsite-nav-active" data-category="Site-Wide Custom Events" data-label="Responsive Tab: Develop"><span>
+          Develop
+        </span></a>
+      
+
+      
+
+      
+
+      
+        
+
+
+
+<nav class="devsite-nav-responsive-tabs devsite-nav">
+  <ul class="devsite-nav-list">
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <span class="devsite-nav-responsive-forward devsite-nav-responsive-tab devsite-nav-title
+                     devsite-nav-active gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: Tutorials" tabindex="0"><span>
+          Tutorials
+        </span></span>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/guide/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Guide"><span>
+          Guide
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/deploy/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Deploy"><span>
+          Deploy
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/performance/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Performance"><span>
+          Performance
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/extend/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Extend"><span>
+          Extend
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      <a href="https://github.com/tensorflow" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: GitHub"><span>
+        GitHub
+      </span></a>
+    </li>
+  
+  </ul>
+</nav>
+
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/community/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Community"><span>
+          Community
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/api_docs/python/tf" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: API"><span>
+          API
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/ecosystem/" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Ecosystem"><span>
+          Ecosystem
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      <a href="https://github.com/tensorflow" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: GitHub"><span>
+        GitHub
+      </span></a>
+    </li>
+  
+  </ul>
+</nav>
+
+
+      
+    
+  </div>
+  
+  
+  <div class="devsite-nav-responsive-sidebar-panel" style="display: block;">
+    
+    <div class="devsite-nav-responsive-back" tabindex="0"></div>
+    
+    <nav class="devsite-nav-responsive-sidebar">
+      
+      
+    <ul class="devsite-nav-list devsite-nav-expandable devsite-nav-only-accordions"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/" class="devsite-nav-title"><span>Get started with TensorFlow</span></a></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Learn and use ML, click to expand/collapse" role="link" tabindex="0"><span>Learn and use ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_classification" class="devsite-nav-title"><span>Basic classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_text_classification" class="devsite-nav-title"><span>Text classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression" class="devsite-nav-title"><span>Regression</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/overfit_and_underfit" class="devsite-nav-title"><span>Overfitting and underfitting</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/save_and_restore_models" class="devsite-nav-title"><span>Save and restore models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Research and experimentation, click to expand/collapse" role="link" tabindex="0"><span>Research and experimentation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/eager_basics" class="devsite-nav-title"><span>Eager execution</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/automatic_differentiation" class="devsite-nav-title"><span>Automatic differentiation</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training" class="devsite-nav-title"><span>Custom training: basics</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_layers" class="devsite-nav-title"><span>Custom layers</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training_walkthrough" class="devsite-nav-title"><span>Custom training: walkthrough</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="ML at production scale, click to expand/collapse" role="link" tabindex="0"><span>ML at production scale</span></span><a class="devsite-nav-toggle devsite-nav-toggle-expanded material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0"></a><ul class="devsite-nav-section devsite-nav-section-expanded"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/linear" class="devsite-nav-title"><span>Linear model with Estimators</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/wide_deep" class="devsite-nav-title"><span class="devsite-nav-text"><span>Wide and deep learning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/boosted_trees" class="devsite-nav-title"><span class="devsite-nav-text"><span>Boosted trees</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/text_classification_with_tf_hub" class="devsite-nav-title"><span>Text classifier with TF-Hub</span></a></li><li class="devsite-nav-item devsite-nav-active"><a href="https://www.tensorflow.org/tutorials/estimators/cnn" class="devsite-nav-title"><span>Build a CNN using Estimators</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Generative models, click to expand/collapse" role="link" tabindex="0"><span>Generative models</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/text_generation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Text generation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/nmt_with_attention/nmt_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Translation with attention</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/image_captioning_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image captioning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/dcgan.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>DCGAN</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/cvae.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>VAE</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Images, click to expand/collapse" role="link" tabindex="0"><span>Images</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/pix2pix/pix2pix_eager.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Pix2Pix</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/research/nst_blogpost/4_Neural_Style_Transfer_with_Eager_Execution.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural Style Transfer</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/samples/outreach/blogs/segmentation_blogpost/image_segmentation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image Segmentation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition" class="devsite-nav-title"><span>Image recognition</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/image_retraining" class="devsite-nav-title"><span>Image retraining</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/deep_cnn" class="devsite-nav-title"><span>Advanced CNN</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Sequences, click to expand/collapse" role="link" tabindex="0"><span>Sequences</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent" class="devsite-nav-title"><span>Recurrent neural network</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent_quickdraw" class="devsite-nav-title"><span>Drawing classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/audio_recognition" class="devsite-nav-title"><span>Simple audio recognition</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/nmt" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural machine translation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Data representation, click to expand/collapse" role="link" tabindex="0"><span>Data representation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/word2vec" class="devsite-nav-title"><span>Vector representations of words</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/kernel_methods" class="devsite-nav-title"><span>Kernel methods</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/linear" class="devsite-nav-title"><span>Large-scale linear models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Non-ML, click to expand/collapse" role="link" tabindex="0"><span>Non-ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/mandelbrot" class="devsite-nav-title"><span>Mandelbrot set</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/pdes" class="devsite-nav-title"><span>Partial differential equations</span></a></li></ul></li><li class="devsite-nav-item"><hr class="devsite-nav-break"></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/next_steps" class="devsite-nav-title"><span>Next steps</span></a></li></ul></nav>
+  </div>
+  
+  
+    
+      
+    
+      
+    
+      
+    
+      
+        <div class="devsite-nav-responsive-index-panel" data-tab="API" style="display: none;">
+          <div class="devsite-nav-index-back" data-tab="API" tabindex="0"></div>
+          <nav>
+            <ul class="devsite-nav-list">
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    API
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/api_docs/python/tf"><span>
+                    r1.<wbr>11 (stable)
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.10/api_docs/python/tf"><span>
+                    r1.<wbr>10
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.9/api_docs/python/tf"><span>
+                    r1.<wbr>9
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.8/api_docs/python/tf"><span>
+                    r1.<wbr>8
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.7/api_docs/python/tf"><span>
+                    r1.<wbr>7
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.6/api_docs/python/tf"><span>
+                    r1.<wbr>6
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/"><span>
+                    More…
+                  </span></a>
+                </li>
+                
+              
+            
+            </ul>
+          </nav>
+        </div>
+      
+    
+      
+        <div class="devsite-nav-responsive-index-panel" data-tab="Ecosystem" style="display: none;">
+          <div class="devsite-nav-index-back" data-tab="Ecosystem" tabindex="0"></div>
+          <nav>
+            <ul class="devsite-nav-list">
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    Projects
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/serving/"><span>
+                    Serving
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/hub/"><span>
+                    Hub
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/tfx"><span>
+                    TFX
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/probability/"><span>
+                    Probability
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/ecosystem/"><span>
+                    More…
+                  </span></a>
+                </li>
+                
+              
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    Implementations
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://js.tensorflow.org/"><span>
+                    TensorFlow.<wbr>js
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/lite/"><span>
+                    TensorFlow Lite
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/swift/"><span>
+                    Swift for TensorFlow
+                  </span></a>
+                </li>
+                
+              
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    Research
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/tfrc/"><span>
+                    Research Cloud
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://github.com/tensorflow/models"><span>
+                    Model Garden
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://magenta.tensorflow.org/"><span>
+                    Magenta
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://github.com/google/nucleus"><span>
+                    Nucleus
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://colab.research.google.com/notebooks/welcome.ipynb"><span>
+                    Colab
+                  </span></a>
+                </li>
+                
+              
+            
+            </ul>
+          </nav>
+        </div>
+      
+    
+  
+</nav>
+
+
+        <div class="devsite-main-content clearfix" style="margin-top: 204px;">
+
+        
+        
+
+        
+  
+  
+    
+    
+      
+  <nav class="devsite-section-nav devsite-nav nocontent" style="left: auto; max-height: 289px; position: fixed; top: 120px;">
+    <ul class="devsite-nav-list devsite-nav-expandable devsite-nav-only-accordions"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/" class="devsite-nav-title"><span>Get started with TensorFlow</span></a></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Learn and use ML, click to expand/collapse" role="link" tabindex="0"><span>Learn and use ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_classification" class="devsite-nav-title"><span>Basic classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_text_classification" class="devsite-nav-title"><span>Text classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression" class="devsite-nav-title"><span>Regression</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/overfit_and_underfit" class="devsite-nav-title"><span>Overfitting and underfitting</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/save_and_restore_models" class="devsite-nav-title"><span>Save and restore models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Research and experimentation, click to expand/collapse" role="link" tabindex="0"><span>Research and experimentation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/eager_basics" class="devsite-nav-title"><span>Eager execution</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/automatic_differentiation" class="devsite-nav-title"><span>Automatic differentiation</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training" class="devsite-nav-title"><span>Custom training: basics</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_layers" class="devsite-nav-title"><span>Custom layers</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training_walkthrough" class="devsite-nav-title"><span>Custom training: walkthrough</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="ML at production scale, click to expand/collapse" role="link" tabindex="0"><span>ML at production scale</span></span><a class="devsite-nav-toggle devsite-nav-toggle-expanded material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0"></a><ul class="devsite-nav-section devsite-nav-section-expanded"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/linear" class="devsite-nav-title"><span>Linear model with Estimators</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/wide_deep" class="devsite-nav-title"><span class="devsite-nav-text"><span>Wide and deep learning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/boosted_trees" class="devsite-nav-title"><span class="devsite-nav-text"><span>Boosted trees</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/text_classification_with_tf_hub" class="devsite-nav-title"><span>Text classifier with TF-Hub</span></a></li><li class="devsite-nav-item devsite-nav-active"><a href="https://www.tensorflow.org/tutorials/estimators/cnn" class="devsite-nav-title"><span>Build a CNN using Estimators</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Generative models, click to expand/collapse" role="link" tabindex="0"><span>Generative models</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/text_generation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Text generation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/nmt_with_attention/nmt_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Translation with attention</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/image_captioning_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image captioning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/dcgan.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>DCGAN</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/cvae.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>VAE</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Images, click to expand/collapse" role="link" tabindex="0"><span>Images</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/pix2pix/pix2pix_eager.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Pix2Pix</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/research/nst_blogpost/4_Neural_Style_Transfer_with_Eager_Execution.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural Style Transfer</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/samples/outreach/blogs/segmentation_blogpost/image_segmentation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image Segmentation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition" class="devsite-nav-title"><span>Image recognition</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/image_retraining" class="devsite-nav-title"><span>Image retraining</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/deep_cnn" class="devsite-nav-title"><span>Advanced CNN</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Sequences, click to expand/collapse" role="link" tabindex="0"><span>Sequences</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent" class="devsite-nav-title"><span>Recurrent neural network</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent_quickdraw" class="devsite-nav-title"><span>Drawing classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/audio_recognition" class="devsite-nav-title"><span>Simple audio recognition</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/nmt" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural machine translation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Data representation, click to expand/collapse" role="link" tabindex="0"><span>Data representation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/word2vec" class="devsite-nav-title"><span>Vector representations of words</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/kernel_methods" class="devsite-nav-title"><span>Kernel methods</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/linear" class="devsite-nav-title"><span>Large-scale linear models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Non-ML, click to expand/collapse" role="link" tabindex="0"><span>Non-ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/mandelbrot" class="devsite-nav-title"><span>Mandelbrot set</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/pdes" class="devsite-nav-title"><span>Partial differential equations</span></a></li></ul></li><li class="devsite-nav-item"><hr class="devsite-nav-break"></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/next_steps" class="devsite-nav-title"><span>Next steps</span></a></li></ul>
+  </nav>
+
+    
+
+    
+  <nav class="devsite-page-nav devsite-nav" style="position: fixed; left: 1120px; max-height: 289px; top: 120px;"><ul class="devsite-page-nav-list"><li class="devsite-nav-item devsite-nav-item-heading"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#top_of_page" class="devsite-nav-title"><span>Contents</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#getting_started" class="devsite-nav-title"><span>Getting Started</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#intro_to_convolutional_neural_networks" class="devsite-nav-title"><span>Intro to Convolutional Neural Networks</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#building_the_cnn_mnist_classifier" class="devsite-nav-title"><span>Building the CNN MNIST Classifier</span></a><ul class="devsite-page-nav-list"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#input_layer" class="devsite-nav-title"><span>Input Layer</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#convolutional_layer_1" class="devsite-nav-title"><span>Convolutional Layer #1</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#pooling_layer_1" class="devsite-nav-title"><span>Pooling Layer #1</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#convolutional_layer_2_and_pooling_layer_2" class="devsite-nav-title"><span>Convolutional Layer #2 and Pooling Layer #2</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#dense_layer" class="devsite-nav-title"><span>Dense Layer</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#logits_layer" class="devsite-nav-title"><span>Logits Layer</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#generate_predictions" class="devsite-nav-title"><span>Generate Predictions</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#calculate_loss" class="devsite-nav-title"><span>Calculate Loss</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#configure_the_training_op" class="devsite-nav-title"><span>Configure the Training Op</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#add_evaluation_metrics" class="devsite-nav-title"><span>Add evaluation metrics</span></a></li></ul></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#training_and_evaluating_the_cnn_mnist_classifier" class="devsite-nav-title"><span>Training and Evaluating the CNN MNIST Classifier</span></a><ul class="devsite-page-nav-list"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#load_training_and_test_data" class="devsite-nav-title"><span>Load Training and Test Data</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#create_the_estimator" class="devsite-nav-title"><span>Create the Estimator</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#set_up_a_logging_hook" class="devsite-nav-title"><span>Set Up a Logging Hook</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#train_the_model" class="devsite-nav-title"><span>Train the Model</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#evaluate_the_model" class="devsite-nav-title"><span>Evaluate the Model</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#run_the_model" class="devsite-nav-title"><span>Run the Model</span></a></li></ul></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#additional_resources" class="devsite-nav-title devsite-nav-active"><span>Additional Resources</span></a></li></ul></nav>
+
+
+      <article class="devsite-article">
+        <article class="devsite-article-inner">
+  
+          
+  
+
+
+<div class="devsite-rating-container
+            "><div class="devsite-rating-stars"><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="1" data-category="Site-Wide Custom Events" data-label="Star Rating 1" track-metadata-score="1" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 1 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="2" data-category="Site-Wide Custom Events" data-label="Star Rating 2" track-metadata-score="2" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 2 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="3" data-category="Site-Wide Custom Events" data-label="Star Rating 3" track-metadata-score="3" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 3 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="4" data-category="Site-Wide Custom Events" data-label="Star Rating 4" track-metadata-score="4" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 4 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="5" data-category="Site-Wide Custom Events" data-label="Star Rating 5" track-metadata-score="5" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 5 out of 5"></div></div><div class="devsite-rating-description"></div><div class="devsite-rating-internal"><span class="devsite-rating-stats"></span></div></div><script>
+  $(document).ready(function() {
+    devsite.ratings.init(
+      document.querySelectorAll('#devsite-feedback-project'), false
+      
+    );
+  });
+</script>
+
+
+  
+  <nav class="devsite-breadcrumb-nav devsite-nav">
+    
+
+
+<ul class="devsite-breadcrumb-list">
+  
+  <li class="devsite-breadcrumb-item">
+    
+    
+    <a href="https://www.tensorflow.org/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="1">
+    
+    
+      TensorFlow
+    
+    
+    </a>
+    
+  </li>
+  
+  <li class="devsite-breadcrumb-item">
+    
+    
+    <div class="devsite-breadcrumb-guillemet material-icons"></div>
+    
+    
+    <a href="https://www.tensorflow.org/tutorials/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="2">
+    
+    
+      Develop
+    
+    
+    </a>
+    
+  </li>
+  
+  <li class="devsite-breadcrumb-item">
+    
+    
+    <div class="devsite-breadcrumb-guillemet material-icons"></div>
+    
+    
+    <a href="https://www.tensorflow.org/tutorials/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="3">
+    
+    
+      Tutorials
+    
+    
+    </a>
+    
+  </li>
+  
+</ul>
+
+  </nav>
+  
+  
+  <h1 itemprop="name" class="devsite-page-title">
+    Build a Convolutional Neural Network using Estimators
+  </h1>
+  
+  
+  <nav class="devsite-page-nav-embedded devsite-nav"><ul class="devsite-page-nav-list"><li class="devsite-nav-item devsite-nav-item-heading"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#top_of_page" class="devsite-nav-title"><span>Contents</span></a><button type="button" title="Expand/collapse contents" class="devsite-nav-show-all button-transparent material-icons"></button></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#getting_started" class="devsite-nav-title"><span>Getting Started</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#intro_to_convolutional_neural_networks" class="devsite-nav-title"><span>Intro to Convolutional Neural Networks</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#building_the_cnn_mnist_classifier" class="devsite-nav-title"><span>Building the CNN MNIST Classifier</span></a><ul class="devsite-page-nav-list"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#input_layer" class="devsite-nav-title"><span>Input Layer</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#convolutional_layer_1" class="devsite-nav-title devsite-nav-item-hidden"><span>Convolutional Layer #1</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#pooling_layer_1" class="devsite-nav-title devsite-nav-item-hidden"><span>Pooling Layer #1</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#convolutional_layer_2_and_pooling_layer_2" class="devsite-nav-title devsite-nav-item-hidden"><span>Convolutional Layer #2 and Pooling Layer #2</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#dense_layer" class="devsite-nav-title devsite-nav-item-hidden"><span>Dense Layer</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#logits_layer" class="devsite-nav-title devsite-nav-item-hidden"><span>Logits Layer</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#generate_predictions" class="devsite-nav-title devsite-nav-item-hidden"><span>Generate Predictions</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#calculate_loss" class="devsite-nav-title devsite-nav-item-hidden"><span>Calculate Loss</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#configure_the_training_op" class="devsite-nav-title devsite-nav-item-hidden"><span>Configure the Training Op</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#add_evaluation_metrics" class="devsite-nav-title devsite-nav-item-hidden"><span>Add evaluation metrics</span></a></li></ul></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#training_and_evaluating_the_cnn_mnist_classifier" class="devsite-nav-title devsite-nav-item-hidden"><span>Training and Evaluating the CNN MNIST Classifier</span></a><ul class="devsite-page-nav-list"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#load_training_and_test_data" class="devsite-nav-title devsite-nav-item-hidden"><span>Load Training and Test Data</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#create_the_estimator" class="devsite-nav-title devsite-nav-item-hidden"><span>Create the Estimator</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#set_up_a_logging_hook" class="devsite-nav-title devsite-nav-item-hidden"><span>Set Up a Logging Hook</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#train_the_model" class="devsite-nav-title devsite-nav-item-hidden"><span>Train the Model</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#evaluate_the_model" class="devsite-nav-title devsite-nav-item-hidden"><span>Evaluate the Model</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#run_the_model" class="devsite-nav-title devsite-nav-item-hidden"><span>Run the Model</span></a></li></ul></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#additional_resources" class="devsite-nav-title devsite-nav-item-hidden"><span>Additional Resources</span></a></li><li class="devsite-nav-item"><button type="button" class="button-flat devsite-nav-more-items material-icons" title="Expand/collapse contents" aria-hidden="true"></button></li></ul></nav>
+  
+  <div class="devsite-article-body clearfix
+            " itemprop="articleBody">
+    
+<style>/* override theme */
+table img {
+  max-width: 100%;
+}
+
+/* override var element to differentiate color from comment */
+var, var code, var span, .prettyprint var span {
+  color: #039be5;
+}
+
+/* .devsite-terminal virtualenv prompt */
+.tfo-terminal-venv::before {
+  content: "(venv) $ " !important;
+}
+
+/* .devsite-terminal root prompt */
+.tfo-terminal-root::before {
+  content: "# " !important;
+}
+
+/* .devsite-terminal Windows prompt */
+.tfo-terminal-windows::before {
+  content: "C:\\> " !important;
+}
+
+/* .devsite-terminal Windows prompt w/ virtualenv */
+.tfo-terminal-windows-venv::before {
+  content: "(venv) C:\\> " !important;
+}
+
+/* on rendered notebook page,
+   remove link to webpage since we're already here */
+.tfo-notebook-buttons td:first-child {
+  display: none;
+}
+
+/* landing pages */
+
+.tfo-button-primary {
+  background-color: #fca851;
+}
+
+.tfo-button-primary:hover {
+  background-color: #ef6c02;
+}
+
+.tfo-landing-row-item-inset-white {
+  background-color: #fff;
+  padding: 32px;
+}
+
+.tfo-landing-row-item-inset-white ol,
+.tfo-landing-row-item-inset-white ul {
+  padding-left: 20px;
+}
+
+a.colab-button {
+  background: rgba(255, 255, 255, .75);
+  border: solid 1px rgba(0, 0, 0, .08);
+  border-bottom-color: rgba(0, 0, 0, .15);
+  border-radius: 4px;
+  color: #aaa;
+  display: inline-block;
+  font-size: 11px !important;
+  font-weight: 300;
+  line-height: 16px;
+  padding: 4px 8px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+a.colab-button:hover {
+  background: white;
+  border-color: rgba(0, 0, 0, .2);
+  color: #666;
+}
+
+a.colab-button span {
+  background: url(/images/colab_logo_button.svg) no-repeat 1px 1px / 20px;
+  border-radius: 4px;
+  display: inline-block;
+  padding-left: 24px;
+  text-decoration: none;
+}
+
+/* Hide toc/page nav on Tutorials landing page. */
+.tfo-tutorials .devsite-page-nav,
+body[theme="tensorflow-theme"].tfo-tutorials devsite-toc {
+  display: none !important;
+}
+
+/* adjust code block for smaller screens */
+@media screen and (max-width: 1000px) {
+  .tfo-landing-row-item-code-block {
+    flex-direction: column !important;
+  }
+
+  .tfo-landing-row-item-code-block > .devsite-landing-row-item-code {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .tfo-landing-row-item-code-block {
+    display: none;
+  }
+}
+</style>
+
+<script src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/MathJax.js"></script>
+
+<!-- DO NOT EDIT! Automatically generated file. -->
+
+
+
+<p>The <a href="https://www.tensorflow.org/api_docs/python/tf/layers"><code>tf.layers</code></a> module provides a high-level API that makes
+it easy to construct a neural network. It provides methods that facilitate the
+creation of dense (fully connected) layers and convolutional layers, adding
+activation functions, and applying dropout regularization. In this tutorial,
+you'll learn how to use <code>layers</code> to build a convolutional neural network model
+to recognize the handwritten digits in the MNIST data set.</p>
+
+<p><img src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/mnist_0-9.png" alt="handwritten digits 0–9 from the MNIST data set"></p>
+
+<p><strong>The <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a> comprises 60,000
+training examples and 10,000 test examples of the handwritten digits 0–9,
+formatted as 28x28-pixel monochrome images.</strong></p>
+
+<h2 id="getting_started"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Getting Started</h2>
+
+<p>Let's set up the skeleton for our TensorFlow program. Create a file called
+<code>cnn_mnist.py</code>, and add the following code:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">from</span><span class="pln"> __future__ </span><span class="kwd">import</span><span class="pln"> absolute_import<br></span><span class="kwd">from</span><span class="pln"> __future__ </span><span class="kwd">import</span><span class="pln"> division<br></span><span class="kwd">from</span><span class="pln"> __future__ </span><span class="kwd">import</span><span class="pln"> print_function<br><br></span><span class="com"># Imports</span><span class="pln"><br></span><span class="kwd">import</span><span class="pln"> numpy </span><span class="kwd">as</span><span class="pln"> np<br></span><span class="kwd">import</span><span class="pln"> tensorflow </span><span class="kwd">as</span><span class="pln"> tf<br><br>tf</span><span class="pun">.</span><span class="pln">logging</span><span class="pun">.</span><span class="pln">set_verbosity</span><span class="pun">(</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">logging</span><span class="pun">.</span><span class="pln">INFO</span><span class="pun">)</span><span class="pln"><br><br></span><span class="com"># Our application logic will be added here</span><span class="pln"><br><br></span><span class="kwd">if</span><span class="pln"> __name__ </span><span class="pun">==</span><span class="pln"> </span><span class="str">"__main__"</span><span class="pun">:</span><span class="pln"><br>&nbsp; tf</span><span class="pun">.</span><span class="pln">app</span><span class="pun">.</span><span class="pln">run</span><span class="pun">()</span><span class="pln"><br></span></code></pre>
+<p>As you work through the tutorial, you'll add code to construct, train, and
+evaluate the convolutional neural network. The complete, final code can be
+<a href="https://www.github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/layers/cnn_mnist.py">found here</a>.</p>
+
+<h2 id="intro_to_convolutional_neural_networks"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Intro to Convolutional Neural Networks</h2>
+
+<p>Convolutional neural networks (CNNs) are the current state-of-the-art model
+architecture for image classification tasks. CNNs apply a series of filters to
+the raw pixel data of an image to extract and learn higher-level features, which
+the model can then use for classification. CNNs contains three components:</p>
+
+<ul>
+<li><p><strong>Convolutional layers</strong>, which apply a specified number of convolution
+filters to the image. For each subregion, the layer performs a set of
+mathematical operations to produce a single value in the output feature map.
+Convolutional layers then typically apply a
+<a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)">ReLU activation function</a> to
+the output to introduce nonlinearities into the model.</p></li>
+<li><p><strong>Pooling layers</strong>, which
+<a href="https://en.wikipedia.org/wiki/Convolutional_neural_network#Pooling_layer">downsample the image data</a>
+extracted by the convolutional layers to reduce the dimensionality of the
+feature map in order to decrease processing time. A commonly used pooling
+algorithm is max pooling, which extracts subregions of the feature map
+(e.g., 2x2-pixel tiles), keeps their maximum value, and discards all other
+values.</p></li>
+<li><p><strong>Dense (fully connected) layers</strong>, which perform classification on the
+features extracted by the convolutional layers and downsampled by the
+pooling layers. In a dense layer, every node in the layer is connected to
+every node in the preceding layer.</p></li>
+</ul>
+
+<p>Typically, a CNN is composed of a stack of convolutional modules that perform
+feature extraction. Each module consists of a convolutional layer followed by a
+pooling layer. The last convolutional module is followed by one or more dense
+layers that perform classification. The final dense layer in a CNN contains a
+single node for each target class in the model (all the possible classes the
+model may predict), with a
+<a href="https://en.wikipedia.org/wiki/Softmax_function">softmax</a> activation function to
+generate a value between 0–1 for each node (the sum of all these softmax values
+is equal to 1). We can interpret the softmax values for a given image as
+relative measurements of how likely it is that the image falls into each target
+class.</p>
+
+<blockquote>
+<aside class="note"><strong>Note:</strong><span> For a more comprehensive walkthrough of CNN architecture, see Stanford
+University's <a href="https://cs231n.github.io/convolutional-networks/">
+Convolutional Neural Networks for Visual Recognition course materials</a>.<p></p></span></aside></blockquote>
+
+<h2 id="building_the_cnn_mnist_classifier"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Building the CNN MNIST Classifier</h2>
+
+<p>Let's build a model to classify the images in the MNIST dataset using the
+following CNN architecture:</p>
+
+<ol>
+<li><strong>Convolutional Layer #1</strong>: Applies 32 5x5 filters (extracting 5x5-pixel
+subregions), with ReLU activation function</li>
+<li><strong>Pooling Layer #1</strong>: Performs max pooling with a 2x2 filter and stride of 2
+(which specifies that pooled regions do not overlap)</li>
+<li><strong>Convolutional Layer #2</strong>: Applies 64 5x5 filters, with ReLU activation
+function</li>
+<li><strong>Pooling Layer #2</strong>: Again, performs max pooling with a 2x2 filter and
+stride of 2</li>
+<li><strong>Dense Layer #1</strong>: 1,024 neurons, with dropout regularization rate of 0.4
+(probability of 0.4 that any given element will be dropped during training)</li>
+<li><strong>Dense Layer #2 (Logits Layer)</strong>: 10 neurons, one for each digit target
+class (0–9).</li>
+</ol>
+
+<p>The <a href="https://www.tensorflow.org/api_docs/python/tf/layers"><code>tf.layers</code></a> module contains methods to create each of the three layer types
+above:</p>
+
+<ul>
+<li><code>conv2d()</code>. Constructs a two-dimensional convolutional layer. Takes number
+of filters, filter kernel size, padding, and activation function as
+arguments.</li>
+<li><code>max_pooling2d()</code>. Constructs a two-dimensional pooling layer using the
+max-pooling algorithm. Takes pooling filter size and stride as arguments.</li>
+<li><code>dense()</code>. Constructs a dense layer. Takes number of neurons and activation
+function as arguments.</li>
+</ul>
+
+<p>Each of these methods accepts a tensor as input and returns a transformed tensor
+as output. This makes it easy to connect one layer to another: just take the
+output from one layer-creation method and supply it as input to another.</p>
+
+<p>Open <code>cnn_mnist.py</code> and add the following <code>cnn_model_fn</code> function, which
+conforms to the interface expected by TensorFlow's Estimator API (more on this
+later in <a href="https://www.tensorflow.org/tutorials/estimators/cnn#create_the_estimator">Create the Estimator</a>). <code>cnn_mnist.py</code> takes
+MNIST feature data, labels, and mode (from
+<a href="https://www.tensorflow.org/api_docs/python/tf/estimator/ModeKeys"><code>tf.estimator.ModeKeys</code></a>: <code>TRAIN</code>, <code>EVAL</code>, <code>PREDICT</code>) as arguments;
+configures the CNN; and returns predictions, loss, and a training operation:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">def</span><span class="pln"> cnn_model_fn</span><span class="pun">(</span><span class="pln">features</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">,</span><span class="pln"> mode</span><span class="pun">):</span><span class="pln"><br>&nbsp; </span><span class="str">"""Model function for CNN."""</span><span class="pln"><br>&nbsp; </span><span class="com"># Input Layer</span><span class="pln"><br>&nbsp; input_layer </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">reshape</span><span class="pun">(</span><span class="pln">features</span><span class="pun">[</span><span class="str">"x"</span><span class="pun">],</span><span class="pln"> </span><span class="pun">[-</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">28</span><span class="pun">,</span><span class="pln"> </span><span class="lit">28</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">])</span><span class="pln"><br><br>&nbsp; </span><span class="com"># Convolutional Layer #1</span><span class="pln"><br>&nbsp; conv1 </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">conv2d</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; inputs</span><span class="pun">=</span><span class="pln">input_layer</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; filters</span><span class="pun">=</span><span class="lit">32</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; kernel_size</span><span class="pun">=[</span><span class="lit">5</span><span class="pun">,</span><span class="pln"> </span><span class="lit">5</span><span class="pun">],</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; padding</span><span class="pun">=</span><span class="str">"same"</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; activation</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">relu</span><span class="pun">)</span><span class="pln"><br><br>&nbsp; </span><span class="com"># Pooling Layer #1</span><span class="pln"><br>&nbsp; pool1 </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">max_pooling2d</span><span class="pun">(</span><span class="pln">inputs</span><span class="pun">=</span><span class="pln">conv1</span><span class="pun">,</span><span class="pln"> pool_size</span><span class="pun">=[</span><span class="lit">2</span><span class="pun">,</span><span class="pln"> </span><span class="lit">2</span><span class="pun">],</span><span class="pln"> strides</span><span class="pun">=</span><span class="lit">2</span><span class="pun">)</span><span class="pln"><br><br>&nbsp; </span><span class="com"># Convolutional Layer #2 and Pooling Layer #2</span><span class="pln"><br>&nbsp; conv2 </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">conv2d</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; inputs</span><span class="pun">=</span><span class="pln">pool1</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; filters</span><span class="pun">=</span><span class="lit">64</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; kernel_size</span><span class="pun">=[</span><span class="lit">5</span><span class="pun">,</span><span class="pln"> </span><span class="lit">5</span><span class="pun">],</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; padding</span><span class="pun">=</span><span class="str">"same"</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; activation</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">relu</span><span class="pun">)</span><span class="pln"><br>&nbsp; pool2 </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">max_pooling2d</span><span class="pun">(</span><span class="pln">inputs</span><span class="pun">=</span><span class="pln">conv2</span><span class="pun">,</span><span class="pln"> pool_size</span><span class="pun">=[</span><span class="lit">2</span><span class="pun">,</span><span class="pln"> </span><span class="lit">2</span><span class="pun">],</span><span class="pln"> strides</span><span class="pun">=</span><span class="lit">2</span><span class="pun">)</span><span class="pln"><br><br>&nbsp; </span><span class="com"># Dense Layer</span><span class="pln"><br>&nbsp; pool2_flat </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">reshape</span><span class="pun">(</span><span class="pln">pool2</span><span class="pun">,</span><span class="pln"> </span><span class="pun">[-</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">7</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> </span><span class="lit">7</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> </span><span class="lit">64</span><span class="pun">])</span><span class="pln"><br>&nbsp; dense </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">dense</span><span class="pun">(</span><span class="pln">inputs</span><span class="pun">=</span><span class="pln">pool2_flat</span><span class="pun">,</span><span class="pln"> units</span><span class="pun">=</span><span class="lit">1024</span><span class="pun">,</span><span class="pln"> activation</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">relu</span><span class="pun">)</span><span class="pln"><br>&nbsp; dropout </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">dropout</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; inputs</span><span class="pun">=</span><span class="pln">dense</span><span class="pun">,</span><span class="pln"> rate</span><span class="pun">=</span><span class="lit">0.4</span><span class="pun">,</span><span class="pln"> training</span><span class="pun">=</span><span class="pln">mode </span><span class="pun">==</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">ModeKeys</span><span class="pun">.</span><span class="pln">TRAIN</span><span class="pun">)</span><span class="pln"><br><br>&nbsp; </span><span class="com"># Logits Layer</span><span class="pln"><br>&nbsp; logits </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">dense</span><span class="pun">(</span><span class="pln">inputs</span><span class="pun">=</span><span class="pln">dropout</span><span class="pun">,</span><span class="pln"> units</span><span class="pun">=</span><span class="lit">10</span><span class="pun">)</span><span class="pln"><br><br>&nbsp; predictions </span><span class="pun">=</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="com"># Generate predictions (for PREDICT and EVAL mode)</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="str">"classes"</span><span class="pun">:</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">argmax</span><span class="pun">(</span><span class="pln">input</span><span class="pun">=</span><span class="pln">logits</span><span class="pun">,</span><span class="pln"> axis</span><span class="pun">=</span><span class="lit">1</span><span class="pun">),</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="com"># Add `softmax_tensor` to the graph. It is used for PREDICT and by the</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="com"># `logging_hook`.</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="str">"probabilities"</span><span class="pun">:</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">softmax</span><span class="pun">(</span><span class="pln">logits</span><span class="pun">,</span><span class="pln"> name</span><span class="pun">=</span><span class="str">"softmax_tensor"</span><span class="pun">)</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> mode </span><span class="pun">==</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">ModeKeys</span><span class="pun">.</span><span class="pln">PREDICT</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">EstimatorSpec</span><span class="pun">(</span><span class="pln">mode</span><span class="pun">=</span><span class="pln">mode</span><span class="pun">,</span><span class="pln"> predictions</span><span class="pun">=</span><span class="pln">predictions</span><span class="pun">)</span><span class="pln"><br><br>&nbsp; </span><span class="com"># Calculate Loss (for both TRAIN and EVAL modes)</span><span class="pln"><br>&nbsp; loss </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">losses</span><span class="pun">.</span><span class="pln">sparse_softmax_cross_entropy</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">=</span><span class="pln">labels</span><span class="pun">,</span><span class="pln"> logits</span><span class="pun">=</span><span class="pln">logits</span><span class="pun">)</span><span class="pln"><br><br>&nbsp; </span><span class="com"># Configure the Training Op (for TRAIN mode)</span><span class="pln"><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> mode </span><span class="pun">==</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">ModeKeys</span><span class="pun">.</span><span class="pln">TRAIN</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; optimizer </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">train</span><span class="pun">.</span><span class="typ">GradientDescentOptimizer</span><span class="pun">(</span><span class="pln">learning_rate</span><span class="pun">=</span><span class="lit">0.001</span><span class="pun">)</span><span class="pln"><br>&nbsp; &nbsp; train_op </span><span class="pun">=</span><span class="pln"> optimizer</span><span class="pun">.</span><span class="pln">minimize</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; loss</span><span class="pun">=</span><span class="pln">loss</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; global_step</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">train</span><span class="pun">.</span><span class="pln">get_global_step</span><span class="pun">())</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">EstimatorSpec</span><span class="pun">(</span><span class="pln">mode</span><span class="pun">=</span><span class="pln">mode</span><span class="pun">,</span><span class="pln"> loss</span><span class="pun">=</span><span class="pln">loss</span><span class="pun">,</span><span class="pln"> train_op</span><span class="pun">=</span><span class="pln">train_op</span><span class="pun">)</span><span class="pln"><br><br>&nbsp; </span><span class="com"># Add evaluation metrics (for EVAL mode)</span><span class="pln"><br>&nbsp; eval_metric_ops </span><span class="pun">=</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="str">"accuracy"</span><span class="pun">:</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">metrics</span><span class="pun">.</span><span class="pln">accuracy</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; labels</span><span class="pun">=</span><span class="pln">labels</span><span class="pun">,</span><span class="pln"> predictions</span><span class="pun">=</span><span class="pln">predictions</span><span class="pun">[</span><span class="str">"classes"</span><span class="pun">])}</span><span class="pln"><br>&nbsp; </span><span class="kwd">return</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">EstimatorSpec</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; mode</span><span class="pun">=</span><span class="pln">mode</span><span class="pun">,</span><span class="pln"> loss</span><span class="pun">=</span><span class="pln">loss</span><span class="pun">,</span><span class="pln"> eval_metric_ops</span><span class="pun">=</span><span class="pln">eval_metric_ops</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>The following sections (with headings corresponding to each code block above)
+dive deeper into the <a href="https://www.tensorflow.org/api_docs/python/tf/layers"><code>tf.layers</code></a> code used to create each layer, as well as how
+to calculate loss, configure the training op, and generate predictions. If
+you're already experienced with CNNs and <a href="https://www.tensorflow.org/guide/custom_estimators">TensorFlow <code>Estimator</code>s</a>,
+and find the above code intuitive, you may want to skim these sections or just
+skip ahead to <a href="https://www.tensorflow.org/tutorials/estimators/cnn#train_eval_mnist">"Training and Evaluating the CNN MNIST Classifier"</a>.</p>
+
+<h3 id="input_layer">Input Layer</h3>
+
+<p>The methods in the <code>layers</code> module for creating convolutional and pooling layers
+for two-dimensional image data expect input tensors to have a shape of
+<code>[<em>batch_size</em>, <em>image_height</em>, <em>image_width</em>,
+<em>channels</em>]</code> by default. This behavior can be changed using the <code><em>data_format</em></code> parameter; defined as follows:</p>
+
+<ul>
+<li><em><code>batch_size</code></em>. Size of the subset of examples to use when performing
+gradient descent during training.</li>
+<li><em><code>image_height</code></em>. Height of the example images.</li>
+<li><em><code>image_width</code></em>. Width of the example images.</li>
+<li><em><code>channels</code></em>. Number of color channels in the example images. For color
+images, the number of channels is 3 (red, green, blue). For monochrome
+images, there is just 1 channel (black).</li>
+<li><em><code>data_format</code></em>. A string, one of <code>channels_last</code> (default) or <code>channels_first</code>.
+  <code>channels_last</code> corresponds to inputs with shape
+  <code>(batch, ..., channels)</code> while <code>channels_first</code> corresponds to
+  inputs with shape <code>(batch, channels, ...)</code>.</li>
+</ul>
+
+<p>Here, our MNIST dataset is composed of monochrome 28x28 pixel images, so the
+desired shape for our input layer is <code>[<em>batch_size</em>, 28, 28,
+1]</code>.</p>
+
+<p>To convert our input feature map (<code>features</code>) to this shape, we can perform the
+following <code>reshape</code> operation:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">input_layer </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">reshape</span><span class="pun">(</span><span class="pln">features</span><span class="pun">[</span><span class="str">"x"</span><span class="pun">],</span><span class="pln"> </span><span class="pun">[-</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">28</span><span class="pun">,</span><span class="pln"> </span><span class="lit">28</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">])</span><span class="pln"><br></span></code></pre>
+<p>Note that we've indicated <code>-1</code> for batch size, which specifies that this
+dimension should be dynamically computed based on the number of input values in
+<code>features["x"]</code>, holding the size of all other dimensions constant. This allows
+us to treat <code>batch_size</code> as a hyperparameter that we can tune. For example, if
+we feed examples into our model in batches of 5, <code>features["x"]</code> will contain
+3,920 values (one value for each pixel in each image), and <code>input_layer</code> will
+have a shape of <code>[5, 28, 28, 1]</code>. Similarly, if we feed examples in batches of
+100, <code>features["x"]</code> will contain 78,400 values, and <code>input_layer</code> will have a
+shape of <code>[100, 28, 28, 1]</code>.</p>
+
+<h3 id="convolutional_layer_1">Convolutional Layer #1</h3>
+
+<p>In our first convolutional layer, we want to apply 32 5x5 filters to the input
+layer, with a ReLU activation function. We can use the <code>conv2d()</code> method in the
+<code>layers</code> module to create this layer as follows:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">conv1 </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">conv2d</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; inputs</span><span class="pun">=</span><span class="pln">input_layer</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; filters</span><span class="pun">=</span><span class="lit">32</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; kernel_size</span><span class="pun">=[</span><span class="lit">5</span><span class="pun">,</span><span class="pln"> </span><span class="lit">5</span><span class="pun">],</span><span class="pln"><br>&nbsp; &nbsp; padding</span><span class="pun">=</span><span class="str">"same"</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; activation</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">relu</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>The <code>inputs</code> argument specifies our input tensor, which must have the shape
+<code>[<em>batch_size</em>, <em>image_height</em>, <em>image_width</em>,
+<em>channels</em>]</code>. Here, we're connecting our first convolutional layer
+to <code>input_layer</code>, which has the shape <code>[<em>batch_size</em>, 28, 28,
+1]</code>.</p>
+
+<blockquote>
+<aside class="note"><strong>Note:</strong><span> <code>conv2d()</code> will instead accept a shape of
+<code>[<em>batch_size</em>, <em>channels</em>, <em>image_height</em>, <em>image_width</em>]</code> when passed the argument
+<code>data_format=channels_first</code>.</span></aside></blockquote>
+
+<p>The <code>filters</code> argument specifies the number of filters to apply (here, 32), and
+<code>kernel_size</code> specifies the dimensions of the filters as <code>[<em>height</em>,
+<em>width</em>]</code> (here, <code>[5, 5]</code>).</p>
+
+<p class="tip"><b>TIP:</b> If filter height and width have the same value, you can instead specify a
+single integer for <code>kernel_size</code>—e.g., <code>kernel_size=5</code>.</p>
+
+<p>The <code>padding</code> argument specifies one of two enumerated values
+(case-insensitive): <code>valid</code> (default value) or <code>same</code>. To specify that the
+output tensor should have the same height and width values as the input tensor,
+we set <code>padding=same</code> here, which instructs TensorFlow to add 0 values to the
+edges of the input tensor to preserve height and width of 28. (Without padding,
+a 5x5 convolution over a 28x28 tensor will produce a 24x24 tensor, as there are
+24x24 locations to extract a 5x5 tile from a 28x28 grid.)</p>
+
+<p>The <code>activation</code> argument specifies the activation function to apply to the
+output of the convolution. Here, we specify ReLU activation with
+<a href="https://www.tensorflow.org/api_docs/python/tf/nn/relu"><code>tf.nn.relu</code></a>.</p>
+
+<p>Our output tensor produced by <code>conv2d()</code> has a shape of
+<code>[<em>batch_size</em>, 28, 28, 32]</code>: the same height and width
+dimensions as the input, but now with 32 channels holding the output from each
+of the filters.</p>
+
+<h3 id="pooling_layer_1">Pooling Layer #1</h3>
+
+<p>Next, we connect our first pooling layer to the convolutional layer we just
+created. We can use the <code>max_pooling2d()</code> method in <code>layers</code> to construct a
+layer that performs max pooling with a 2x2 filter and stride of 2:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">pool1 </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">max_pooling2d</span><span class="pun">(</span><span class="pln">inputs</span><span class="pun">=</span><span class="pln">conv1</span><span class="pun">,</span><span class="pln"> pool_size</span><span class="pun">=[</span><span class="lit">2</span><span class="pun">,</span><span class="pln"> </span><span class="lit">2</span><span class="pun">],</span><span class="pln"> strides</span><span class="pun">=</span><span class="lit">2</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>Again, <code>inputs</code> specifies the input tensor, with a shape of
+<code>[<em>batch_size</em>, <em>image_height</em>, <em>image_width</em>,
+<em>channels</em>]</code>. Here, our input tensor is <code>conv1</code>, the output from
+the first convolutional layer, which has a shape of <code>[<em>batch_size</em>,
+28, 28, 32]</code>.</p>
+
+<blockquote>
+<aside class="note"><strong>Note:</strong><span> As with <code>conv2d()</code>, <code>max_pooling2d()</code> will instead
+accept a shape of <code>[<em>batch_size</em>, <em>channels</em>, 
+<em>image_height</em>, <em>image_width</em>]</code> when passed the argument
+<code>data_format=channels_first</code>.</span></aside></blockquote>
+
+<p>The <code>pool_size</code> argument specifies the size of the max pooling filter as
+<code>[<em>height</em>, <em>width</em>]</code> (here, <code>[2, 2]</code>). If both
+dimensions have the same value, you can instead specify a single integer (e.g.,
+<code>pool_size=2</code>).</p>
+
+<p>The <code>strides</code> argument specifies the size of the stride. Here, we set a stride
+of 2, which indicates that the subregions extracted by the filter should be
+separated by 2 pixels in both the height and width dimensions (for a 2x2 filter,
+this means that none of the regions extracted will overlap). If you want to set
+different stride values for height and width, you can instead specify a tuple or
+list (e.g., <code>stride=[3, 6]</code>).</p>
+
+<p>Our output tensor produced by <code>max_pooling2d()</code> (<code>pool1</code>) has a shape of
+<code>[<em>batch_size</em>, 14, 14, 32]</code>: the 2x2 filter reduces height and width by 50% each.</p>
+
+<h3 id="convolutional_layer_2_and_pooling_layer_2">Convolutional Layer #2 and Pooling Layer #2</h3>
+
+<p>We can connect a second convolutional and pooling layer to our CNN using
+<code>conv2d()</code> and <code>max_pooling2d()</code> as before. For convolutional layer #2, we
+configure 64 5x5 filters with ReLU activation, and for pooling layer #2, we use
+the same specs as pooling layer #1 (a 2x2 max pooling filter with stride of 2):</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">conv2 </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">conv2d</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; inputs</span><span class="pun">=</span><span class="pln">pool1</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; filters</span><span class="pun">=</span><span class="lit">64</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; kernel_size</span><span class="pun">=[</span><span class="lit">5</span><span class="pun">,</span><span class="pln"> </span><span class="lit">5</span><span class="pun">],</span><span class="pln"><br>&nbsp; &nbsp; padding</span><span class="pun">=</span><span class="str">"same"</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; activation</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">relu</span><span class="pun">)</span><span class="pln"><br><br>pool2 </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">max_pooling2d</span><span class="pun">(</span><span class="pln">inputs</span><span class="pun">=</span><span class="pln">conv2</span><span class="pun">,</span><span class="pln"> pool_size</span><span class="pun">=[</span><span class="lit">2</span><span class="pun">,</span><span class="pln"> </span><span class="lit">2</span><span class="pun">],</span><span class="pln"> strides</span><span class="pun">=</span><span class="lit">2</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>Note that convolutional layer #2 takes the output tensor of our first pooling
+layer (<code>pool1</code>) as input, and produces the tensor <code>conv2</code> as output. <code>conv2</code>
+has a shape of <code>[<em>batch_size</em>, 14, 14, 64]</code>, the same height and width as <code>pool1</code> (due to <code>padding="same"</code>), and 64 channels for the 64
+filters applied.</p>
+
+<p>Pooling layer #2 takes <code>conv2</code> as input, producing <code>pool2</code> as output. <code>pool2</code>
+has shape <code>[<em>batch_size</em>, 7, 7, 64]</code> (50% reduction of height and width from <code>conv2</code>).</p>
+
+<h3 id="dense_layer">Dense Layer</h3>
+
+<p>Next, we want to add a dense layer (with 1,024 neurons and ReLU activation) to
+our CNN to perform classification on the features extracted by the
+convolution/pooling layers. Before we connect the layer, however, we'll flatten
+our feature map (<code>pool2</code>) to shape <code>[<em>batch_size</em>,
+<em>features</em>]</code>, so that our tensor has only two dimensions:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">pool2_flat </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">reshape</span><span class="pun">(</span><span class="pln">pool2</span><span class="pun">,</span><span class="pln"> </span><span class="pun">[-</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">7</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> </span><span class="lit">7</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> </span><span class="lit">64</span><span class="pun">])</span><span class="pln"><br></span></code></pre>
+<p>In the <code>reshape()</code> operation above, the <code>-1</code> signifies that the <em><code>batch_size</code></em>
+dimension will be dynamically calculated based on the number of examples in our
+input data. Each example has 7 (<code>pool2</code> height) * 7 (<code>pool2</code> width) * 64
+(<code>pool2</code> channels) features, so we want the <code>features</code> dimension to have a value
+of 7 * 7 * 64 (3136 in total). The output tensor, <code>pool2_flat</code>, has shape
+<code>[<em>batch_size</em>, 3136]</code>.</p>
+
+<p>Now, we can use the <code>dense()</code> method in <code>layers</code> to connect our dense layer as
+follows:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">dense </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">dense</span><span class="pun">(</span><span class="pln">inputs</span><span class="pun">=</span><span class="pln">pool2_flat</span><span class="pun">,</span><span class="pln"> units</span><span class="pun">=</span><span class="lit">1024</span><span class="pun">,</span><span class="pln"> activation</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">relu</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>The <code>inputs</code> argument specifies the input tensor: our flattened feature map,
+<code>pool2_flat</code>. The <code>units</code> argument specifies the number of neurons in the dense
+layer (1,024). The <code>activation</code> argument takes the activation function; again,
+we'll use <a href="https://www.tensorflow.org/api_docs/python/tf/nn/relu"><code>tf.nn.relu</code></a> to add ReLU activation.</p>
+
+<p>To help improve the results of our model, we also apply dropout regularization
+to our dense layer, using the <code>dropout</code> method in <code>layers</code>:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">dropout </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">dropout</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; inputs</span><span class="pun">=</span><span class="pln">dense</span><span class="pun">,</span><span class="pln"> rate</span><span class="pun">=</span><span class="lit">0.4</span><span class="pun">,</span><span class="pln"> training</span><span class="pun">=</span><span class="pln">mode </span><span class="pun">==</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">ModeKeys</span><span class="pun">.</span><span class="pln">TRAIN</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>Again, <code>inputs</code> specifies the input tensor, which is the output tensor from our
+dense layer (<code>dense</code>).</p>
+
+<p>The <code>rate</code> argument specifies the dropout rate; here, we use <code>0.4</code>, which means
+40% of the elements will be randomly dropped out during training.</p>
+
+<p>The <code>training</code> argument takes a boolean specifying whether or not the model is
+currently being run in training mode; dropout will only be performed if
+<code>training</code> is <code>True</code>. Here, we check if the <code>mode</code> passed to our model function
+<code>cnn_model_fn</code> is <code>TRAIN</code> mode.</p>
+
+<p>Our output tensor <code>dropout</code> has shape <code>[<em>batch_size</em>, 1024]</code>.</p>
+
+<h3 id="logits_layer">Logits Layer</h3>
+
+<p>The final layer in our neural network is the logits layer, which will return the
+raw values for our predictions. We create a dense layer with 10 neurons (one for
+each target class 0–9), with linear activation (the default):</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">logits </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="pln">dense</span><span class="pun">(</span><span class="pln">inputs</span><span class="pun">=</span><span class="pln">dropout</span><span class="pun">,</span><span class="pln"> units</span><span class="pun">=</span><span class="lit">10</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>Our final output tensor of the CNN, <code>logits</code>, has shape
+<code>[<em>batch_size</em>, 10]</code>.</p>
+
+<h3 id="generate_predictions">Generate Predictions</h3>
+
+<p>The logits layer of our model returns our predictions as raw values in a
+<code>[<em>batch_size</em>, 10]</code>-dimensional tensor. Let's convert these
+raw values into two different formats that our model function can return:</p>
+
+<ul>
+<li>The <strong>predicted class</strong> for each example: a digit from 0–9.</li>
+<li>The <strong>probabilities</strong> for each possible target class for each example: the
+probability that the example is a 0, is a 1, is a 2, etc.</li>
+</ul>
+
+<p>For a given example, our predicted class is the element in the corresponding row
+of the logits tensor with the highest raw value. We can find the index of this
+element using the <a href="https://www.tensorflow.org/api_docs/python/tf/argmax"><code>tf.argmax</code></a>
+function:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">tf</span><span class="pun">.</span><span class="pln">argmax</span><span class="pun">(</span><span class="pln">input</span><span class="pun">=</span><span class="pln">logits</span><span class="pun">,</span><span class="pln"> axis</span><span class="pun">=</span><span class="lit">1</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>The <code>input</code> argument specifies the tensor from which to extract maximum
+values—here <code>logits</code>. The <code>axis</code> argument specifies the axis of the <code>input</code>
+tensor along which to find the greatest value. Here, we want to find the largest
+value along the dimension with index of 1, which corresponds to our predictions
+(recall that our logits tensor has shape <code>[<em>batch_size</em>,
+10]</code>).</p>
+
+<p>We can derive probabilities from our logits layer by applying softmax activation
+using <a href="https://www.tensorflow.org/api_docs/python/tf/nn/softmax"><code>tf.nn.softmax</code></a>:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">softmax</span><span class="pun">(</span><span class="pln">logits</span><span class="pun">,</span><span class="pln"> name</span><span class="pun">=</span><span class="str">"softmax_tensor"</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<blockquote>
+<aside class="note"><strong>Note:</strong><span> We use the <code>name</code> argument to explicitly name this operation
+<code>softmax_tensor</code>, so we can reference it later. (We'll set up logging for the
+softmax values in <a href="https://www.tensorflow.org/tutorials/estimators/cnn#set_up_a_logging_hook">"Set Up a Logging Hook"</a>).</span></aside></blockquote>
+
+<p>We compile our predictions in a dict, and return an <code>EstimatorSpec</code> object:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">predictions </span><span class="pun">=</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="str">"classes"</span><span class="pun">:</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">argmax</span><span class="pun">(</span><span class="pln">input</span><span class="pun">=</span><span class="pln">logits</span><span class="pun">,</span><span class="pln"> axis</span><span class="pun">=</span><span class="lit">1</span><span class="pun">),</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="str">"probabilities"</span><span class="pun">:</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">softmax</span><span class="pun">(</span><span class="pln">logits</span><span class="pun">,</span><span class="pln"> name</span><span class="pun">=</span><span class="str">"softmax_tensor"</span><span class="pun">)</span><span class="pln"><br></span><span class="pun">}</span><span class="pln"><br></span><span class="kwd">if</span><span class="pln"> mode </span><span class="pun">==</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">ModeKeys</span><span class="pun">.</span><span class="pln">PREDICT</span><span class="pun">:</span><span class="pln"><br>&nbsp; </span><span class="kwd">return</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">EstimatorSpec</span><span class="pun">(</span><span class="pln">mode</span><span class="pun">=</span><span class="pln">mode</span><span class="pun">,</span><span class="pln"> predictions</span><span class="pun">=</span><span class="pln">predictions</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<h3 id="calculate_loss">Calculate Loss</h3>
+
+<p>For both training and evaluation, we need to define a
+<a href="https://en.wikipedia.org/wiki/Loss_function">loss function</a>
+that measures how closely the model's predictions match the target classes. For
+multiclass classification problems like MNIST,
+<a href="https://en.wikipedia.org/wiki/Cross_entropy">cross entropy</a> is typically used
+as the loss metric. The following code calculates cross entropy when the model
+runs in either <code>TRAIN</code> or <code>EVAL</code> mode:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">loss </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">losses</span><span class="pun">.</span><span class="pln">sparse_softmax_cross_entropy</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">=</span><span class="pln">labels</span><span class="pun">,</span><span class="pln"> logits</span><span class="pun">=</span><span class="pln">logits</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>Let's take a closer look at what's happening above.</p>
+
+<p>Our <code>labels</code> tensor contains a list of prediction indices for our examples, e.g. <code>[1,
+9, ...]</code>. <code>logits</code> contains the linear outputs of our last layer. </p>
+
+<p><a href="https://www.tensorflow.org/api_docs/python/tf/losses/sparse_softmax_cross_entropy"><code>tf.losses.sparse_softmax_cross_entropy</code></a>, calculates the softmax crossentropy
+(aka: categorical crossentropy, negative log-likelihood) from these two inputs
+in an efficient, numerically stable way.</p>
+
+<h3 id="configure_the_training_op">Configure the Training Op</h3>
+
+<p>In the previous section, we defined loss for our CNN as the softmax
+cross-entropy of the logits layer and our labels. Let's configure our model to
+optimize this loss value during training. We'll use a learning rate of 0.001 and
+<a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent</a>
+as the optimization algorithm:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">if</span><span class="pln"> mode </span><span class="pun">==</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">ModeKeys</span><span class="pun">.</span><span class="pln">TRAIN</span><span class="pun">:</span><span class="pln"><br>&nbsp; optimizer </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">train</span><span class="pun">.</span><span class="typ">GradientDescentOptimizer</span><span class="pun">(</span><span class="pln">learning_rate</span><span class="pun">=</span><span class="lit">0.001</span><span class="pun">)</span><span class="pln"><br>&nbsp; train_op </span><span class="pun">=</span><span class="pln"> optimizer</span><span class="pun">.</span><span class="pln">minimize</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; loss</span><span class="pun">=</span><span class="pln">loss</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; global_step</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">train</span><span class="pun">.</span><span class="pln">get_global_step</span><span class="pun">())</span><span class="pln"><br>&nbsp; </span><span class="kwd">return</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">EstimatorSpec</span><span class="pun">(</span><span class="pln">mode</span><span class="pun">=</span><span class="pln">mode</span><span class="pun">,</span><span class="pln"> loss</span><span class="pun">=</span><span class="pln">loss</span><span class="pun">,</span><span class="pln"> train_op</span><span class="pun">=</span><span class="pln">train_op</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<blockquote>
+<aside class="note"><strong>Note:</strong><span> For a more in-depth look at configuring training ops for Estimator model
+functions, see <a href="https://www.tensorflow.org/guide/custom_estimators#defining-the-training-op-for-the-model">"Defining the training op for the model"</a>
+in the <a href="https://www.tensorflow.org/guide/custom_estimators">"Creating Estimations in tf.estimator"</a> tutorial.</span></aside></blockquote>
+
+<h3 id="add_evaluation_metrics">Add evaluation metrics</h3>
+
+<p>To add accuracy metric in our model, we define <code>eval_metric_ops</code> dict in EVAL
+mode as follows:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">eval_metric_ops </span><span class="pun">=</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="str">"accuracy"</span><span class="pun">:</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">metrics</span><span class="pun">.</span><span class="pln">accuracy</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; labels</span><span class="pun">=</span><span class="pln">labels</span><span class="pun">,</span><span class="pln"> predictions</span><span class="pun">=</span><span class="pln">predictions</span><span class="pun">[</span><span class="str">"classes"</span><span class="pun">])}</span><span class="pln"><br></span><span class="kwd">return</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">EstimatorSpec</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; mode</span><span class="pun">=</span><span class="pln">mode</span><span class="pun">,</span><span class="pln"> loss</span><span class="pun">=</span><span class="pln">loss</span><span class="pun">,</span><span class="pln"> eval_metric_ops</span><span class="pun">=</span><span class="pln">eval_metric_ops</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p><a id="train_eval_mnist"></a></p>
+
+<h2 id="training_and_evaluating_the_cnn_mnist_classifier"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Training and Evaluating the CNN MNIST Classifier</h2>
+
+<p>We've coded our MNIST CNN model function; now we're ready to train and evaluate
+it.</p>
+
+<h3 id="load_training_and_test_data">Load Training and Test Data</h3>
+
+<p>First, let's load our training and test data. Add a <code>main()</code> function to
+<code>cnn_mnist.py</code> with the following code:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">def</span><span class="pln"> main</span><span class="pun">(</span><span class="pln">unused_argv</span><span class="pun">):</span><span class="pln"><br>&nbsp; </span><span class="com"># Load training and eval data</span><span class="pln"><br>&nbsp; mnist </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">contrib</span><span class="pun">.</span><span class="pln">learn</span><span class="pun">.</span><span class="pln">datasets</span><span class="pun">.</span><span class="pln">load_dataset</span><span class="pun">(</span><span class="str">"mnist"</span><span class="pun">)</span><span class="pln"><br>&nbsp; train_data </span><span class="pun">=</span><span class="pln"> mnist</span><span class="pun">.</span><span class="pln">train</span><span class="pun">.</span><span class="pln">images </span><span class="com"># Returns np.array</span><span class="pln"><br>&nbsp; train_labels </span><span class="pun">=</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">asarray</span><span class="pun">(</span><span class="pln">mnist</span><span class="pun">.</span><span class="pln">train</span><span class="pun">.</span><span class="pln">labels</span><span class="pun">,</span><span class="pln"> dtype</span><span class="pun">=</span><span class="pln">np</span><span class="pun">.</span><span class="pln">int32</span><span class="pun">)</span><span class="pln"><br>&nbsp; eval_data </span><span class="pun">=</span><span class="pln"> mnist</span><span class="pun">.</span><span class="pln">test</span><span class="pun">.</span><span class="pln">images </span><span class="com"># Returns np.array</span><span class="pln"><br>&nbsp; eval_labels </span><span class="pun">=</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">asarray</span><span class="pun">(</span><span class="pln">mnist</span><span class="pun">.</span><span class="pln">test</span><span class="pun">.</span><span class="pln">labels</span><span class="pun">,</span><span class="pln"> dtype</span><span class="pun">=</span><span class="pln">np</span><span class="pun">.</span><span class="pln">int32</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>We store the training feature data (the raw pixel values for 55,000 images of
+hand-drawn digits) and training labels (the corresponding value from 0–9 for
+each image) as <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html">numpy
+arrays</a>
+in <code>train_data</code> and <code>train_labels</code>, respectively. Similarly, we store the
+evaluation feature data (10,000 images) and evaluation labels in <code>eval_data</code>
+and <code>eval_labels</code>, respectively.</p>
+
+<h3 id="create_the_estimator">Create the Estimator</h3>
+
+<p>Next, let's create an <code>Estimator</code> (a TensorFlow class for performing high-level
+model training, evaluation, and inference) for our model. Add the following code
+to <code>main()</code>:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com"># Create the Estimator</span><span class="pln"><br>mnist_classifier </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="typ">Estimator</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; model_fn</span><span class="pun">=</span><span class="pln">cnn_model_fn</span><span class="pun">,</span><span class="pln"> model_dir</span><span class="pun">=</span><span class="str">"/tmp/mnist_convnet_model"</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>The <code>model_fn</code> argument specifies the model function to use for training,
+evaluation, and prediction; we pass it the <code>cnn_model_fn</code> we created in
+<a href="https://www.tensorflow.org/tutorials/estimators/cnn#building_the_cnn_mnist_classifier">"Building the CNN MNIST Classifier."</a> The
+<code>model_dir</code> argument specifies the directory where model data (checkpoints) will
+be saved (here, we specify the temp directory <code>/tmp/mnist_convnet_model</code>, but
+feel free to change to another directory of your choice).</p>
+
+<blockquote>
+<aside class="note"><strong>Note:</strong><span> For an in-depth walkthrough of the TensorFlow <code>Estimator</code> API, see the
+tutorial <a href="https://www.tensorflow.org/guide/custom_estimators">"Creating Estimators in tf.estimator."</a></span></aside></blockquote>
+
+<h3 id="set_up_a_logging_hook">Set Up a Logging Hook</h3>
+
+<p>Since CNNs can take a while to train, let's set up some logging so we can track
+progress during training. We can use TensorFlow's <a href="https://www.tensorflow.org/api_docs/python/tf/train/SessionRunHook"><code>tf.train.SessionRunHook</code></a> to create a
+<a href="https://www.tensorflow.org/api_docs/python/tf/train/LoggingTensorHook"><code>tf.train.LoggingTensorHook</code></a>
+that will log the probability values from the softmax layer of our CNN. Add the
+following to <code>main()</code>:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com"># Set up logging for predictions</span><span class="pln"><br>tensors_to_log </span><span class="pun">=</span><span class="pln"> </span><span class="pun">{</span><span class="str">"probabilities"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"softmax_tensor"</span><span class="pun">}</span><span class="pln"><br>logging_hook </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">train</span><span class="pun">.</span><span class="typ">LoggingTensorHook</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; tensors</span><span class="pun">=</span><span class="pln">tensors_to_log</span><span class="pun">,</span><span class="pln"> every_n_iter</span><span class="pun">=</span><span class="lit">50</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>We store a dict of the tensors we want to log in <code>tensors_to_log</code>. Each key is a
+label of our choice that will be printed in the log output, and the
+corresponding label is the name of a <code>Tensor</code> in the TensorFlow graph. Here, our
+<code>probabilities</code> can be found in <code>softmax_tensor</code>, the name we gave our softmax
+operation earlier when we generated the probabilities in <code>cnn_model_fn</code>.</p>
+
+<blockquote>
+<aside class="note"><strong>Note:</strong><span> If you don't explicitly assign a name to an operation via the <code>name</code>
+argument, TensorFlow will assign a default name. A couple easy ways to
+discover the names applied to operations are to visualize your graph on
+<a href="https://www.tensorflow.org/guide/graph_viz">TensorBoard</a>) or to enable the
+<a href="https://www.tensorflow.org/guide/debugger">TensorFlow Debugger (tfdbg)</a>.</span></aside></blockquote>
+
+<p>Next, we create the <code>LoggingTensorHook</code>, passing <code>tensors_to_log</code> to the
+<code>tensors</code> argument. We set <code>every_n_iter=50</code>, which specifies that probabilities
+should be logged after every 50 steps of training.</p>
+
+<h3 id="train_the_model">Train the Model</h3>
+
+<p>Now we're ready to train our model, which we can do by creating <code>train_input_fn</code>
+and calling <code>train()</code> on <code>mnist_classifier</code>. Add the following to <code>main()</code>:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com"># Train the model</span><span class="pln"><br>train_input_fn </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="pln">inputs</span><span class="pun">.</span><span class="pln">numpy_input_fn</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; x</span><span class="pun">={</span><span class="str">"x"</span><span class="pun">:</span><span class="pln"> train_data</span><span class="pun">},</span><span class="pln"><br>&nbsp; &nbsp; y</span><span class="pun">=</span><span class="pln">train_labels</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; batch_size</span><span class="pun">=</span><span class="lit">100</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; num_epochs</span><span class="pun">=</span><span class="kwd">None</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; shuffle</span><span class="pun">=</span><span class="kwd">True</span><span class="pun">)</span><span class="pln"><br>mnist_classifier</span><span class="pun">.</span><span class="pln">train</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; input_fn</span><span class="pun">=</span><span class="pln">train_input_fn</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; steps</span><span class="pun">=</span><span class="lit">20000</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; hooks</span><span class="pun">=[</span><span class="pln">logging_hook</span><span class="pun">])</span><span class="pln"><br></span></code></pre>
+<p>In the <code>numpy_input_fn</code> call, we pass the training feature data and labels to
+<code>x</code> (as a dict) and <code>y</code>, respectively. We set a <code>batch_size</code> of <code>100</code> (which
+means that the model will train on minibatches of 100 examples at each step).
+<code>num_epochs=None</code> means that the model will train until the specified number of
+steps is reached. We also set <code>shuffle=True</code> to shuffle the training data.
+In the <code>train</code> call, we set <code>steps=20000</code>
+(which means the model will train for 20,000 steps total). We pass our
+<code>logging_hook</code> to the <code>hooks</code> argument, so that it will be triggered during
+training.</p>
+
+<h3 id="evaluate_the_model">Evaluate the Model</h3>
+
+<p>Once training is complete, we want to evaluate our model to determine its
+accuracy on the MNIST test set. We call the <code>evaluate</code> method, which evaluates
+the metrics we specified in <code>eval_metric_ops</code> argument in the <code>model_fn</code>.
+Add the following to <code>main()</code>:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com"># Evaluate the model and print results</span><span class="pln"><br>eval_input_fn </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">estimator</span><span class="pun">.</span><span class="pln">inputs</span><span class="pun">.</span><span class="pln">numpy_input_fn</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; x</span><span class="pun">={</span><span class="str">"x"</span><span class="pun">:</span><span class="pln"> eval_data</span><span class="pun">},</span><span class="pln"><br>&nbsp; &nbsp; y</span><span class="pun">=</span><span class="pln">eval_labels</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; num_epochs</span><span class="pun">=</span><span class="lit">1</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; shuffle</span><span class="pun">=</span><span class="kwd">False</span><span class="pun">)</span><span class="pln"><br>eval_results </span><span class="pun">=</span><span class="pln"> mnist_classifier</span><span class="pun">.</span><span class="pln">evaluate</span><span class="pun">(</span><span class="pln">input_fn</span><span class="pun">=</span><span class="pln">eval_input_fn</span><span class="pun">)</span><span class="pln"><br></span><span class="kwd">print</span><span class="pun">(</span><span class="pln">eval_results</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>To create <code>eval_input_fn</code>, we set <code>num_epochs=1</code>, so that the model evaluates
+the metrics over one epoch of data and returns the result. We also set
+<code>shuffle=False</code> to iterate through the data sequentially.</p>
+
+<h3 id="run_the_model">Run the Model</h3>
+
+<p>We've coded the CNN model function, <code>Estimator</code>, and the training/evaluation
+logic; now let's see the results. Run <code>cnn_mnist.py</code>.</p>
+
+<blockquote>
+<aside class="note"><strong>Note:</strong><span> Training CNNs is quite computationally intensive. Estimated completion
+time of <code>cnn_mnist.py</code> will vary depending on your processor, but will likely
+be upwards of 1 hour on CPU. To train more quickly, you can decrease the
+number of <code>steps</code> passed to <code>train()</code>, but note that this will affect accuracy.</span></aside></blockquote>
+
+<p>As the model trains, you'll see log output like the following:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">INFO</span><span class="pun">:</span><span class="pln">tensorflow</span><span class="pun">:</span><span class="pln">loss </span><span class="pun">=</span><span class="pln"> </span><span class="lit">2.36026</span><span class="pun">,</span><span class="pln"> step </span><span class="pun">=</span><span class="pln"> </span><span class="lit">1</span><span class="pln"><br>INFO</span><span class="pun">:</span><span class="pln">tensorflow</span><span class="pun">:</span><span class="pln">probabilities </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[[</span><span class="pln"> </span><span class="lit">0.07722801</span><span class="pln"> &nbsp;</span><span class="lit">0.08618255</span><span class="pln"> &nbsp;</span><span class="lit">0.09256398</span><span class="pun">,</span><span class="pln"> </span><span class="pun">...]]</span><span class="pln"><br></span><span class="pun">...</span><span class="pln"><br>INFO</span><span class="pun">:</span><span class="pln">tensorflow</span><span class="pun">:</span><span class="pln">loss </span><span class="pun">=</span><span class="pln"> </span><span class="lit">2.13119</span><span class="pun">,</span><span class="pln"> step </span><span class="pun">=</span><span class="pln"> </span><span class="lit">101</span><span class="pln"><br>INFO</span><span class="pun">:</span><span class="pln">tensorflow</span><span class="pun">:</span><span class="pln">global_step</span><span class="pun">/</span><span class="pln">sec</span><span class="pun">:</span><span class="pln"> </span><span class="lit">5.44132</span><span class="pln"><br></span><span class="pun">...</span><span class="pln"><br>INFO</span><span class="pun">:</span><span class="pln">tensorflow</span><span class="pun">:</span><span class="typ">Loss</span><span class="pln"> </span><span class="kwd">for</span><span class="pln"> </span><span class="kwd">final</span><span class="pln"> step</span><span class="pun">:</span><span class="pln"> </span><span class="lit">0.553216</span><span class="pun">.</span><span class="pln"><br><br>INFO</span><span class="pun">:</span><span class="pln">tensorflow</span><span class="pun">:</span><span class="typ">Restored</span><span class="pln"> model </span><span class="kwd">from</span><span class="pln"> </span><span class="pun">/</span><span class="pln">tmp</span><span class="pun">/</span><span class="pln">mnist_convnet_model<br>INFO</span><span class="pun">:</span><span class="pln">tensorflow</span><span class="pun">:</span><span class="typ">Eval</span><span class="pln"> steps </span><span class="pun">[</span><span class="lit">0</span><span class="pun">,</span><span class="pln">inf</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">for</span><span class="pln"> training step </span><span class="lit">20000.</span><span class="pln"><br>INFO</span><span class="pun">:</span><span class="pln">tensorflow</span><span class="pun">:</span><span class="typ">Input</span><span class="pln"> iterator </span><span class="kwd">is</span><span class="pln"> exhausted</span><span class="pun">.</span><span class="pln"><br>INFO</span><span class="pun">:</span><span class="pln">tensorflow</span><span class="pun">:</span><span class="typ">Saving</span><span class="pln"> evaluation summary </span><span class="kwd">for</span><span class="pln"> step </span><span class="lit">20000</span><span class="pun">:</span><span class="pln"> accuracy </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.9733</span><span class="pun">,</span><span class="pln"> loss </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.0902271</span><span class="pln"><br></span><span class="pun">{</span><span class="str">'loss'</span><span class="pun">:</span><span class="pln"> </span><span class="lit">0.090227105</span><span class="pun">,</span><span class="pln"> </span><span class="str">'global_step'</span><span class="pun">:</span><span class="pln"> </span><span class="lit">20000</span><span class="pun">,</span><span class="pln"> </span><span class="str">'accuracy'</span><span class="pun">:</span><span class="pln"> </span><span class="lit">0.97329998</span><span class="pun">}</span><span class="pln"><br></span></code></pre>
+<p>Here, we've achieved an accuracy of 97.3% on our test data set.</p>
+
+<h2 id="additional_resources"><a href="https://www.tensorflow.org/tutorials/estimators/cnn#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Additional Resources</h2>
+
+<p>To learn more about TensorFlow Estimators and CNNs in TensorFlow, see the
+following resources:</p>
+
+<ul>
+<li><a href="https://www.tensorflow.org/guide/custom_estimators">Creating Estimators in tf.estimator</a>
+provides an introduction to the TensorFlow Estimator API. It walks through
+configuring an Estimator, writing a model function, calculating loss, and
+defining a training op.</li>
+<li><a href="https://www.tensorflow.org/tutorials/images/deep_cnn">Advanced Convolutional Neural Networks</a> walks through how to build a MNIST CNN classification model
+<em>without estimators</em> using lower-level TensorFlow operations.</li>
+</ul>
+
+  </div>
+  
+
+  
+        
+  
+
+
+
+
+
+
+
+        
+<div class="devsite-content-footer nocontent">
+  
+  
+    <p>Except as otherwise noted, the content of this page is licensed under the <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>, and code samples are licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. For details, see our <a href="https://developers.google.com/terms/site-policies">Site Policies</a>. Java is a registered trademark of Oracle and/or its affiliates.</p>
+  
+
+  
+    
+    <p class="devsite-content-footer-date" itemprop="datePublished" content="2018-09-28T19:41:30.219585">
+      
+      Last updated September 28, 2018.
+    </p>
+  
+
+</div>
+
+        </article>
+      </article>
+  
+
+        </div>
+      
+
+<footer class="devsite-footer-linkboxes nocontent
+               devsite-footer-linkboxes-all-backup
+               "><nav class="devsite-full-site-width"><ul class="devsite-footer-linkboxes-list"><li class="devsite-footer-linkbox devsite-footer-linkbox-backup"><h3 class="devsite-footer-linkbox-heading">Stay Connected</h3><ul class="devsite-footer-linkbox-list"><li class="devsite-footer-linkbox-item"><a href="https://medium.com/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Blog Link">
+                Blog
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://github.com/tensorflow/" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer GitHub Link">
+                GitHub
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://twitter.com/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Twitter Link">
+                Twitter
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://youtube.com/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer YouTube Link">
+                YouTube
+            </a></li></ul></li><li class="devsite-footer-linkbox devsite-footer-linkbox-backup"><h3 class="devsite-footer-linkbox-heading">Support</h3><ul class="devsite-footer-linkbox-list"><li class="devsite-footer-linkbox-item"><a href="https://github.com/tensorflow/tensorflow/issues" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Issue Tracker Link">
+                Issue Tracker
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://github.com/tensorflow/tensorflow/blob/master/RELEASE.md" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Release Notes Link">
+                Release Notes
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://stackoverflow.com/questions/tagged/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Stack Overflow Link">
+                Stack Overflow
+            </a></li></ul></li></ul></nav></footer><footer class="devsite-utility-footer"><nav class="devsite-utility-footer-nav devsite-nav devsite-full-site-width"><div class="devsite-utility-footer-nav-left"><form class="devsite-utility-footer-language" action="https://www.tensorflow.org/i18n/setlang/" method="post"><input type="hidden" name="xsrf_token" value="WfTrNueo1TRXnBppzBOqmdkgWe6RagsU8l3T2rxsmyk6MTUzOTA3Mzc5MDA3ODAwMg"><input type="hidden" name="next" value="/tutorials/estimators/cnn"><select class="devsite-utility-footer-language-select kd-select" name="language" track-type="languageSelector" track-name="click" style="display: none;"><option value="en" selected="selected" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="en">
+            English
+          </option><option value="zh-cn" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="zh-cn">
+            简体中文
+          </option></select><span class="kd-button kd-menubutton kd-select" track-type="languageSelector" track-name="click"><div class="label">
+            English
+          </div><div class="kd-disclosureindicator"></div></span></form><span class="devsite-utility-footer-links"><a class="devsite-utility-footer-link gc-analytics-event" href="https://policies.google.com/terms" data-category="Site-Wide Custom Events" data-label="Footer terms link" data-footer-link-id="terms">Terms
+         </a><a class="devsite-utility-footer-link gc-analytics-event" href="https://policies.google.com/privacy" data-category="Site-Wide Custom Events" data-label="Footer privacy link" data-footer-link-id="privacy">Privacy
+         </a></span></div></nav></footer></div><script async="" defer="" src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/api.js"></script><script src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/saved_resource"></script><script src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/script_foot_closure.js"></script><script src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/script_foot.js"></script><script>
+        (function($) {
+          
+          devsite.devsite.Init($, {'ENABLE_BLOCKED_VIDEO_PLACEHOLDER': 0, 'SITE_NAME': 'tensorflow', 'FULL_SITE_SEARCH_ENABLED': 1, 'ENABLE_CLOUDTRACK': 0, 'VTAGS_ENABLED': 0, 'HISTORY_ENABLED': 0, 'SIDEBAR_MINI_ENABLED': 0, 'VERSION_HASH': '1e1304016d', 'SCRIPTSAFE_DOMAIN': 'tensorflow-dot-google-developers.appspot.com', 'ENABLE_BLOCKED_LINK_TOOLTIP': 0, 'ALLOWED_HOSTS': ['.android.com', '.appspot.com', '.gonglchuangl.net', '.google.cn', '.google.com', '.googleplex.com', '.tensorflow.org', '.devsitetest.how'], 'BLOCK_RSS_FEEDS': 0},
+                               '[]','en',
+                               true, '',
+                               {"f62218c009ec029abef196bba5aa34cf": true, "8de7a048f21618359bd37f5ce44be073": false, "098dafe57affddc137df300142652cfd": false, "8e03e230de0bd8a6fe173fdf172e8b3f": true, "cb025a64a50094835616312f4774a53d": true, "51470233c56fc1fde50f00b73c52b216": false, "d169d485cf24243a263783dbe42029b1": true, "039e5d84b87fd75807ffb37b7f1bbf2c": true, "700def1a83e356c06c0925afb05de4b0": false, "6749dcb526ce9bde6993550c7d928d24": true}, '/',
+                               'https://www.tensorflow.org/');
+        })(jQuery);
+
+        
+        devsite.localInit = function() {
+          
+        };
+
+      </script><script>
+      $('.devsite-utility-footer-language-select').each(function() {
+        $(this).change(function(){$('.devsite-utility-footer-language').submit();});
+      });
+      </script></div><span id="devsite-request-elapsed" data-request-elapsed="255.06901741"></span>
+<ul class="kd-menulist devsite-hidden"><li class="kd-menulistitem devsite-selected-option" value="en" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="en">
+            English
+          </li><li class="kd-menulistitem" value="zh-cn" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="zh-cn">
+            简体中文
+          </li></ul><script type="text/javascript" async="" src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/1e6ab715a3a95d4603.js"></script><script type="text/javascript" src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/lat"></script><script type="text/javascript" src="./Build a Convolutional Neural Network using Estimators  _  TensorFlow_files/lt"></script></body></html>

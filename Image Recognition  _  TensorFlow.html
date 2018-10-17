@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)https://www.tensorflow.org/tutorials/images/image_recognition -->
+<html lang="en" class=""><style type="text/css" id="night-mode-pro-style"></style><link type="text/css" rel="stylesheet" id="night-mode-pro-link"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./Image Recognition  _  TensorFlow_files/linkid.js"></script><script async="" src="./Image Recognition  _  TensorFlow_files/analytics.js"></script><script>var a=window.devsite||{};window.devsite=a;a.readyCallbacks=[];window.devsite.readyCallbacks=a.readyCallbacks;a.ready=function(b){a.readyCallbacks.push(b)};window.devsite.ready=a.ready;
+</script><meta name="xsrf_token" content="VTCB4iVvUiIII4xylENdfWKXfSKf01y6qJVdVqN1mzI6MTUzOTA3Mzk1MTEyNjY0Mw"><link rel="canonical" href="https://www.tensorflow.org/tutorials/images/image_recognition"><link rel="alternate" href="https://www.tensorflow.org/tutorials/images/image_recognition" hreflang="en"><link rel="alternate" href="https://tensorflow.google.cn/tutorials/images/image_recognition" hreflang="en-cn"><link rel="alternate" href="https://www.tensorflow.org/tutorials/images/image_recognition" hreflang="x-default"><link rel="shortcut icon" href="https://www.tensorflow.org/_static/1e1304016d/images/tensorflow/favicon.png"><link rel="apple-touch-icon" href="https://www.tensorflow.org/images/apple-touch-icon-180x180.png"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="./Image Recognition  _  TensorFlow_files/css"><link rel="stylesheet" href="./Image Recognition  _  TensorFlow_files/devsite-tensorflow-orange.css"><link rel="search" type="application/opensearchdescription+xml" title="TensorFlow" href="https://www.tensorflow.org/s/opensearch.xml"><script src="./Image Recognition  _  TensorFlow_files/jquery-bundle.js"></script><meta property="og:site_name" content="TensorFlow"><meta property="og:type" content="website"><meta property="og:url" content="https://www.tensorflow.org/tutorials/images/image_recognition"><meta property="og:locale" content="en"><script>
+    var ___gcfg = ___gcfg || {};
+    ___gcfg.lang = 'en';
+  </script><title>Image Recognition &nbsp;|&nbsp; TensorFlow</title><meta property="og:title" content="Image Recognition  |  TensorFlow"><meta property="og:image" content="https://www.tensorflow.org/images/tf_logo_social.png"><meta property="og:image:secure_url" content="https://www.tensorflow.org/images/tf_logo_social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="675"><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover, .MJXp-munder {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > *, .MJXp-munder > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head><body class="
+               devsite-doc-page
+               
+               
+               
+               
+               " id="top_of_page"><div id="MathJax_Message" style="display: none;"></div><div class="devsite-wrapper" style="margin-top: 0px;"><div class="devsite-top-section-wrapper
+            "><header class="devsite-top-section nocontent devsite-top-section-pinned"><div class="devsite-top-logo-row-wrapper-wrapper" style="position: relative;"><div class="devsite-top-logo-row-wrapper"><div class="devsite-top-logo-row devsite-full-site-width"><button type="button" class="devsite-expand-section-nav devsite-header-icon-button
+                                       button-flat material-icons gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Hamburger menu"></button><div class="devsite-product-name-wrapper"><a href="https://www.tensorflow.org/" class="devsite-site-logo-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Site logo" track-type="globalNav" track-name="tensorflow" track-metadata-eventdetail="nav" track-metadata-position="nav"><img src="./Image Recognition  _  TensorFlow_files/lockup.png" class="devsite-site-logo" alt="TensorFlow"><span class="devsite-site-name devsite-product-name">TensorFlow</span></a></div><div class="devsite-header-upper-tabs"><nav class="devsite-doc-set-nav devsite-nav devsite-overflow-tabs-scroll-wrapper"><ul class="devsite-doc-set-nav-tab-list devsite-overflow-tabs-scroll" style="min-width: 488px; left: 0px;"><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/install/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Install">
+          Install
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/tutorials/" class="devsite-doc-set-nav-active devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" aria-label="Develop, selected" data-category="Site-Wide Custom Events" data-label="Tab: Develop">
+          Develop
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/community/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Community">
+          Community
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 devsite-dropdown-menu-container"><a href="https://www.tensorflow.org/api_docs/python/tf" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: API">
+          API
+        </a><span class="devsite-menu-toggle devsite-nav-tab material-icons"></span><div class="devsite-dropdown-menu-wrapper" style="left: 532.156px;"><div class="devsite-dropdown-menu"><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          API
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/api_docs/python/tf"><span>
+                          r1.<wbr>11 (stable)
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.10/api_docs/python/tf"><span>
+                          r1.<wbr>10
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.9/api_docs/python/tf"><span>
+                          r1.<wbr>9
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.8/api_docs/python/tf"><span>
+                          r1.<wbr>8
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.7/api_docs/python/tf"><span>
+                          r1.<wbr>7
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.6/api_docs/python/tf"><span>
+                          r1.<wbr>6
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/"><span>
+                          More…
+                        </span></a></li></ul></div></div></div></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 devsite-dropdown-menu-container"><a href="https://www.tensorflow.org/ecosystem/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Ecosystem">
+          Ecosystem
+        </a><span class="devsite-menu-toggle devsite-nav-tab material-icons"></span><div class="devsite-dropdown-menu-wrapper" style="left: 601.172px;"><div class="devsite-dropdown-menu"><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          Projects
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/serving/"><span>
+                          Serving
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/hub/"><span>
+                          Hub
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/tfx"><span>
+                          TFX
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/probability/"><span>
+                          Probability
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/ecosystem/"><span>
+                          More…
+                        </span></a></li></ul></div><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          Implementations
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://js.tensorflow.org/"><span>
+                          TensorFlow.<wbr>js
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/lite/"><span>
+                          TensorFlow Lite
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/swift/"><span>
+                          Swift for TensorFlow
+                        </span></a></li></ul></div><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          Research
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/tfrc/"><span>
+                          Research Cloud
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://github.com/tensorflow/models"><span>
+                          Model Garden
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://magenta.tensorflow.org/"><span>
+                          Magenta
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://github.com/google/nucleus"><span>
+                          Nucleus
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://colab.research.google.com/notebooks/welcome.ipynb"><span>
+                          Colab
+                        </span></a></li></ul></div></div></div></li></ul><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-forward devsite-hidden"></button><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-back devsite-hidden"></button></nav></div><form class="devsite-search-form" action="https://www.tensorflow.org/s/results/" method="GET" id="top-search" search-placeholder="Search"><div id="searchbox" class="devsite-searchbox"><input placeholder="Search" type="text" class="devsite-search-field devsite-search-query" name="q" value="" autocomplete="off" aria-label="Search box"><div class="devsite-search-image material-icons"></div></div><input type="hidden" name="p" id="search_project" value="/" data-project-name="TensorFlow" data-project-path="/" data-query-match=""><input type="hidden" class="suggest-project" value="TensorFlow"><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Android Developers"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Android Open Source Project"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Apigee Docs"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Google Cloud"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Dialogflow"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Firebase"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Android Developers"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Link.app"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Nest Developers"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="OpenThread"></div><div class="suggest-project-metadata" data-home_url="https://www.orbitera.com/" data-path="/" data-name="Orbitera"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="TensorFlow"></div><div class="devsite-popout devsite-popout-closed"><div class="devsite-suggest-results" style="display: none;"></div></div></form><a class="devsite-header-link devsite-top-button button gc-analytics-event" href="https://github.com/tensorflow" data-category="Site-Wide Custom Events" data-label="Site header link" track-type="globalNav" track-name="github" track-metadata-position="nav" track-metadata-eventdetail="nav"><div class="devsite-header-link-label">GitHub</div></a><button type="button" class="devsite-search-button devsite-header-icon-button button-flat
+                                       material-icons"></button></div></div></div><div class="devsite-collapsible-section" style="margin-top: -68px;"><div class="devsite-header-background devsite-full-site-width"><div class="devsite-product-id-row devsite-full-site-width" style="visibility: hidden;"><div class="devsite-product-description-row"><ul class="devsite-breadcrumb-list"><li class="devsite-breadcrumb-item">
+    
+    
+    
+      Develop
+    
+    
+  </li></ul></div></div><div class="devsite-doc-set-nav-row devsite-full-site-width"><nav class="devsite-doc-set-nav devsite-nav devsite-overflow-tabs-scroll-wrapper"><ul class="devsite-doc-set-nav-tab-list devsite-overflow-tabs-scroll" style="min-width: 557px; left: 0px;"><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/tutorials/" class="devsite-doc-set-nav-active devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" aria-label="Tutorials, selected" data-category="Site-Wide Custom Events" data-label="Tab: Tutorials">
+          Tutorials
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/guide/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Guide">
+          Guide
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/deploy/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Deploy">
+          Deploy
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/performance/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Performance">
+          Performance
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/extend/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Extend">
+          Extend
+        </a></li></ul><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-forward devsite-hidden"></button><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-back devsite-hidden"></button></nav></div></div></div></header><script>
+    if (window.jQuery) {
+      $(document).ready(function() {
+        if (window.devsite && window.devsite.search) {
+          
+          window.devsite.search.init('en')
+        }
+      });
+    }
+  </script></div><div id="gc-wrapper" itemscope="" itemtype="http://schema.org/Article"><input class="google-analytics-id-json" type="hidden" value="{&quot;dimensions&quot;: {&quot;dimension6&quot;: &quot;en&quot;, &quot;dimension4&quot;: &quot;TensorFlow&quot;, &quot;dimension5&quot;: &quot;en&quot;, &quot;dimension3&quot;: false, &quot;dimension1&quot;: &quot;Signed out&quot;, &quot;dimension8&quot;: null}, &quot;gaid&quot;: &quot;UA-69864048-1&quot;}"><script>
+      var dataLayer = [{"freeTrialEligibleUser": "False", "userCountry": "ET", "language": {"requested": "en", "served": "en"}, "projectName": "TensorFlow", "scriptsafe": null, "signedIn": "False", "internalUser": "False"}];
+    </script>
+
+      
+        <div class="devsite-site-mask"></div>
+        
+  
+
+
+<nav class="devsite-nav-responsive devsite-nav nocontent" tabindex="0" style="left: -252px;">
+  
+  <div class="devsite-nav-responsive-tabs-panel devsite-nav-responsive-transition devsite-nav-responsive-transform" style="display: none;">
+    
+      
+        
+
+
+
+<nav class="devsite-nav-responsive-tabs devsite-nav">
+  <ul class="devsite-nav-list">
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/install/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Install"><span>
+          Install
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/tutorials/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  devsite-nav-active" data-category="Site-Wide Custom Events" data-label="Responsive Tab: Develop"><span>
+          Develop
+        </span></a>
+      
+
+      
+
+      
+
+      
+        
+
+
+
+<nav class="devsite-nav-responsive-tabs devsite-nav">
+  <ul class="devsite-nav-list">
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <span class="devsite-nav-responsive-forward devsite-nav-responsive-tab devsite-nav-title
+                     devsite-nav-active gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: Tutorials" tabindex="0"><span>
+          Tutorials
+        </span></span>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/guide/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Guide"><span>
+          Guide
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/deploy/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Deploy"><span>
+          Deploy
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/performance/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Performance"><span>
+          Performance
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/extend/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Extend"><span>
+          Extend
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      <a href="https://github.com/tensorflow" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: GitHub"><span>
+        GitHub
+      </span></a>
+    </li>
+  
+  </ul>
+</nav>
+
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/community/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Community"><span>
+          Community
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/api_docs/python/tf" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: API"><span>
+          API
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/ecosystem/" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Ecosystem"><span>
+          Ecosystem
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      <a href="https://github.com/tensorflow" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: GitHub"><span>
+        GitHub
+      </span></a>
+    </li>
+  
+  </ul>
+</nav>
+
+
+      
+    
+  </div>
+  
+  
+  <div class="devsite-nav-responsive-sidebar-panel" style="display: block;">
+    
+    <div class="devsite-nav-responsive-back" tabindex="0"></div>
+    
+    <nav class="devsite-nav-responsive-sidebar">
+      
+      
+    <ul class="devsite-nav-list devsite-nav-expandable devsite-nav-only-accordions"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/" class="devsite-nav-title"><span>Get started with TensorFlow</span></a></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Learn and use ML, click to expand/collapse" role="link" tabindex="0"><span>Learn and use ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_classification" class="devsite-nav-title"><span>Basic classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_text_classification" class="devsite-nav-title"><span>Text classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression" class="devsite-nav-title"><span>Regression</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/overfit_and_underfit" class="devsite-nav-title"><span>Overfitting and underfitting</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/save_and_restore_models" class="devsite-nav-title"><span>Save and restore models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Research and experimentation, click to expand/collapse" role="link" tabindex="0"><span>Research and experimentation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/eager_basics" class="devsite-nav-title"><span>Eager execution</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/automatic_differentiation" class="devsite-nav-title"><span>Automatic differentiation</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training" class="devsite-nav-title"><span>Custom training: basics</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_layers" class="devsite-nav-title"><span>Custom layers</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training_walkthrough" class="devsite-nav-title"><span>Custom training: walkthrough</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="ML at production scale, click to expand/collapse" role="link" tabindex="0"><span>ML at production scale</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/linear" class="devsite-nav-title"><span>Linear model with Estimators</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/wide_deep" class="devsite-nav-title"><span class="devsite-nav-text"><span>Wide and deep learning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/boosted_trees" class="devsite-nav-title"><span class="devsite-nav-text"><span>Boosted trees</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/text_classification_with_tf_hub" class="devsite-nav-title"><span>Text classifier with TF-Hub</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn" class="devsite-nav-title"><span>Build a CNN using Estimators</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Generative models, click to expand/collapse" role="link" tabindex="0"><span>Generative models</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/text_generation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Text generation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/nmt_with_attention/nmt_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Translation with attention</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/image_captioning_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image captioning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/dcgan.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>DCGAN</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/cvae.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>VAE</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Images, click to expand/collapse" role="link" tabindex="0"><span>Images</span></span><a class="devsite-nav-toggle devsite-nav-toggle-expanded material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0"></a><ul class="devsite-nav-section devsite-nav-section-expanded"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/pix2pix/pix2pix_eager.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Pix2Pix</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/research/nst_blogpost/4_Neural_Style_Transfer_with_Eager_Execution.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural Style Transfer</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/samples/outreach/blogs/segmentation_blogpost/image_segmentation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image Segmentation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-active"><a href="https://www.tensorflow.org/tutorials/images/image_recognition" class="devsite-nav-title"><span>Image recognition</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/image_retraining" class="devsite-nav-title"><span>Image retraining</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/deep_cnn" class="devsite-nav-title"><span>Advanced CNN</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Sequences, click to expand/collapse" role="link" tabindex="0"><span>Sequences</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent" class="devsite-nav-title"><span>Recurrent neural network</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent_quickdraw" class="devsite-nav-title"><span>Drawing classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/audio_recognition" class="devsite-nav-title"><span>Simple audio recognition</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/nmt" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural machine translation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Data representation, click to expand/collapse" role="link" tabindex="0"><span>Data representation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/word2vec" class="devsite-nav-title"><span>Vector representations of words</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/kernel_methods" class="devsite-nav-title"><span>Kernel methods</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/linear" class="devsite-nav-title"><span>Large-scale linear models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Non-ML, click to expand/collapse" role="link" tabindex="0"><span>Non-ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/mandelbrot" class="devsite-nav-title"><span>Mandelbrot set</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/pdes" class="devsite-nav-title"><span>Partial differential equations</span></a></li></ul></li><li class="devsite-nav-item"><hr class="devsite-nav-break"></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/next_steps" class="devsite-nav-title"><span>Next steps</span></a></li></ul></nav>
+  </div>
+  
+  
+    
+      
+    
+      
+    
+      
+    
+      
+        <div class="devsite-nav-responsive-index-panel" data-tab="API" style="display: none;">
+          <div class="devsite-nav-index-back" data-tab="API" tabindex="0"></div>
+          <nav>
+            <ul class="devsite-nav-list">
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    API
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/api_docs/python/tf"><span>
+                    r1.<wbr>11 (stable)
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.10/api_docs/python/tf"><span>
+                    r1.<wbr>10
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.9/api_docs/python/tf"><span>
+                    r1.<wbr>9
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.8/api_docs/python/tf"><span>
+                    r1.<wbr>8
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.7/api_docs/python/tf"><span>
+                    r1.<wbr>7
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.6/api_docs/python/tf"><span>
+                    r1.<wbr>6
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/"><span>
+                    More…
+                  </span></a>
+                </li>
+                
+              
+            
+            </ul>
+          </nav>
+        </div>
+      
+    
+      
+        <div class="devsite-nav-responsive-index-panel" data-tab="Ecosystem" style="display: none;">
+          <div class="devsite-nav-index-back" data-tab="Ecosystem" tabindex="0"></div>
+          <nav>
+            <ul class="devsite-nav-list">
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    Projects
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/serving/"><span>
+                    Serving
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/hub/"><span>
+                    Hub
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/tfx"><span>
+                    TFX
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/probability/"><span>
+                    Probability
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/ecosystem/"><span>
+                    More…
+                  </span></a>
+                </li>
+                
+              
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    Implementations
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://js.tensorflow.org/"><span>
+                    TensorFlow.<wbr>js
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/lite/"><span>
+                    TensorFlow Lite
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/swift/"><span>
+                    Swift for TensorFlow
+                  </span></a>
+                </li>
+                
+              
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    Research
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/tfrc/"><span>
+                    Research Cloud
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://github.com/tensorflow/models"><span>
+                    Model Garden
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://magenta.tensorflow.org/"><span>
+                    Magenta
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://github.com/google/nucleus"><span>
+                    Nucleus
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://colab.research.google.com/notebooks/welcome.ipynb"><span>
+                    Colab
+                  </span></a>
+                </li>
+                
+              
+            
+            </ul>
+          </nav>
+        </div>
+      
+    
+  
+</nav>
+
+
+        <div class="devsite-main-content clearfix" style="margin-top: 204px;">
+
+        
+        
+
+        
+  
+  
+    
+    
+      
+  <nav class="devsite-section-nav devsite-nav nocontent" style="left: auto; max-height: 485px; position: fixed; top: 120px;">
+    <ul class="devsite-nav-list devsite-nav-expandable devsite-nav-only-accordions"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/" class="devsite-nav-title"><span>Get started with TensorFlow</span></a></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Learn and use ML, click to expand/collapse" role="link" tabindex="0"><span>Learn and use ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_classification" class="devsite-nav-title"><span>Basic classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_text_classification" class="devsite-nav-title"><span>Text classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression" class="devsite-nav-title"><span>Regression</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/overfit_and_underfit" class="devsite-nav-title"><span>Overfitting and underfitting</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/save_and_restore_models" class="devsite-nav-title"><span>Save and restore models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Research and experimentation, click to expand/collapse" role="link" tabindex="0"><span>Research and experimentation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/eager_basics" class="devsite-nav-title"><span>Eager execution</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/automatic_differentiation" class="devsite-nav-title"><span>Automatic differentiation</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training" class="devsite-nav-title"><span>Custom training: basics</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_layers" class="devsite-nav-title"><span>Custom layers</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training_walkthrough" class="devsite-nav-title"><span>Custom training: walkthrough</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="ML at production scale, click to expand/collapse" role="link" tabindex="0"><span>ML at production scale</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/linear" class="devsite-nav-title"><span>Linear model with Estimators</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/wide_deep" class="devsite-nav-title"><span class="devsite-nav-text"><span>Wide and deep learning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/boosted_trees" class="devsite-nav-title"><span class="devsite-nav-text"><span>Boosted trees</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/text_classification_with_tf_hub" class="devsite-nav-title"><span>Text classifier with TF-Hub</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn" class="devsite-nav-title"><span>Build a CNN using Estimators</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Generative models, click to expand/collapse" role="link" tabindex="0"><span>Generative models</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/text_generation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Text generation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/nmt_with_attention/nmt_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Translation with attention</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/image_captioning_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image captioning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/dcgan.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>DCGAN</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/cvae.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>VAE</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Images, click to expand/collapse" role="link" tabindex="0"><span>Images</span></span><a class="devsite-nav-toggle devsite-nav-toggle-expanded material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0"></a><ul class="devsite-nav-section devsite-nav-section-expanded"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/pix2pix/pix2pix_eager.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Pix2Pix</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/research/nst_blogpost/4_Neural_Style_Transfer_with_Eager_Execution.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural Style Transfer</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/samples/outreach/blogs/segmentation_blogpost/image_segmentation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image Segmentation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-active"><a href="https://www.tensorflow.org/tutorials/images/image_recognition" class="devsite-nav-title"><span>Image recognition</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/image_retraining" class="devsite-nav-title"><span>Image retraining</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/deep_cnn" class="devsite-nav-title"><span>Advanced CNN</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Sequences, click to expand/collapse" role="link" tabindex="0"><span>Sequences</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent" class="devsite-nav-title"><span>Recurrent neural network</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent_quickdraw" class="devsite-nav-title"><span>Drawing classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/audio_recognition" class="devsite-nav-title"><span>Simple audio recognition</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/nmt" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural machine translation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Data representation, click to expand/collapse" role="link" tabindex="0"><span>Data representation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/word2vec" class="devsite-nav-title"><span>Vector representations of words</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/kernel_methods" class="devsite-nav-title"><span>Kernel methods</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/linear" class="devsite-nav-title"><span>Large-scale linear models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Non-ML, click to expand/collapse" role="link" tabindex="0"><span>Non-ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/mandelbrot" class="devsite-nav-title"><span>Mandelbrot set</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/pdes" class="devsite-nav-title"><span>Partial differential equations</span></a></li></ul></li><li class="devsite-nav-item"><hr class="devsite-nav-break"></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/next_steps" class="devsite-nav-title"><span>Next steps</span></a></li></ul>
+  </nav>
+
+    
+
+    
+  <nav class="devsite-page-nav devsite-nav" style="position: fixed; left: 1120px; max-height: 485px; top: 120px;"><ul class="devsite-page-nav-list"><li class="devsite-nav-item devsite-nav-item-heading"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#top_of_page" class="devsite-nav-title"><span>Contents</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#usage_with_python_api" class="devsite-nav-title"><span>Usage with Python API</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#usage_with_the_c_api" class="devsite-nav-title"><span>Usage with the C++ API</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#resources_for_learning_more" class="devsite-nav-title"><span>Resources for Learning More</span></a></li></ul></nav>
+
+
+      <article class="devsite-article">
+        <article class="devsite-article-inner">
+  
+          
+  
+
+
+<div class="devsite-rating-container
+            "><div class="devsite-rating-stars"><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="1" data-category="Site-Wide Custom Events" data-label="Star Rating 1" track-metadata-score="1" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 1 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="2" data-category="Site-Wide Custom Events" data-label="Star Rating 2" track-metadata-score="2" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 2 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="3" data-category="Site-Wide Custom Events" data-label="Star Rating 3" track-metadata-score="3" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 3 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="4" data-category="Site-Wide Custom Events" data-label="Star Rating 4" track-metadata-score="4" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 4 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="5" data-category="Site-Wide Custom Events" data-label="Star Rating 5" track-metadata-score="5" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 5 out of 5"></div></div><div class="devsite-rating-description"></div><div class="devsite-rating-internal"><span class="devsite-rating-stats"></span></div></div><script>
+  $(document).ready(function() {
+    devsite.ratings.init(
+      document.querySelectorAll('#devsite-feedback-project'), false
+      
+    );
+  });
+</script>
+
+
+  
+  <nav class="devsite-breadcrumb-nav devsite-nav">
+    
+
+
+<ul class="devsite-breadcrumb-list">
+  
+  <li class="devsite-breadcrumb-item">
+    
+    
+    <a href="https://www.tensorflow.org/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="1">
+    
+    
+      TensorFlow
+    
+    
+    </a>
+    
+  </li>
+  
+  <li class="devsite-breadcrumb-item">
+    
+    
+    <div class="devsite-breadcrumb-guillemet material-icons"></div>
+    
+    
+    <a href="https://www.tensorflow.org/tutorials/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="2">
+    
+    
+      Develop
+    
+    
+    </a>
+    
+  </li>
+  
+  <li class="devsite-breadcrumb-item">
+    
+    
+    <div class="devsite-breadcrumb-guillemet material-icons"></div>
+    
+    
+    <a href="https://www.tensorflow.org/tutorials/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="3">
+    
+    
+      Tutorials
+    
+    
+    </a>
+    
+  </li>
+  
+</ul>
+
+  </nav>
+  
+  
+  <h1 itemprop="name" class="devsite-page-title">
+    Image Recognition
+  </h1>
+  
+  
+  <nav class="devsite-page-nav-embedded devsite-nav"><ul class="devsite-page-nav-list"><li class="devsite-nav-item devsite-nav-item-heading"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#top_of_page" class="devsite-nav-title"><span>Contents</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#usage_with_python_api" class="devsite-nav-title"><span>Usage with Python API</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#usage_with_the_c_api" class="devsite-nav-title"><span>Usage with the C++ API</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#resources_for_learning_more" class="devsite-nav-title"><span>Resources for Learning More</span></a></li></ul></nav>
+  
+  <div class="devsite-article-body clearfix
+            " itemprop="articleBody">
+    
+<style>/* override theme */
+table img {
+  max-width: 100%;
+}
+
+/* override var element to differentiate color from comment */
+var, var code, var span, .prettyprint var span {
+  color: #039be5;
+}
+
+/* .devsite-terminal virtualenv prompt */
+.tfo-terminal-venv::before {
+  content: "(venv) $ " !important;
+}
+
+/* .devsite-terminal root prompt */
+.tfo-terminal-root::before {
+  content: "# " !important;
+}
+
+/* .devsite-terminal Windows prompt */
+.tfo-terminal-windows::before {
+  content: "C:\\> " !important;
+}
+
+/* .devsite-terminal Windows prompt w/ virtualenv */
+.tfo-terminal-windows-venv::before {
+  content: "(venv) C:\\> " !important;
+}
+
+/* on rendered notebook page,
+   remove link to webpage since we're already here */
+.tfo-notebook-buttons td:first-child {
+  display: none;
+}
+
+/* landing pages */
+
+.tfo-button-primary {
+  background-color: #fca851;
+}
+
+.tfo-button-primary:hover {
+  background-color: #ef6c02;
+}
+
+.tfo-landing-row-item-inset-white {
+  background-color: #fff;
+  padding: 32px;
+}
+
+.tfo-landing-row-item-inset-white ol,
+.tfo-landing-row-item-inset-white ul {
+  padding-left: 20px;
+}
+
+a.colab-button {
+  background: rgba(255, 255, 255, .75);
+  border: solid 1px rgba(0, 0, 0, .08);
+  border-bottom-color: rgba(0, 0, 0, .15);
+  border-radius: 4px;
+  color: #aaa;
+  display: inline-block;
+  font-size: 11px !important;
+  font-weight: 300;
+  line-height: 16px;
+  padding: 4px 8px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+a.colab-button:hover {
+  background: white;
+  border-color: rgba(0, 0, 0, .2);
+  color: #666;
+}
+
+a.colab-button span {
+  background: url(/images/colab_logo_button.svg) no-repeat 1px 1px / 20px;
+  border-radius: 4px;
+  display: inline-block;
+  padding-left: 24px;
+  text-decoration: none;
+}
+
+/* Hide toc/page nav on Tutorials landing page. */
+.tfo-tutorials .devsite-page-nav,
+body[theme="tensorflow-theme"].tfo-tutorials devsite-toc {
+  display: none !important;
+}
+
+/* adjust code block for smaller screens */
+@media screen and (max-width: 1000px) {
+  .tfo-landing-row-item-code-block {
+    flex-direction: column !important;
+  }
+
+  .tfo-landing-row-item-code-block > .devsite-landing-row-item-code {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .tfo-landing-row-item-code-block {
+    display: none;
+  }
+}
+</style>
+
+<script src="./Image Recognition  _  TensorFlow_files/MathJax.js"></script>
+
+<!-- DO NOT EDIT! Automatically generated file. -->
+
+
+
+<p>Our brains make vision seem easy. It doesn't take any effort for humans to
+tell apart a lion and a jaguar, read a sign, or recognize a human's face.
+But these are actually hard problems to solve with a computer: they only
+seem easy because our brains are incredibly good at understanding images.</p>
+
+<p>In the last few years, the field of machine learning has made tremendous
+progress on addressing these difficult problems. In particular, we've
+found that a kind of model called a deep
+<a href="https://colah.github.io/posts/2014-07-Conv-Nets-Modular/">convolutional neural network</a>
+can achieve reasonable performance on hard visual recognition tasks --
+matching or exceeding human performance in some domains.</p>
+
+<p>Researchers have demonstrated steady progress
+in computer vision by validating their work against
+<a href="http://www.image-net.org/">ImageNet</a> -- an academic benchmark for computer vision.
+Successive models continue to show improvements, each time achieving
+a new state-of-the-art result:
+<a href="https://static.googleusercontent.com/media/research.google.com/en//archive/unsupervised_icml2012.pdf">QuocNet</a>, <a href="https://www.cs.toronto.edu/~fritz/absps/imagenet.pdf">AlexNet</a>, <a href="https://arxiv.org/abs/1409.4842">Inception (GoogLeNet)</a>, <a href="https://arxiv.org/abs/1502.03167">BN-Inception-v2</a>.
+Researchers both internal and external to Google have published papers describing all
+these models but the results are still hard to reproduce.
+We're now taking the next step by releasing code for running image recognition
+on our latest model, <a href="https://arxiv.org/abs/1512.00567">Inception-v3</a>.</p>
+
+<p>Inception-v3 is trained for the <a href="http://image-net.org/">ImageNet</a> Large Visual Recognition Challenge
+using the data from 2012. This is a standard task in computer vision,
+where models try to classify entire
+images into <a href="http://image-net.org/challenges/LSVRC/2014/browse-synsets">1000 classes</a>, like "Zebra", "Dalmatian", and "Dishwasher".
+For example, here are the results from <a href="https://www.cs.toronto.edu/~fritz/absps/imagenet.pdf">AlexNet</a> classifying some images:</p>
+
+<div style="width:50%; margin:auto; margin-bottom:10px; margin-top:20px;">
+<img style="width:100%" src="./Image Recognition  _  TensorFlow_files/AlexClassification.png">
+</div>
+
+<p>To compare models, we examine how often the model fails to predict the
+correct answer as one of their top 5 guesses -- termed "top-5 error rate".
+<a href="https://www.cs.toronto.edu/~fritz/absps/imagenet.pdf">AlexNet</a> achieved by setting a top-5 error rate of 15.3% on the 2012
+validation data set; <a href="https://arxiv.org/abs/1409.4842">Inception (GoogLeNet)</a> achieved 6.67%;
+<a href="https://arxiv.org/abs/1502.03167">BN-Inception-v2</a> achieved 4.9%; <a href="https://arxiv.org/abs/1512.00567">Inception-v3</a> reaches 3.46%.</p>
+
+<blockquote>
+<p>How well do humans do on ImageNet Challenge? There's a <a href="https://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/">blog post</a> by
+Andrej Karpathy who attempted to measure his own performance. He reached
+5.1% top-5 error rate.</p>
+</blockquote>
+
+<p>This tutorial will teach you how to use <a href="https://arxiv.org/abs/1512.00567">Inception-v3</a>. You'll learn how to
+classify images into <a href="http://image-net.org/challenges/LSVRC/2014/browse-synsets">1000 classes</a> in Python or C++. We'll also discuss how to
+extract higher level features from this model which may be reused for other
+vision tasks.</p>
+
+<p>We're excited to see what the community will do with this model.</p>
+
+<h2 id="usage_with_python_api"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Usage with Python API</h2>
+
+<p><code>classify_image.py</code> downloads the trained model from <code>tensorflow.org</code>
+when the program is run for the first time. You'll need about 200M of free space
+available on your hard disk.</p>
+
+<p>Start by cloning the <a href="https://github.com/tensorflow/models">TensorFlow models repo</a> from GitHub. Run the following commands:</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">cd models</span><span class="pun">/</span><span class="pln">tutorials</span><span class="pun">/</span><span class="pln">image</span><span class="pun">/</span><span class="pln">imagenet<br>python classify_image</span><span class="pun">.</span><span class="pln">py<br></span></code></pre>
+<p>The above command will classify a supplied image of a panda bear.</p>
+
+<div style="width:15%; margin:auto; margin-bottom:10px; margin-top:20px;">
+  <img style="width:100%" src="./Image Recognition  _  TensorFlow_files/cropped_panda.jpg">
+</div>
+
+<p>If the model runs correctly, the script will produce the following output:</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">giant panda</span><span class="pun">,</span><span class="pln"> panda</span><span class="pun">,</span><span class="pln"> panda bear</span><span class="pun">,</span><span class="pln"> coon bear</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Ailuropoda</span><span class="pln"> melanoleuca </span><span class="pun">(</span><span class="pln">score </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.88493</span><span class="pun">)</span><span class="pln"><br>indri</span><span class="pun">,</span><span class="pln"> indris</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Indri</span><span class="pln"> indri</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Indri</span><span class="pln"> brevicaudatus </span><span class="pun">(</span><span class="pln">score </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.00878</span><span class="pun">)</span><span class="pln"><br>lesser panda</span><span class="pun">,</span><span class="pln"> red panda</span><span class="pun">,</span><span class="pln"> panda</span><span class="pun">,</span><span class="pln"> bear cat</span><span class="pun">,</span><span class="pln"> cat bear</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Ailurus</span><span class="pln"> fulgens </span><span class="pun">(</span><span class="pln">score </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.00317</span><span class="pun">)</span><span class="pln"><br>custard apple </span><span class="pun">(</span><span class="pln">score </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.00149</span><span class="pun">)</span><span class="pln"><br>earthstar </span><span class="pun">(</span><span class="pln">score </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.00127</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>If you wish to supply other JPEG images, you may do so by editing
+the <code>--image_file</code> argument.</p>
+
+<blockquote>
+<p>If you download the model data to a different directory, you
+will need to point <code>--model_dir</code>  to the directory used.</p>
+</blockquote>
+
+<h2 id="usage_with_the_c_api"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Usage with the C++ API</h2>
+
+<p>You can run the same <a href="https://arxiv.org/abs/1512.00567">Inception-v3</a> model in C++ for use in production
+environments. You can download the archive containing the GraphDef that defines
+the model like this (running from the root directory of the TensorFlow
+repository):</p>
+<pre class="prettyprint lang-bash"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">curl </span><span class="pun">-</span><span class="pln">L </span><span class="str">"https://storage.googleapis.com/download.tensorflow.org/models/inception_v3_2016_08_28_frozen.pb.tar.gz"</span><span class="pln"> </span><span class="pun">|</span><span class="pln"><br>&nbsp; tar </span><span class="pun">-</span><span class="pln">C tensorflow</span><span class="pun">/</span><span class="pln">examples</span><span class="pun">/</span><span class="pln">label_image</span><span class="pun">/</span><span class="pln">data </span><span class="pun">-</span><span class="pln">xz<br></span></code></pre>
+<p>Next, we need to compile the C++ binary that includes the code to load and run the graph.
+If you've followed
+<a href="https://www.tensorflow.org/install/source">the instructions to download the source installation of TensorFlow</a>
+for your platform, you should be able to build the example by
+running this command from your shell terminal:</p>
+<pre class="prettyprint lang-bash"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">bazel build tensorflow</span><span class="pun">/</span><span class="pln">examples</span><span class="pun">/</span><span class="pln">label_image</span><span class="pun">/...</span><span class="pln"><br></span></code></pre>
+<p>That should create a binary executable that you can then run like this:</p>
+<pre class="prettyprint lang-bash"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">bazel</span><span class="pun">-</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">tensorflow</span><span class="pun">/</span><span class="pln">examples</span><span class="pun">/</span><span class="pln">label_image</span><span class="pun">/</span><span class="pln">label_image<br></span></code></pre>
+<p>This uses the default example image that ships with the framework, and should
+output something similar to this:</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">I tensorflow</span><span class="pun">/</span><span class="pln">examples</span><span class="pun">/</span><span class="pln">label_image</span><span class="pun">/</span><span class="pln">main</span><span class="pun">.</span><span class="pln">cc</span><span class="pun">:</span><span class="lit">206</span><span class="pun">]</span><span class="pln"> military uniform </span><span class="pun">(</span><span class="lit">653</span><span class="pun">):</span><span class="pln"> </span><span class="lit">0.834306</span><span class="pln"><br>I tensorflow</span><span class="pun">/</span><span class="pln">examples</span><span class="pun">/</span><span class="pln">label_image</span><span class="pun">/</span><span class="pln">main</span><span class="pun">.</span><span class="pln">cc</span><span class="pun">:</span><span class="lit">206</span><span class="pun">]</span><span class="pln"> mortarboard </span><span class="pun">(</span><span class="lit">668</span><span class="pun">):</span><span class="pln"> </span><span class="lit">0.0218692</span><span class="pln"><br>I tensorflow</span><span class="pun">/</span><span class="pln">examples</span><span class="pun">/</span><span class="pln">label_image</span><span class="pun">/</span><span class="pln">main</span><span class="pun">.</span><span class="pln">cc</span><span class="pun">:</span><span class="lit">206</span><span class="pun">]</span><span class="pln"> academic gown </span><span class="pun">(</span><span class="lit">401</span><span class="pun">):</span><span class="pln"> </span><span class="lit">0.0103579</span><span class="pln"><br>I tensorflow</span><span class="pun">/</span><span class="pln">examples</span><span class="pun">/</span><span class="pln">label_image</span><span class="pun">/</span><span class="pln">main</span><span class="pun">.</span><span class="pln">cc</span><span class="pun">:</span><span class="lit">206</span><span class="pun">]</span><span class="pln"> pickelhaube </span><span class="pun">(</span><span class="lit">716</span><span class="pun">):</span><span class="pln"> </span><span class="lit">0.00800814</span><span class="pln"><br>I tensorflow</span><span class="pun">/</span><span class="pln">examples</span><span class="pun">/</span><span class="pln">label_image</span><span class="pun">/</span><span class="pln">main</span><span class="pun">.</span><span class="pln">cc</span><span class="pun">:</span><span class="lit">206</span><span class="pun">]</span><span class="pln"> bulletproof vest </span><span class="pun">(</span><span class="lit">466</span><span class="pun">):</span><span class="pln"> </span><span class="lit">0.00535088</span><span class="pln"><br></span></code></pre>
+<p>In this case, we're using the default image of
+<a href="https://en.wikipedia.org/wiki/Grace_Hopper">Admiral Grace Hopper</a>, and you can
+see the network correctly identifies she's wearing a military uniform, with a high
+score of 0.8.</p>
+
+<div style="width:45%; margin:auto; margin-bottom:10px; margin-top:20px;">
+  <img style="width:100%" src="./Image Recognition  _  TensorFlow_files/grace_hopper.jpg">
+</div>
+
+<p>Next, try it out on your own images by supplying the --image= argument, e.g.</p>
+<pre class="prettyprint lang-bash"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">bazel</span><span class="pun">-</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">tensorflow</span><span class="pun">/</span><span class="pln">examples</span><span class="pun">/</span><span class="pln">label_image</span><span class="pun">/</span><span class="pln">label_image </span><span class="pun">--</span><span class="pln">image</span><span class="pun">=</span><span class="pln">my_image</span><span class="pun">.</span><span class="pln">png<br></span></code></pre>
+<p>If you look inside the <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/label_image/main.cc"><code>tensorflow/examples/label_image/main.cc</code></a>
+file, you can find out
+how it works. We hope this code will help you integrate TensorFlow into
+your own applications, so we will walk step by step through the main functions:</p>
+
+<p>The command line flags control where the files are loaded from, and properties of the input images.
+The model expects to get square 299x299 RGB images, so those are the <code>input_width</code>
+and <code>input_height</code> flags. We also need to scale the pixel values from integers that
+are between 0 and 255 to the floating point values that the graph operates on.
+We control the scaling with the <code>input_mean</code> and <code>input_std</code> flags: we first subtract
+<code>input_mean</code> from each pixel value, then divide it by <code>input_std</code>.</p>
+
+<p>These values probably look somewhat magical, but they are just defined by the
+original model author based on what he/she wanted to use as input images for
+training. If you have a graph that you've trained yourself, you'll just need
+to adjust the values to match whatever you used during your training process.</p>
+
+<p>You can see how they're applied to an image in the
+<a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/label_image/main.cc#L88"><code>ReadTensorFromImageFile()</code></a>
+function.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com">// Given an image file name, read in the data, try to decode it as an image,</span><span class="pln"><br></span><span class="com">// resize it to the requested size, and then scale the values as desired.</span><span class="pln"><br></span><span class="typ">Status</span><span class="pln"> </span><span class="typ">ReadTensorFromImageFile</span><span class="pun">(</span><span class="kwd">string</span><span class="pln"> file_name</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">const</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> input_height</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="kwd">const</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> input_width</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">const</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> input_mean</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="kwd">const</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> input_std</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;std</span><span class="pun">::</span><span class="pln">vector</span><span class="pun">&lt;</span><span class="typ">Tensor</span><span class="pun">&gt;*</span><span class="pln"> out_tensors</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">GraphDefBuilder</span><span class="pln"> b</span><span class="pun">;</span><span class="pln"><br></span></code></pre>
+<p>We start by creating a <code>GraphDefBuilder</code>, which is an object we can use to
+specify a model to run or load.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; </span><span class="kwd">string</span><span class="pln"> input_name </span><span class="pun">=</span><span class="pln"> </span><span class="str">"file_reader"</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="kwd">string</span><span class="pln"> output_name </span><span class="pun">=</span><span class="pln"> </span><span class="str">"normalized"</span><span class="pun">;</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">Node</span><span class="pun">*</span><span class="pln"> file_reader </span><span class="pun">=</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">ReadFile</span><span class="pun">(</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">Const</span><span class="pun">(</span><span class="pln">file_name</span><span class="pun">,</span><span class="pln"> b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">()),</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">().</span><span class="typ">WithName</span><span class="pun">(</span><span class="pln">input_name</span><span class="pun">));</span><span class="pln"><br></span></code></pre>
+<p>We then start creating nodes for the small model we want to run
+to load, resize, and scale the pixel values to get the result the main model
+expects as its input. The first node we create is just a <code>Const</code> op that holds a
+tensor with the file name of the image we want to load. That's then passed as the
+first input to the <code>ReadFile</code> op. You might notice we're passing <code>b.opts()</code> as the last
+argument to all the op creation functions. The argument ensures that the node is added to
+the model definition held in the <code>GraphDefBuilder</code>. We also name the <code>ReadFile</code>
+operator by making the <code>WithName()</code> call to <code>b.opts()</code>. This gives a name to the node,
+which isn't strictly necessary since an automatic name will be assigned if you don't
+do this, but it does make debugging a bit easier.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; </span><span class="com">// Now try to figure out what kind of file it is and decode it.</span><span class="pln"><br>&nbsp; </span><span class="kwd">const</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> wanted_channels </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3</span><span class="pun">;</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">Node</span><span class="pun">*</span><span class="pln"> image_reader</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">StringPiece</span><span class="pun">(</span><span class="pln">file_name</span><span class="pun">).</span><span class="pln">ends_with</span><span class="pun">(</span><span class="str">".png"</span><span class="pun">))</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; image_reader </span><span class="pun">=</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">DecodePng</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; file_reader</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">().</span><span class="typ">WithAttr</span><span class="pun">(</span><span class="str">"channels"</span><span class="pun">,</span><span class="pln"> wanted_channels</span><span class="pun">).</span><span class="typ">WithName</span><span class="pun">(</span><span class="str">"png_reader"</span><span class="pun">));</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="com">// Assume if it's not a PNG then it must be a JPEG.</span><span class="pln"><br>&nbsp; &nbsp; image_reader </span><span class="pun">=</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">DecodeJpeg</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; file_reader</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">().</span><span class="typ">WithAttr</span><span class="pun">(</span><span class="str">"channels"</span><span class="pun">,</span><span class="pln"> wanted_channels</span><span class="pun">).</span><span class="typ">WithName</span><span class="pun">(</span><span class="str">"jpeg_reader"</span><span class="pun">));</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; </span><span class="com">// Now cast the image data to float so we can do normal math on it.</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">Node</span><span class="pun">*</span><span class="pln"> float_caster </span><span class="pun">=</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">Cast</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; image_reader</span><span class="pun">,</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">DT_FLOAT</span><span class="pun">,</span><span class="pln"> b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">().</span><span class="typ">WithName</span><span class="pun">(</span><span class="str">"float_caster"</span><span class="pun">));</span><span class="pln"><br>&nbsp; </span><span class="com">// The convention for image ops in TensorFlow is that all images are expected</span><span class="pln"><br>&nbsp; </span><span class="com">// to be in batches, so that they're four-dimensional arrays with indices of</span><span class="pln"><br>&nbsp; </span><span class="com">// [batch, height, width, channel]. Because we only have a single image, we</span><span class="pln"><br>&nbsp; </span><span class="com">// have to add a batch dimension of 1 to the start with ExpandDims().</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">Node</span><span class="pun">*</span><span class="pln"> dims_expander </span><span class="pun">=</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">ExpandDims</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; float_caster</span><span class="pun">,</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">Const</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">()),</span><span class="pln"> b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">());</span><span class="pln"><br>&nbsp; </span><span class="com">// Bilinearly resize the image to fit the required dimensions.</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">Node</span><span class="pun">*</span><span class="pln"> resized </span><span class="pun">=</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">ResizeBilinear</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; dims_expander</span><span class="pun">,</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">Const</span><span class="pun">({</span><span class="pln">input_height</span><span class="pun">,</span><span class="pln"> input_width</span><span class="pun">},</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">().</span><span class="typ">WithName</span><span class="pun">(</span><span class="str">"size"</span><span class="pun">)),</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">());</span><span class="pln"><br>&nbsp; </span><span class="com">// Subtract the mean and divide by the scale.</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">Div</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">Sub</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; resized</span><span class="pun">,</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">Const</span><span class="pun">({</span><span class="pln">input_mean</span><span class="pun">},</span><span class="pln"> b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">()),</span><span class="pln"> b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">()),</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">Const</span><span class="pun">({</span><span class="pln">input_std</span><span class="pun">},</span><span class="pln"> b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">()),</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">().</span><span class="typ">WithName</span><span class="pun">(</span><span class="pln">output_name</span><span class="pun">));</span><span class="pln"><br></span></code></pre>
+<p>We then keep adding more nodes, to decode the file data as an image, to cast the
+integers into floating point values, to resize it, and then finally to run the
+subtraction and division operations on the pixel values.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; </span><span class="com">// This runs the GraphDef network definition that we've just constructed, and</span><span class="pln"><br>&nbsp; </span><span class="com">// returns the results in the output tensor.</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">GraphDef</span><span class="pln"> graph</span><span class="pun">;</span><span class="pln"><br>&nbsp; TF_RETURN_IF_ERROR</span><span class="pun">(</span><span class="pln">b</span><span class="pun">.</span><span class="typ">ToGraphDef</span><span class="pun">(&amp;</span><span class="pln">graph</span><span class="pun">));</span><span class="pln"><br></span></code></pre>
+<p>At the end of this we have
+a model definition stored in the b variable, which we turn into a full graph
+definition with the <code>ToGraphDef()</code> function.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; std</span><span class="pun">::</span><span class="pln">unique_ptr</span><span class="pun">&lt;</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">Session</span><span class="pun">&gt;</span><span class="pln"> session</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; tensorflow</span><span class="pun">::</span><span class="typ">NewSession</span><span class="pun">(</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">SessionOptions</span><span class="pun">()));</span><span class="pln"><br>&nbsp; TF_RETURN_IF_ERROR</span><span class="pun">(</span><span class="pln">session</span><span class="pun">-&gt;</span><span class="typ">Create</span><span class="pun">(</span><span class="pln">graph</span><span class="pun">));</span><span class="pln"><br>&nbsp; TF_RETURN_IF_ERROR</span><span class="pun">(</span><span class="pln">session</span><span class="pun">-&gt;</span><span class="typ">Run</span><span class="pun">({},</span><span class="pln"> </span><span class="pun">{</span><span class="pln">output_name</span><span class="pun">},</span><span class="pln"> </span><span class="pun">{},</span><span class="pln"> out_tensors</span><span class="pun">));</span><span class="pln"><br>&nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">Status</span><span class="pun">::</span><span class="pln">OK</span><span class="pun">();</span><span class="pln"><br></span></code></pre>
+<p>Then we create a <a href="https://www.tensorflow.org/api_docs/python/tf/Session"><code>tf.Session</code></a>
+object, which is the interface to actually running the graph, and run it,
+specifying which node we want to get the output from, and where to put the
+output data.</p>
+
+<p>This gives us a vector of <code>Tensor</code> objects, which in this case we know will only be a
+single object long. You can think of a <code>Tensor</code> as a multi-dimensional array in this
+context, and it holds a 299 pixel high, 299 pixel wide, 3 channel image as float
+values. If you have your own image-processing framework in your product already, you
+should be able to use that instead, as long as you apply the same transformations
+before you feed images into the main graph.</p>
+
+<p>This is a simple example of creating a small TensorFlow graph dynamically in C++,
+but for the pre-trained Inception model we want to load a much larger definition from
+a file. You can see how we do that in the <code>LoadGraph()</code> function.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com">// Reads a model graph definition from disk, and creates a session object you</span><span class="pln"><br></span><span class="com">// can use to run it.</span><span class="pln"><br></span><span class="typ">Status</span><span class="pln"> </span><span class="typ">LoadGraph</span><span class="pun">(</span><span class="kwd">string</span><span class="pln"> graph_file_name</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;std</span><span class="pun">::</span><span class="pln">unique_ptr</span><span class="pun">&lt;</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">Session</span><span class="pun">&gt;*</span><span class="pln"> session</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">GraphDef</span><span class="pln"> graph_def</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="typ">Status</span><span class="pln"> load_graph_status </span><span class="pun">=</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="typ">ReadBinaryProto</span><span class="pun">(</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">Env</span><span class="pun">::</span><span class="typ">Default</span><span class="pun">(),</span><span class="pln"> graph_file_name</span><span class="pun">,</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">graph_def</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">load_graph_status</span><span class="pun">.</span><span class="pln">ok</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">errors</span><span class="pun">::</span><span class="typ">NotFound</span><span class="pun">(</span><span class="str">"Failed to load compute graph at '"</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; graph_file_name</span><span class="pun">,</span><span class="pln"> </span><span class="str">"'"</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br></span></code></pre>
+<p>If you've looked through the image loading code, a lot of the terms should seem familiar. Rather than
+using a <code>GraphDefBuilder</code> to produce a <code>GraphDef</code> object, we load a protobuf file that
+directly contains the <code>GraphDef</code>.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; session</span><span class="pun">-&gt;</span><span class="pln">reset</span><span class="pun">(</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">NewSession</span><span class="pun">(</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">SessionOptions</span><span class="pun">()));</span><span class="pln"><br>&nbsp; </span><span class="typ">Status</span><span class="pln"> session_create_status </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(*</span><span class="pln">session</span><span class="pun">)-&gt;</span><span class="typ">Create</span><span class="pun">(</span><span class="pln">graph_def</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">session_create_status</span><span class="pun">.</span><span class="pln">ok</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> session_create_status</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">Status</span><span class="pun">::</span><span class="pln">OK</span><span class="pun">();</span><span class="pln"><br></span><span class="pun">}</span><span class="pln"><br></span></code></pre>
+<p>Then we create a Session object from that <code>GraphDef</code> and
+pass it back to the caller so that they can run it at a later time.</p>
+
+<p>The <code>GetTopLabels()</code> function is a lot like the image loading, except that in this case
+we want to take the results of running the main graph, and turn it into a sorted list
+of the highest-scoring labels. Just like the image loader, it creates a
+<code>GraphDefBuilder</code>, adds a couple of nodes to it, and then runs the short graph to get a
+pair of output tensors. In this case they represent the sorted scores and index
+positions of the highest results.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com">// Analyzes the output of the Inception graph to retrieve the highest scores and</span><span class="pln"><br></span><span class="com">// their positions in the tensor, which correspond to categories.</span><span class="pln"><br></span><span class="typ">Status</span><span class="pln"> </span><span class="typ">GetTopLabels</span><span class="pun">(</span><span class="kwd">const</span><span class="pln"> std</span><span class="pun">::</span><span class="pln">vector</span><span class="pun">&lt;</span><span class="typ">Tensor</span><span class="pun">&gt;&amp;</span><span class="pln"> outputs</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> how_many_labels</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Tensor</span><span class="pun">*</span><span class="pln"> indices</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Tensor</span><span class="pun">*</span><span class="pln"> scores</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">GraphDefBuilder</span><span class="pln"> b</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="kwd">string</span><span class="pln"> output_name </span><span class="pun">=</span><span class="pln"> </span><span class="str">"top_k"</span><span class="pun">;</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">TopK</span><span class="pun">(</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="pln">ops</span><span class="pun">::</span><span class="typ">Const</span><span class="pun">(</span><span class="pln">outputs</span><span class="pun">[</span><span class="lit">0</span><span class="pun">],</span><span class="pln"> b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">()),</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; how_many_labels</span><span class="pun">,</span><span class="pln"> b</span><span class="pun">.</span><span class="pln">opts</span><span class="pun">().</span><span class="typ">WithName</span><span class="pun">(</span><span class="pln">output_name</span><span class="pun">));</span><span class="pln"><br>&nbsp; </span><span class="com">// This runs the GraphDef network definition that we've just constructed, and</span><span class="pln"><br>&nbsp; </span><span class="com">// returns the results in the output tensors.</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="typ">GraphDef</span><span class="pln"> graph</span><span class="pun">;</span><span class="pln"><br>&nbsp; TF_RETURN_IF_ERROR</span><span class="pun">(</span><span class="pln">b</span><span class="pun">.</span><span class="typ">ToGraphDef</span><span class="pun">(&amp;</span><span class="pln">graph</span><span class="pun">));</span><span class="pln"><br>&nbsp; std</span><span class="pun">::</span><span class="pln">unique_ptr</span><span class="pun">&lt;</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">Session</span><span class="pun">&gt;</span><span class="pln"> session</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; tensorflow</span><span class="pun">::</span><span class="typ">NewSession</span><span class="pun">(</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">SessionOptions</span><span class="pun">()));</span><span class="pln"><br>&nbsp; TF_RETURN_IF_ERROR</span><span class="pun">(</span><span class="pln">session</span><span class="pun">-&gt;</span><span class="typ">Create</span><span class="pun">(</span><span class="pln">graph</span><span class="pun">));</span><span class="pln"><br>&nbsp; </span><span class="com">// The TopK node returns two outputs, the scores and their original indices,</span><span class="pln"><br>&nbsp; </span><span class="com">// so we have to append :0 and :1 to specify them both.</span><span class="pln"><br>&nbsp; std</span><span class="pun">::</span><span class="pln">vector</span><span class="pun">&lt;</span><span class="typ">Tensor</span><span class="pun">&gt;</span><span class="pln"> out_tensors</span><span class="pun">;</span><span class="pln"><br>&nbsp; TF_RETURN_IF_ERROR</span><span class="pun">(</span><span class="pln">session</span><span class="pun">-&gt;</span><span class="typ">Run</span><span class="pun">({},</span><span class="pln"> </span><span class="pun">{</span><span class="pln">output_name </span><span class="pun">+</span><span class="pln"> </span><span class="str">":0"</span><span class="pun">,</span><span class="pln"> output_name </span><span class="pun">+</span><span class="pln"> </span><span class="str">":1"</span><span class="pun">},</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">{},</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">out_tensors</span><span class="pun">));</span><span class="pln"><br>&nbsp; </span><span class="pun">*</span><span class="pln">scores </span><span class="pun">=</span><span class="pln"> out_tensors</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln"><br>&nbsp; </span><span class="pun">*</span><span class="pln">indices </span><span class="pun">=</span><span class="pln"> out_tensors</span><span class="pun">[</span><span class="lit">1</span><span class="pun">];</span><span class="pln"><br>&nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">Status</span><span class="pun">::</span><span class="pln">OK</span><span class="pun">();</span><span class="pln"><br></span></code></pre>
+<p>The <code>PrintTopLabels()</code> function takes those sorted results, and prints them out in a
+friendly way. The <code>CheckTopLabel()</code> function is very similar, but just makes sure that
+the top label is the one we expect, for debugging purposes.</p>
+
+<p>At the end, <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/label_image/main.cc#L252"><code>main()</code></a>
+ties together all of these calls.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">int</span><span class="pln"> main</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> argc</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">char</span><span class="pun">*</span><span class="pln"> argv</span><span class="pun">[])</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; </span><span class="com">// We need to call this to set up global state for TensorFlow.</span><span class="pln"><br>&nbsp; tensorflow</span><span class="pun">::</span><span class="pln">port</span><span class="pun">::</span><span class="typ">InitMain</span><span class="pun">(</span><span class="pln">argv</span><span class="pun">[</span><span class="lit">0</span><span class="pun">],</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">argc</span><span class="pun">,</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">argv</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="typ">Status</span><span class="pln"> s </span><span class="pun">=</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="typ">ParseCommandLineFlags</span><span class="pun">(&amp;</span><span class="pln">argc</span><span class="pun">,</span><span class="pln"> argv</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">s</span><span class="pun">.</span><span class="pln">ok</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; LOG</span><span class="pun">(</span><span class="pln">ERROR</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> </span><span class="str">"Error parsing command line flags: "</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> s</span><span class="pun">.</span><span class="typ">ToString</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br><br>&nbsp; </span><span class="com">// First we load and initialize the model.</span><span class="pln"><br>&nbsp; std</span><span class="pun">::</span><span class="pln">unique_ptr</span><span class="pun">&lt;</span><span class="pln">tensorflow</span><span class="pun">::</span><span class="typ">Session</span><span class="pun">&gt;</span><span class="pln"> session</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="kwd">string</span><span class="pln"> graph_path </span><span class="pun">=</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">io</span><span class="pun">::</span><span class="typ">JoinPath</span><span class="pun">(</span><span class="pln">FLAGS_root_dir</span><span class="pun">,</span><span class="pln"> FLAGS_graph</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="typ">Status</span><span class="pln"> load_graph_status </span><span class="pun">=</span><span class="pln"> </span><span class="typ">LoadGraph</span><span class="pun">(</span><span class="pln">graph_path</span><span class="pun">,</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">session</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">load_graph_status</span><span class="pun">.</span><span class="pln">ok</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; LOG</span><span class="pun">(</span><span class="pln">ERROR</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> load_graph_status</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br></span></code></pre>
+<p>We load the main graph.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; </span><span class="com">// Get the image from disk as a float array of numbers, resized and normalized</span><span class="pln"><br>&nbsp; </span><span class="com">// to the specifications the main graph expects.</span><span class="pln"><br>&nbsp; std</span><span class="pun">::</span><span class="pln">vector</span><span class="pun">&lt;</span><span class="typ">Tensor</span><span class="pun">&gt;</span><span class="pln"> resized_tensors</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="kwd">string</span><span class="pln"> image_path </span><span class="pun">=</span><span class="pln"> tensorflow</span><span class="pun">::</span><span class="pln">io</span><span class="pun">::</span><span class="typ">JoinPath</span><span class="pun">(</span><span class="pln">FLAGS_root_dir</span><span class="pun">,</span><span class="pln"> FLAGS_image</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="typ">Status</span><span class="pln"> read_tensor_status </span><span class="pun">=</span><span class="pln"> </span><span class="typ">ReadTensorFromImageFile</span><span class="pun">(</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; image_path</span><span class="pun">,</span><span class="pln"> FLAGS_input_height</span><span class="pun">,</span><span class="pln"> FLAGS_input_width</span><span class="pun">,</span><span class="pln"> FLAGS_input_mean</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; FLAGS_input_std</span><span class="pun">,</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">resized_tensors</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">read_tensor_status</span><span class="pun">.</span><span class="pln">ok</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; LOG</span><span class="pun">(</span><span class="pln">ERROR</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> read_tensor_status</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; </span><span class="kwd">const</span><span class="pln"> </span><span class="typ">Tensor</span><span class="pun">&amp;</span><span class="pln"> resized_tensor </span><span class="pun">=</span><span class="pln"> resized_tensors</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln"><br></span></code></pre>
+<p>Load, resize, and process the input image.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; </span><span class="com">// Actually run the image through the model.</span><span class="pln"><br>&nbsp; std</span><span class="pun">::</span><span class="pln">vector</span><span class="pun">&lt;</span><span class="typ">Tensor</span><span class="pun">&gt;</span><span class="pln"> outputs</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="typ">Status</span><span class="pln"> run_status </span><span class="pun">=</span><span class="pln"> session</span><span class="pun">-&gt;</span><span class="typ">Run</span><span class="pun">({</span><span class="pln"> </span><span class="pun">{</span><span class="pln">FLAGS_input_layer</span><span class="pun">,</span><span class="pln"> resized_tensor</span><span class="pun">}},</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="pun">{</span><span class="pln">FLAGS_output_layer</span><span class="pun">},</span><span class="pln"> </span><span class="pun">{},</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">outputs</span><span class="pun">);</span><span class="pln"><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">run_status</span><span class="pun">.</span><span class="pln">ok</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; LOG</span><span class="pun">(</span><span class="pln">ERROR</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> </span><span class="str">"Running model failed: "</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> run_status</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br></span></code></pre>
+<p>Here we run the loaded graph with the image as an input.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; </span><span class="com">// This is for automated testing to make sure we get the expected result with</span><span class="pln"><br>&nbsp; </span><span class="com">// the default settings. We know that label 866 (military uniform) should be</span><span class="pln"><br>&nbsp; </span><span class="com">// the top label for the Admiral Hopper image.</span><span class="pln"><br>&nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">FLAGS_self_test</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">bool</span><span class="pln"> expected_matches</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="typ">Status</span><span class="pln"> check_status </span><span class="pun">=</span><span class="pln"> </span><span class="typ">CheckTopLabel</span><span class="pun">(</span><span class="pln">outputs</span><span class="pun">,</span><span class="pln"> </span><span class="lit">866</span><span class="pun">,</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">expected_matches</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">check_status</span><span class="pun">.</span><span class="pln">ok</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; LOG</span><span class="pun">(</span><span class="pln">ERROR</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> </span><span class="str">"Running check failed: "</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> check_status</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">expected_matches</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; LOG</span><span class="pun">(</span><span class="pln">ERROR</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> </span><span class="str">"Self-test failed!"</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br></span></code></pre>
+<p>For testing purposes we can check to make sure we get the output we expect here.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; </span><span class="com">// Do something interesting with the results we've generated.</span><span class="pln"><br>&nbsp; </span><span class="typ">Status</span><span class="pln"> print_status </span><span class="pun">=</span><span class="pln"> </span><span class="typ">PrintTopLabels</span><span class="pun">(</span><span class="pln">outputs</span><span class="pun">,</span><span class="pln"> FLAGS_labels</span><span class="pun">);</span><span class="pln"><br></span></code></pre>
+<p>Finally we print the labels we found.</p>
+<pre class="prettyprint"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">&nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">print_status</span><span class="pun">.</span><span class="pln">ok</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; LOG</span><span class="pun">(</span><span class="pln">ERROR</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> </span><span class="str">"Running print failed: "</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> print_status</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br></span></code></pre>
+<p>The error handling here is using TensorFlow's <code>Status</code>
+object, which is very convenient because it lets you know whether any error has
+occurred with the <code>ok()</code> checker, and then can be printed out to give a readable error
+message.</p>
+
+<p>In this case we are demonstrating object recognition, but you should be able to
+use very similar code on other models you've found or trained yourself, across
+all
+sorts of domains. We hope this small example gives you some ideas on how to use
+TensorFlow within your own products.</p>
+
+<blockquote>
+<p><strong>EXERCISE</strong>: Transfer learning is the idea that, if you know how to solve a task well, you
+should be able to transfer some of that understanding to solving related
+problems.  One way to perform transfer learning is to remove the final
+classification layer of the network and extract
+the <a href="https://arxiv.org/abs/1310.1531">next-to-last layer of the CNN</a>, in this case a 2048 dimensional vector.</p>
+</blockquote>
+
+<h2 id="resources_for_learning_more"><a href="https://www.tensorflow.org/tutorials/images/image_recognition#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Resources for Learning More</h2>
+
+<p>To learn about neural networks in general, Michael Nielsen's
+<a href="http://neuralnetworksanddeeplearning.com/chap1.html">free online book</a>
+is an excellent resource. For convolutional neural networks in particular,
+Chris Olah has some
+<a href="https://colah.github.io/posts/2014-07-Conv-Nets-Modular/">nice blog posts</a>,
+and Michael Nielsen's book has a
+<a href="http://neuralnetworksanddeeplearning.com/chap6.html">great chapter</a>
+covering them.</p>
+
+<p>To find out more about implementing convolutional neural networks, you can jump
+to the TensorFlow <a href="https://www.tensorflow.org/tutorials/images/deep_cnn">deep convolutional networks tutorial</a>,
+or start a bit more gently with our <a href="https://www.tensorflow.org/tutorials/estimators/cnn">Estimator MNIST tutorial</a>.
+Finally, if you want to get up to speed on research in this area, you can
+read the recent work of all the papers referenced in this tutorial.</p>
+
+  </div>
+  
+
+  
+        
+  
+
+
+
+
+
+
+
+        
+<div class="devsite-content-footer nocontent">
+  
+  
+    <p>Except as otherwise noted, the content of this page is licensed under the <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>, and code samples are licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. For details, see our <a href="https://developers.google.com/terms/site-policies">Site Policies</a>. Java is a registered trademark of Oracle and/or its affiliates.</p>
+  
+
+  
+    
+    <p class="devsite-content-footer-date" itemprop="datePublished" content="2018-09-28T19:41:30.198943">
+      
+      Last updated September 28, 2018.
+    </p>
+  
+
+</div>
+
+        </article>
+      </article>
+  
+
+        </div>
+      
+
+<footer class="devsite-footer-linkboxes nocontent
+               devsite-footer-linkboxes-all-backup
+               "><nav class="devsite-full-site-width"><ul class="devsite-footer-linkboxes-list"><li class="devsite-footer-linkbox devsite-footer-linkbox-backup"><h3 class="devsite-footer-linkbox-heading">Stay Connected</h3><ul class="devsite-footer-linkbox-list"><li class="devsite-footer-linkbox-item"><a href="https://medium.com/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Blog Link">
+                Blog
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://github.com/tensorflow/" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer GitHub Link">
+                GitHub
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://twitter.com/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Twitter Link">
+                Twitter
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://youtube.com/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer YouTube Link">
+                YouTube
+            </a></li></ul></li><li class="devsite-footer-linkbox devsite-footer-linkbox-backup"><h3 class="devsite-footer-linkbox-heading">Support</h3><ul class="devsite-footer-linkbox-list"><li class="devsite-footer-linkbox-item"><a href="https://github.com/tensorflow/tensorflow/issues" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Issue Tracker Link">
+                Issue Tracker
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://github.com/tensorflow/tensorflow/blob/master/RELEASE.md" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Release Notes Link">
+                Release Notes
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://stackoverflow.com/questions/tagged/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Stack Overflow Link">
+                Stack Overflow
+            </a></li></ul></li></ul></nav></footer><footer class="devsite-utility-footer"><nav class="devsite-utility-footer-nav devsite-nav devsite-full-site-width"><div class="devsite-utility-footer-nav-left"><form class="devsite-utility-footer-language" action="https://www.tensorflow.org/i18n/setlang/" method="post"><input type="hidden" name="xsrf_token" value="VTCB4iVvUiIII4xylENdfWKXfSKf01y6qJVdVqN1mzI6MTUzOTA3Mzk1MTEyNjY0Mw"><input type="hidden" name="next" value="/tutorials/images/image_recognition"><select class="devsite-utility-footer-language-select kd-select" name="language" track-type="languageSelector" track-name="click" style="display: none;"><option value="en" selected="selected" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="en">
+            English
+          </option><option value="zh-cn" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="zh-cn">
+            简体中文
+          </option></select><span class="kd-button kd-menubutton kd-select" track-type="languageSelector" track-name="click"><div class="label">
+            English
+          </div><div class="kd-disclosureindicator"></div></span></form><span class="devsite-utility-footer-links"><a class="devsite-utility-footer-link gc-analytics-event" href="https://policies.google.com/terms" data-category="Site-Wide Custom Events" data-label="Footer terms link" data-footer-link-id="terms">Terms
+         </a><a class="devsite-utility-footer-link gc-analytics-event" href="https://policies.google.com/privacy" data-category="Site-Wide Custom Events" data-label="Footer privacy link" data-footer-link-id="privacy">Privacy
+         </a></span></div></nav></footer></div><script async="" defer="" src="./Image Recognition  _  TensorFlow_files/api.js"></script><script src="./Image Recognition  _  TensorFlow_files/saved_resource"></script><script src="./Image Recognition  _  TensorFlow_files/script_foot_closure.js"></script><script src="./Image Recognition  _  TensorFlow_files/script_foot.js"></script><script>
+        (function($) {
+          
+          devsite.devsite.Init($, {'ENABLE_BLOCKED_VIDEO_PLACEHOLDER': 0, 'SITE_NAME': 'tensorflow', 'FULL_SITE_SEARCH_ENABLED': 1, 'ENABLE_CLOUDTRACK': 0, 'VTAGS_ENABLED': 0, 'HISTORY_ENABLED': 0, 'SIDEBAR_MINI_ENABLED': 0, 'VERSION_HASH': '1e1304016d', 'SCRIPTSAFE_DOMAIN': 'tensorflow-dot-google-developers.appspot.com', 'ENABLE_BLOCKED_LINK_TOOLTIP': 0, 'ALLOWED_HOSTS': ['.android.com', '.appspot.com', '.gonglchuangl.net', '.google.cn', '.google.com', '.googleplex.com', '.tensorflow.org', '.devsitetest.how'], 'BLOCK_RSS_FEEDS': 0},
+                               '[]','en',
+                               true, '',
+                               {"f62218c009ec029abef196bba5aa34cf": true, "8de7a048f21618359bd37f5ce44be073": false, "098dafe57affddc137df300142652cfd": false, "8e03e230de0bd8a6fe173fdf172e8b3f": true, "cb025a64a50094835616312f4774a53d": true, "51470233c56fc1fde50f00b73c52b216": false, "d169d485cf24243a263783dbe42029b1": true, "039e5d84b87fd75807ffb37b7f1bbf2c": true, "700def1a83e356c06c0925afb05de4b0": false, "6749dcb526ce9bde6993550c7d928d24": true}, '/',
+                               'https://www.tensorflow.org/');
+        })(jQuery);
+
+        
+        devsite.localInit = function() {
+          
+        };
+
+      </script><script>
+      $('.devsite-utility-footer-language-select').each(function() {
+        $(this).change(function(){$('.devsite-utility-footer-language').submit();});
+      });
+      </script></div><span id="devsite-request-elapsed" data-request-elapsed="227.246046066"></span>
+<ul class="kd-menulist devsite-hidden"><li class="kd-menulistitem devsite-selected-option" value="en" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="en">
+            English
+          </li><li class="kd-menulistitem" value="zh-cn" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="zh-cn">
+            简体中文
+          </li></ul><script type="text/javascript" async="" src="./Image Recognition  _  TensorFlow_files/1e6ab715a3a95d4603.js"></script></body></html>

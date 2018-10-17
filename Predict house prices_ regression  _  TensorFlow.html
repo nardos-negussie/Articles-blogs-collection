@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)https://www.tensorflow.org/tutorials/keras/basic_regression -->
+<html lang="en" class=""><style type="text/css" id="night-mode-pro-style"></style><link type="text/css" rel="stylesheet" id="night-mode-pro-link"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./Predict house prices_ regression  _  TensorFlow_files/linkid.js"></script><script async="" src="./Predict house prices_ regression  _  TensorFlow_files/analytics.js"></script><script>var a=window.devsite||{};window.devsite=a;a.readyCallbacks=[];window.devsite.readyCallbacks=a.readyCallbacks;a.ready=function(b){a.readyCallbacks.push(b)};window.devsite.ready=a.ready;
+</script><meta name="xsrf_token" content="qgLCB3d5dekP8Xa1flU98_TXfVRLgh1ivlne2l_P6Rg6MTUzOTA3Mzg0MDY3ODIxNw"><link rel="canonical" href="https://www.tensorflow.org/tutorials/keras/basic_regression"><link rel="alternate" href="https://www.tensorflow.org/tutorials/keras/basic_regression" hreflang="en"><link rel="alternate" href="https://tensorflow.google.cn/tutorials/keras/basic_regression" hreflang="en-cn"><link rel="alternate" href="https://www.tensorflow.org/tutorials/keras/basic_regression" hreflang="x-default"><link rel="shortcut icon" href="https://www.tensorflow.org/_static/1e1304016d/images/tensorflow/favicon.png"><link rel="apple-touch-icon" href="https://www.tensorflow.org/images/apple-touch-icon-180x180.png"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="./Predict house prices_ regression  _  TensorFlow_files/css"><link rel="stylesheet" href="./Predict house prices_ regression  _  TensorFlow_files/devsite-tensorflow-orange.css"><link rel="search" type="application/opensearchdescription+xml" title="TensorFlow" href="https://www.tensorflow.org/s/opensearch.xml"><script src="./Predict house prices_ regression  _  TensorFlow_files/jquery-bundle.js"></script><meta property="og:site_name" content="TensorFlow"><meta property="og:type" content="website"><meta property="og:url" content="https://www.tensorflow.org/tutorials/keras/basic_regression"><meta property="og:locale" content="en"><script>
+    var ___gcfg = ___gcfg || {};
+    ___gcfg.lang = 'en';
+  </script><title>Predict house prices: regression &nbsp;|&nbsp; TensorFlow</title><meta property="og:title" content="Predict house prices: regression  |  TensorFlow"><meta property="og:image" content="https://www.tensorflow.org/images/tf_logo_social.png"><meta property="og:image:secure_url" content="https://www.tensorflow.org/images/tf_logo_social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="675"><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover, .MJXp-munder {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > *, .MJXp-munder > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head><body class="
+               devsite-doc-page
+               
+               
+               
+               
+               " id="top_of_page"><div id="MathJax_Message" style="display: none;"></div><div class="devsite-wrapper" style="margin-top: 0px;"><div class="devsite-top-section-wrapper
+            "><header class="devsite-top-section nocontent devsite-top-section-pinned"><div class="devsite-top-logo-row-wrapper-wrapper" style="position: relative;"><div class="devsite-top-logo-row-wrapper"><div class="devsite-top-logo-row devsite-full-site-width"><button type="button" class="devsite-expand-section-nav devsite-header-icon-button
+                                       button-flat material-icons gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Hamburger menu"></button><div class="devsite-product-name-wrapper"><a href="https://www.tensorflow.org/" class="devsite-site-logo-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Site logo" track-type="globalNav" track-name="tensorflow" track-metadata-eventdetail="nav" track-metadata-position="nav"><img src="./Predict house prices_ regression  _  TensorFlow_files/lockup.png" class="devsite-site-logo" alt="TensorFlow"><span class="devsite-site-name devsite-product-name">TensorFlow</span></a></div><div class="devsite-header-upper-tabs"><nav class="devsite-doc-set-nav devsite-nav devsite-overflow-tabs-scroll-wrapper"><ul class="devsite-doc-set-nav-tab-list devsite-overflow-tabs-scroll" style="min-width: 488px; left: 0px;"><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/install/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Install">
+          Install
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/tutorials/" class="devsite-doc-set-nav-active devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" aria-label="Develop, selected" data-category="Site-Wide Custom Events" data-label="Tab: Develop">
+          Develop
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/community/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Community">
+          Community
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 devsite-dropdown-menu-container"><a href="https://www.tensorflow.org/api_docs/python/tf" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: API">
+          API
+        </a><span class="devsite-menu-toggle devsite-nav-tab material-icons"></span><div class="devsite-dropdown-menu-wrapper" style="left: 532.156px;"><div class="devsite-dropdown-menu"><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          API
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/api_docs/python/tf"><span>
+                          r1.<wbr>11 (stable)
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.10/api_docs/python/tf"><span>
+                          r1.<wbr>10
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.9/api_docs/python/tf"><span>
+                          r1.<wbr>9
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.8/api_docs/python/tf"><span>
+                          r1.<wbr>8
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.7/api_docs/python/tf"><span>
+                          r1.<wbr>7
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.6/api_docs/python/tf"><span>
+                          r1.<wbr>6
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/versions/"><span>
+                          More…
+                        </span></a></li></ul></div></div></div></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 devsite-dropdown-menu-container"><a href="https://www.tensorflow.org/ecosystem/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Ecosystem">
+          Ecosystem
+        </a><span class="devsite-menu-toggle devsite-nav-tab material-icons"></span><div class="devsite-dropdown-menu-wrapper" style="left: 601.172px;"><div class="devsite-dropdown-menu"><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          Projects
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/serving/"><span>
+                          Serving
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/hub/"><span>
+                          Hub
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/tfx"><span>
+                          TFX
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/probability/"><span>
+                          Probability
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/ecosystem/"><span>
+                          More…
+                        </span></a></li></ul></div><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          Implementations
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://js.tensorflow.org/"><span>
+                          TensorFlow.<wbr>js
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/lite/"><span>
+                          TensorFlow Lite
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/swift/"><span>
+                          Swift for TensorFlow
+                        </span></a></li></ul></div><div class="devsite-dropdown-menu-column"><ul class="devsite-nav-list devsite-dropdown-menu-section"><li class="devsite-nav-item devsite-nav-item-heading"><span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                          Research
+                        </span></span></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://www.tensorflow.org/tfrc/"><span>
+                          Research Cloud
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://github.com/tensorflow/models"><span>
+                          Model Garden
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://magenta.tensorflow.org/"><span>
+                          Magenta
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://github.com/google/nucleus"><span>
+                          Nucleus
+                        </span></a></li><li class="devsite-nav-item"><a class="devsite-nav-title" href="https://colab.research.google.com/notebooks/welcome.ipynb"><span>
+                          Colab
+                        </span></a></li></ul></div></div></div></li></ul><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-forward devsite-hidden"></button><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-back devsite-hidden"></button></nav></div><form class="devsite-search-form" action="https://www.tensorflow.org/s/results/" method="GET" id="top-search" search-placeholder="Search"><div id="searchbox" class="devsite-searchbox"><input placeholder="Search" type="text" class="devsite-search-field devsite-search-query" name="q" value="" autocomplete="off" aria-label="Search box"><div class="devsite-search-image material-icons"></div></div><input type="hidden" name="p" id="search_project" value="/" data-project-name="TensorFlow" data-project-path="/" data-query-match=""><input type="hidden" class="suggest-project" value="TensorFlow"><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Android Developers"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Android Open Source Project"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Apigee Docs"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Google Cloud"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Dialogflow"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Firebase"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Android Developers"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Link.app"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="Nest Developers"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="OpenThread"></div><div class="suggest-project-metadata" data-home_url="https://www.orbitera.com/" data-path="/" data-name="Orbitera"></div><div class="suggest-project-metadata" data-home_url="/" data-path="/" data-name="TensorFlow"></div><div class="devsite-popout devsite-popout-closed"><div class="devsite-suggest-results" style="display: none;"></div></div></form><a class="devsite-header-link devsite-top-button button gc-analytics-event" href="https://github.com/tensorflow" data-category="Site-Wide Custom Events" data-label="Site header link" track-type="globalNav" track-name="github" track-metadata-position="nav" track-metadata-eventdetail="nav"><div class="devsite-header-link-label">GitHub</div></a><button type="button" class="devsite-search-button devsite-header-icon-button button-flat
+                                       material-icons"></button></div></div></div><div class="devsite-collapsible-section" style="margin-top: -68px;"><div class="devsite-header-background devsite-full-site-width"><div class="devsite-product-id-row devsite-full-site-width" style="visibility: hidden;"><div class="devsite-product-description-row"><ul class="devsite-breadcrumb-list"><li class="devsite-breadcrumb-item">
+    
+    
+    
+      Develop
+    
+    
+  </li></ul></div></div><div class="devsite-doc-set-nav-row devsite-full-site-width"><nav class="devsite-doc-set-nav devsite-nav devsite-overflow-tabs-scroll-wrapper"><ul class="devsite-doc-set-nav-tab-list devsite-overflow-tabs-scroll" style="min-width: 557px; left: 0px;"><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/tutorials/" class="devsite-doc-set-nav-active devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" aria-label="Tutorials, selected" data-category="Site-Wide Custom Events" data-label="Tab: Tutorials">
+          Tutorials
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/guide/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Guide">
+          Guide
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/deploy/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Deploy">
+          Deploy
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/performance/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Performance">
+          Performance
+        </a></li><li class="devsite-doc-set-nav-tab-container devsite-nav-tab
+                 "><a href="https://www.tensorflow.org/extend/" class=" devsite-nav-tab
+                  devsite-doc-set-nav-tab devsite-doc-set-nav-tab-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Extend">
+          Extend
+        </a></li></ul><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-forward devsite-hidden"></button><button type="button" class="devsite-overflow-tabs-scroll-button devsite-top-button material-icons devsite-scroll-back devsite-hidden"></button></nav></div></div></div></header><script>
+    if (window.jQuery) {
+      $(document).ready(function() {
+        if (window.devsite && window.devsite.search) {
+          
+          window.devsite.search.init('en')
+        }
+      });
+    }
+  </script></div><div id="gc-wrapper" itemscope="" itemtype="http://schema.org/Article"><input class="google-analytics-id-json" type="hidden" value="{&quot;dimensions&quot;: {&quot;dimension6&quot;: &quot;en&quot;, &quot;dimension4&quot;: &quot;TensorFlow&quot;, &quot;dimension5&quot;: &quot;en&quot;, &quot;dimension3&quot;: false, &quot;dimension1&quot;: &quot;Signed out&quot;, &quot;dimension8&quot;: null}, &quot;gaid&quot;: &quot;UA-69864048-1&quot;}"><script>
+      var dataLayer = [{"freeTrialEligibleUser": "False", "userCountry": "ET", "language": {"requested": "en", "served": "en"}, "projectName": "TensorFlow", "scriptsafe": null, "signedIn": "False", "internalUser": "False"}];
+    </script>
+
+      
+        <div class="devsite-site-mask"></div>
+        
+  
+
+
+<nav class="devsite-nav-responsive devsite-nav nocontent" tabindex="0" style="left: -252px;">
+  
+  <div class="devsite-nav-responsive-tabs-panel devsite-nav-responsive-transition devsite-nav-responsive-transform" style="display: none;">
+    
+      
+        
+
+
+
+<nav class="devsite-nav-responsive-tabs devsite-nav">
+  <ul class="devsite-nav-list">
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/install/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Install"><span>
+          Install
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/tutorials/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  devsite-nav-active" data-category="Site-Wide Custom Events" data-label="Responsive Tab: Develop"><span>
+          Develop
+        </span></a>
+      
+
+      
+
+      
+
+      
+        
+
+
+
+<nav class="devsite-nav-responsive-tabs devsite-nav">
+  <ul class="devsite-nav-list">
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <span class="devsite-nav-responsive-forward devsite-nav-responsive-tab devsite-nav-title
+                     devsite-nav-active gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: Tutorials" tabindex="0"><span>
+          Tutorials
+        </span></span>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/guide/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Guide"><span>
+          Guide
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/deploy/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Deploy"><span>
+          Deploy
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/performance/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Performance"><span>
+          Performance
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/extend/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Extend"><span>
+          Extend
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      <a href="https://github.com/tensorflow" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: GitHub"><span>
+        GitHub
+      </span></a>
+    </li>
+  
+  </ul>
+</nav>
+
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/community/?nav=true" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Community"><span>
+          Community
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/api_docs/python/tf" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: API"><span>
+          API
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      
+        <a href="https://www.tensorflow.org/ecosystem/" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event
+                  " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Ecosystem"><span>
+          Ecosystem
+        </span></a>
+      
+
+      
+
+      
+
+      
+    </li>
+  
+
+  
+    <li class="devsite-nav-item devsite-nav-item-heading">
+      <a href="https://github.com/tensorflow" class="devsite-nav-responsive-tab devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: GitHub"><span>
+        GitHub
+      </span></a>
+    </li>
+  
+  </ul>
+</nav>
+
+
+      
+    
+  </div>
+  
+  
+  <div class="devsite-nav-responsive-sidebar-panel" style="display: block;">
+    
+    <div class="devsite-nav-responsive-back" tabindex="0"></div>
+    
+    <nav class="devsite-nav-responsive-sidebar">
+      
+      
+    <ul class="devsite-nav-list devsite-nav-expandable devsite-nav-only-accordions"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/" class="devsite-nav-title"><span>Get started with TensorFlow</span></a></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Learn and use ML, click to expand/collapse" role="link" tabindex="0"><span>Learn and use ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-expanded material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0"></a><ul class="devsite-nav-section devsite-nav-section-expanded"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_classification" class="devsite-nav-title"><span>Basic classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_text_classification" class="devsite-nav-title"><span>Text classification</span></a></li><li class="devsite-nav-item devsite-nav-active"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression" class="devsite-nav-title"><span>Regression</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/overfit_and_underfit" class="devsite-nav-title"><span>Overfitting and underfitting</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/save_and_restore_models" class="devsite-nav-title"><span>Save and restore models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Research and experimentation, click to expand/collapse" role="link" tabindex="0"><span>Research and experimentation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/eager_basics" class="devsite-nav-title"><span>Eager execution</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/automatic_differentiation" class="devsite-nav-title"><span>Automatic differentiation</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training" class="devsite-nav-title"><span>Custom training: basics</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_layers" class="devsite-nav-title"><span>Custom layers</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training_walkthrough" class="devsite-nav-title"><span>Custom training: walkthrough</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="ML at production scale, click to expand/collapse" role="link" tabindex="0"><span>ML at production scale</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/linear" class="devsite-nav-title"><span>Linear model with Estimators</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/wide_deep" class="devsite-nav-title"><span class="devsite-nav-text"><span>Wide and deep learning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/boosted_trees" class="devsite-nav-title"><span class="devsite-nav-text"><span>Boosted trees</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/text_classification_with_tf_hub" class="devsite-nav-title"><span>Text classifier with TF-Hub</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn" class="devsite-nav-title"><span>Build a CNN using Estimators</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Generative models, click to expand/collapse" role="link" tabindex="0"><span>Generative models</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/text_generation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Text generation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/nmt_with_attention/nmt_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Translation with attention</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/image_captioning_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image captioning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/dcgan.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>DCGAN</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/cvae.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>VAE</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Images, click to expand/collapse" role="link" tabindex="0"><span>Images</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/pix2pix/pix2pix_eager.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Pix2Pix</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/research/nst_blogpost/4_Neural_Style_Transfer_with_Eager_Execution.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural Style Transfer</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/samples/outreach/blogs/segmentation_blogpost/image_segmentation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image Segmentation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition" class="devsite-nav-title"><span>Image recognition</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/image_retraining" class="devsite-nav-title"><span>Image retraining</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/deep_cnn" class="devsite-nav-title"><span>Advanced CNN</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Sequences, click to expand/collapse" role="link" tabindex="0"><span>Sequences</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent" class="devsite-nav-title"><span>Recurrent neural network</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent_quickdraw" class="devsite-nav-title"><span>Drawing classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/audio_recognition" class="devsite-nav-title"><span>Simple audio recognition</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/nmt" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural machine translation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Data representation, click to expand/collapse" role="link" tabindex="0"><span>Data representation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/word2vec" class="devsite-nav-title"><span>Vector representations of words</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/kernel_methods" class="devsite-nav-title"><span>Kernel methods</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/linear" class="devsite-nav-title"><span>Large-scale linear models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Non-ML, click to expand/collapse" role="link" tabindex="0"><span>Non-ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/mandelbrot" class="devsite-nav-title"><span>Mandelbrot set</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/pdes" class="devsite-nav-title"><span>Partial differential equations</span></a></li></ul></li><li class="devsite-nav-item"><hr class="devsite-nav-break"></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/next_steps" class="devsite-nav-title"><span>Next steps</span></a></li></ul></nav>
+  </div>
+  
+  
+    
+      
+    
+      
+    
+      
+    
+      
+        <div class="devsite-nav-responsive-index-panel" data-tab="API" style="display: none;">
+          <div class="devsite-nav-index-back" data-tab="API" tabindex="0"></div>
+          <nav>
+            <ul class="devsite-nav-list">
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    API
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/api_docs/python/tf"><span>
+                    r1.<wbr>11 (stable)
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.10/api_docs/python/tf"><span>
+                    r1.<wbr>10
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.9/api_docs/python/tf"><span>
+                    r1.<wbr>9
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.8/api_docs/python/tf"><span>
+                    r1.<wbr>8
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.7/api_docs/python/tf"><span>
+                    r1.<wbr>7
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/r1.6/api_docs/python/tf"><span>
+                    r1.<wbr>6
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/versions/"><span>
+                    More…
+                  </span></a>
+                </li>
+                
+              
+            
+            </ul>
+          </nav>
+        </div>
+      
+    
+      
+        <div class="devsite-nav-responsive-index-panel" data-tab="Ecosystem" style="display: none;">
+          <div class="devsite-nav-index-back" data-tab="Ecosystem" tabindex="0"></div>
+          <nav>
+            <ul class="devsite-nav-list">
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    Projects
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/serving/"><span>
+                    Serving
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/hub/"><span>
+                    Hub
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/tfx"><span>
+                    TFX
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/probability/"><span>
+                    Probability
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/ecosystem/"><span>
+                    More…
+                  </span></a>
+                </li>
+                
+              
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    Implementations
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://js.tensorflow.org/"><span>
+                    TensorFlow.<wbr>js
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/lite/"><span>
+                    TensorFlow Lite
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/swift/"><span>
+                    Swift for TensorFlow
+                  </span></a>
+                </li>
+                
+              
+            
+              
+                
+                <li class="devsite-nav-item devsite-nav-item-heading">
+                  <span class="devsite-nav-title devsite-nav-title-no-path"><span>
+                    Research
+                  </span></span>
+                </li>
+                
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://www.tensorflow.org/tfrc/"><span>
+                    Research Cloud
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://github.com/tensorflow/models"><span>
+                    Model Garden
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://magenta.tensorflow.org/"><span>
+                    Magenta
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://github.com/google/nucleus"><span>
+                    Nucleus
+                  </span></a>
+                </li>
+                
+                <li class="devsite-nav-item">
+                  <a class="devsite-nav-title" href="https://colab.research.google.com/notebooks/welcome.ipynb"><span>
+                    Colab
+                  </span></a>
+                </li>
+                
+              
+            
+            </ul>
+          </nav>
+        </div>
+      
+    
+  
+</nav>
+
+
+        <div class="devsite-main-content clearfix" style="margin-top: 204px;">
+
+        
+        
+
+        
+  
+  
+    
+    
+      
+  <nav class="devsite-section-nav devsite-nav nocontent" style="left: auto; max-height: 298px; position: fixed; top: 120px;">
+    <ul class="devsite-nav-list devsite-nav-expandable devsite-nav-only-accordions"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/" class="devsite-nav-title"><span>Get started with TensorFlow</span></a></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Learn and use ML, click to expand/collapse" role="link" tabindex="0"><span>Learn and use ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-expanded material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0"></a><ul class="devsite-nav-section devsite-nav-section-expanded"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_classification" class="devsite-nav-title"><span>Basic classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_text_classification" class="devsite-nav-title"><span>Text classification</span></a></li><li class="devsite-nav-item devsite-nav-active"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression" class="devsite-nav-title"><span>Regression</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/overfit_and_underfit" class="devsite-nav-title"><span>Overfitting and underfitting</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/save_and_restore_models" class="devsite-nav-title"><span>Save and restore models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Research and experimentation, click to expand/collapse" role="link" tabindex="0"><span>Research and experimentation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/" class="devsite-nav-title"><span>Overview</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/eager_basics" class="devsite-nav-title"><span>Eager execution</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/automatic_differentiation" class="devsite-nav-title"><span>Automatic differentiation</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training" class="devsite-nav-title"><span>Custom training: basics</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_layers" class="devsite-nav-title"><span>Custom layers</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/eager/custom_training_walkthrough" class="devsite-nav-title"><span>Custom training: walkthrough</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="ML at production scale, click to expand/collapse" role="link" tabindex="0"><span>ML at production scale</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/linear" class="devsite-nav-title"><span>Linear model with Estimators</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/wide_deep" class="devsite-nav-title"><span class="devsite-nav-text"><span>Wide and deep learning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/tree/master/official/boosted_trees" class="devsite-nav-title"><span class="devsite-nav-text"><span>Boosted trees</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/text_classification_with_tf_hub" class="devsite-nav-title"><span>Text classifier with TF-Hub</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/estimators/cnn" class="devsite-nav-title"><span>Build a CNN using Estimators</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Generative models, click to expand/collapse" role="link" tabindex="0"><span>Generative models</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/text_generation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Text generation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/nmt_with_attention/nmt_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Translation with attention</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/image_captioning_with_attention.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image captioning</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/dcgan.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>DCGAN</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/generative_examples/cvae.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>VAE</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Images, click to expand/collapse" role="link" tabindex="0"><span>Images</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/contrib/eager/python/examples/pix2pix/pix2pix_eager.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Pix2Pix</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/research/nst_blogpost/4_Neural_Style_Transfer_with_Eager_Execution.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural Style Transfer</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/models/blob/master/samples/outreach/blogs/segmentation_blogpost/image_segmentation.ipynb" class="devsite-nav-title"><span class="devsite-nav-text"><span>Image Segmentation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/image_recognition" class="devsite-nav-title"><span>Image recognition</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/hub/tutorials/image_retraining" class="devsite-nav-title"><span>Image retraining</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/images/deep_cnn" class="devsite-nav-title"><span>Advanced CNN</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Sequences, click to expand/collapse" role="link" tabindex="0"><span>Sequences</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent" class="devsite-nav-title"><span>Recurrent neural network</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/recurrent_quickdraw" class="devsite-nav-title"><span>Drawing classification</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/sequences/audio_recognition" class="devsite-nav-title"><span>Simple audio recognition</span></a></li><li class="devsite-nav-item devsite-nav-external devsite-nav-has-status"><a href="https://github.com/tensorflow/nmt" class="devsite-nav-title"><span class="devsite-nav-text"><span>Neural machine translation</span></span><span class="devsite-nav-icon-wrapper"><span class="devsite-nav-icon material-icons" title="External"></span></span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Data representation, click to expand/collapse" role="link" tabindex="0"><span>Data representation</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/word2vec" class="devsite-nav-title"><span>Vector representations of words</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/kernel_methods" class="devsite-nav-title"><span>Kernel methods</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/representation/linear" class="devsite-nav-title"><span>Large-scale linear models</span></a></li></ul></li><li class="devsite-nav-item devsite-nav-item-section-expandable devsite-nav-accordion"><span class="devsite-nav-title devsite-nav-title-no-path" aria-label="Non-ML, click to expand/collapse" role="link" tabindex="0"><span>Non-ML</span></span><a class="devsite-nav-toggle devsite-nav-toggle-collapsed material-icons" track-type="leftNav" track-name="expandNavSectionArrow" track-metadata-position="0" aria-hidden="true"></a><ul class="devsite-nav-section devsite-nav-section-collapsed"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/mandelbrot" class="devsite-nav-title"><span>Mandelbrot set</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/non-ml/pdes" class="devsite-nav-title"><span>Partial differential equations</span></a></li></ul></li><li class="devsite-nav-item"><hr class="devsite-nav-break"></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/next_steps" class="devsite-nav-title"><span>Next steps</span></a></li></ul>
+  </nav>
+
+    
+
+    
+  <nav class="devsite-page-nav devsite-nav" style="position: fixed; left: 1120px; max-height: 298px; top: 120px;"><ul class="devsite-page-nav-list"><li class="devsite-nav-item devsite-nav-item-heading"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#top_of_page" class="devsite-nav-title"><span>Contents</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#the_boston_housing_prices_dataset" class="devsite-nav-title"><span>The Boston Housing Prices dataset</span></a><ul class="devsite-page-nav-list"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#examples_and_features" class="devsite-nav-title"><span>Examples and features</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#labels" class="devsite-nav-title"><span>Labels</span></a></li></ul></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#normalize_features" class="devsite-nav-title"><span>Normalize features</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#create_the_model" class="devsite-nav-title"><span>Create the model</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#train_the_model" class="devsite-nav-title"><span>Train the model</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#predict" class="devsite-nav-title"><span>Predict</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#conclusion" class="devsite-nav-title devsite-nav-active"><span>Conclusion</span></a></li></ul></nav>
+
+
+      <article class="devsite-article">
+        <article class="devsite-article-inner">
+  
+          
+  
+
+
+<div class="devsite-rating-container
+            "><div class="devsite-rating-stars"><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="1" data-category="Site-Wide Custom Events" data-label="Star Rating 1" track-metadata-score="1" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 1 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="2" data-category="Site-Wide Custom Events" data-label="Star Rating 2" track-metadata-score="2" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 2 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="3" data-category="Site-Wide Custom Events" data-label="Star Rating 3" track-metadata-score="3" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 3 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="4" data-category="Site-Wide Custom Events" data-label="Star Rating 4" track-metadata-score="4" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 4 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="5" data-category="Site-Wide Custom Events" data-label="Star Rating 5" track-metadata-score="5" track-type="feedback" track-name="rating" track-metadata-position="header" role="button" aria-label="Site content star ratings, rating 5 out of 5"></div></div><div class="devsite-rating-description"></div><div class="devsite-rating-internal"><span class="devsite-rating-stats"></span></div></div><script>
+  $(document).ready(function() {
+    devsite.ratings.init(
+      document.querySelectorAll('#devsite-feedback-project'), false
+      
+    );
+  });
+</script>
+
+
+  
+  <nav class="devsite-breadcrumb-nav devsite-nav">
+    
+
+
+<ul class="devsite-breadcrumb-list">
+  
+  <li class="devsite-breadcrumb-item">
+    
+    
+    <a href="https://www.tensorflow.org/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="1">
+    
+    
+      TensorFlow
+    
+    
+    </a>
+    
+  </li>
+  
+  <li class="devsite-breadcrumb-item">
+    
+    
+    <div class="devsite-breadcrumb-guillemet material-icons"></div>
+    
+    
+    <a href="https://www.tensorflow.org/tutorials/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="2">
+    
+    
+      Develop
+    
+    
+    </a>
+    
+  </li>
+  
+  <li class="devsite-breadcrumb-item">
+    
+    
+    <div class="devsite-breadcrumb-guillemet material-icons"></div>
+    
+    
+    <a href="https://www.tensorflow.org/tutorials/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="3">
+    
+    
+      Tutorials
+    
+    
+    </a>
+    
+  </li>
+  
+</ul>
+
+  </nav>
+  
+  
+  <h1 itemprop="name" class="devsite-page-title">
+    Predict house prices: regression
+  </h1>
+  
+  
+  <nav class="devsite-page-nav-embedded devsite-nav"><ul class="devsite-page-nav-list"><li class="devsite-nav-item devsite-nav-item-heading"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#top_of_page" class="devsite-nav-title"><span>Contents</span></a><button type="button" title="Expand/collapse contents" class="devsite-nav-show-all button-transparent material-icons"></button></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#the_boston_housing_prices_dataset" class="devsite-nav-title"><span>The Boston Housing Prices dataset</span></a><ul class="devsite-page-nav-list"><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#examples_and_features" class="devsite-nav-title"><span>Examples and features</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#labels" class="devsite-nav-title"><span>Labels</span></a></li></ul></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#normalize_features" class="devsite-nav-title"><span>Normalize features</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#create_the_model" class="devsite-nav-title devsite-nav-item-hidden"><span>Create the model</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#train_the_model" class="devsite-nav-title devsite-nav-item-hidden"><span>Train the model</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#predict" class="devsite-nav-title devsite-nav-item-hidden"><span>Predict</span></a></li><li class="devsite-nav-item"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#conclusion" class="devsite-nav-title devsite-nav-item-hidden"><span>Conclusion</span></a></li><li class="devsite-nav-item"><button type="button" class="button-flat devsite-nav-more-items material-icons" title="Expand/collapse contents" aria-hidden="true"></button></li></ul></nav>
+  
+  <div class="devsite-article-body clearfix
+            " itemprop="articleBody">
+    
+<style>/* override theme */
+table img {
+  max-width: 100%;
+}
+
+/* override var element to differentiate color from comment */
+var, var code, var span, .prettyprint var span {
+  color: #039be5;
+}
+
+/* .devsite-terminal virtualenv prompt */
+.tfo-terminal-venv::before {
+  content: "(venv) $ " !important;
+}
+
+/* .devsite-terminal root prompt */
+.tfo-terminal-root::before {
+  content: "# " !important;
+}
+
+/* .devsite-terminal Windows prompt */
+.tfo-terminal-windows::before {
+  content: "C:\\> " !important;
+}
+
+/* .devsite-terminal Windows prompt w/ virtualenv */
+.tfo-terminal-windows-venv::before {
+  content: "(venv) C:\\> " !important;
+}
+
+/* on rendered notebook page,
+   remove link to webpage since we're already here */
+.tfo-notebook-buttons td:first-child {
+  display: none;
+}
+
+/* landing pages */
+
+.tfo-button-primary {
+  background-color: #fca851;
+}
+
+.tfo-button-primary:hover {
+  background-color: #ef6c02;
+}
+
+.tfo-landing-row-item-inset-white {
+  background-color: #fff;
+  padding: 32px;
+}
+
+.tfo-landing-row-item-inset-white ol,
+.tfo-landing-row-item-inset-white ul {
+  padding-left: 20px;
+}
+
+a.colab-button {
+  background: rgba(255, 255, 255, .75);
+  border: solid 1px rgba(0, 0, 0, .08);
+  border-bottom-color: rgba(0, 0, 0, .15);
+  border-radius: 4px;
+  color: #aaa;
+  display: inline-block;
+  font-size: 11px !important;
+  font-weight: 300;
+  line-height: 16px;
+  padding: 4px 8px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+a.colab-button:hover {
+  background: white;
+  border-color: rgba(0, 0, 0, .2);
+  color: #666;
+}
+
+a.colab-button span {
+  background: url(/images/colab_logo_button.svg) no-repeat 1px 1px / 20px;
+  border-radius: 4px;
+  display: inline-block;
+  padding-left: 24px;
+  text-decoration: none;
+}
+
+/* Hide toc/page nav on Tutorials landing page. */
+.tfo-tutorials .devsite-page-nav,
+body[theme="tensorflow-theme"].tfo-tutorials devsite-toc {
+  display: none !important;
+}
+
+/* adjust code block for smaller screens */
+@media screen and (max-width: 1000px) {
+  .tfo-landing-row-item-code-block {
+    flex-direction: column !important;
+  }
+
+  .tfo-landing-row-item-code-block > .devsite-landing-row-item-code {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .tfo-landing-row-item-code-block {
+    display: none;
+  }
+}
+</style>
+
+<script src="./Predict house prices_ regression  _  TensorFlow_files/MathJax.js"></script>
+
+<!-- DO NOT EDIT! Automatically generated file. -->
+
+
+
+<div class="devsite-table-wrapper"><table class="tfo-notebook-buttons" align="left">
+  <tbody><tr><td>
+    <a target="_blank" href="https://www.tensorflow.org/tutorials/keras/basic_regression"><img src="./Predict house prices_ regression  _  TensorFlow_files/tf_logo_32px.png">View on TensorFlow.org</a>
+  </td>
+  <td>
+    <a target="_blank" href="https://colab.research.google.com/github/tensorflow/docs/blob/master/site/en/tutorials/keras/basic_regression.ipynb"><img src="./Predict house prices_ regression  _  TensorFlow_files/colab_logo_32px.png">Run in Google Colab</a>
+  </td>
+  <td>
+    <a target="_blank" href="https://github.com/tensorflow/docs/blob/master/site/en/tutorials/keras/basic_regression.ipynb"><img src="./Predict house prices_ regression  _  TensorFlow_files/GitHub-Mark-32px.png">View source on GitHub</a>
+  </td>
+</tr></tbody></table></div>
+
+<p>In a <em>regression</em> problem, we aim to predict the output of a continuous value, like a price or a probability. Contrast this with a <em>classification</em> problem, where we aim to predict a discrete label (for example, where a picture contains an apple or an orange). </p>
+
+<p>This notebook builds a model to predict the median price of homes in a Boston suburb during the mid-1970s. To do this, we'll provide the model with some data points about the suburb, such as the crime rate and the local property tax rate.</p>
+
+<p>This example uses the <a href="https://www.tensorflow.org/api_docs/python/tf/keras"><code>tf.keras</code></a> API, see <a href="https://www.tensorflow.org/guide/keras">this guide</a> for details.</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">from</span><span class="pln"> __future__ </span><span class="kwd">import</span><span class="pln"> absolute_import</span><span class="pun">,</span><span class="pln"> division</span><span class="pun">,</span><span class="pln"> print_function<br><br></span><span class="kwd">import</span><span class="pln"> tensorflow </span><span class="kwd">as</span><span class="pln"> tf<br></span><span class="kwd">from</span><span class="pln"> tensorflow </span><span class="kwd">import</span><span class="pln"> keras<br><br></span><span class="kwd">import</span><span class="pln"> numpy </span><span class="kwd">as</span><span class="pln"> np<br><br></span><span class="kwd">print</span><span class="pun">(</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">__version__</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>1.11.0
+</pre>
+
+<h2 id="the_boston_housing_prices_dataset"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>The Boston Housing Prices dataset</h2>
+
+<p>This <a href="https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html">dataset</a> is accessible directly in TensorFlow. Download and shuffle the training set:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">boston_housing </span><span class="pun">=</span><span class="pln"> keras</span><span class="pun">.</span><span class="pln">datasets</span><span class="pun">.</span><span class="pln">boston_housing<br><br></span><span class="pun">(</span><span class="pln">train_data</span><span class="pun">,</span><span class="pln"> train_labels</span><span class="pun">),</span><span class="pln"> </span><span class="pun">(</span><span class="pln">test_data</span><span class="pun">,</span><span class="pln"> test_labels</span><span class="pun">)</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> boston_housing</span><span class="pun">.</span><span class="pln">load_data</span><span class="pun">()</span><span class="pln"><br><br></span><span class="com"># Shuffle the training set</span><span class="pln"><br>order </span><span class="pun">=</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">argsort</span><span class="pun">(</span><span class="pln">np</span><span class="pun">.</span><span class="pln">random</span><span class="pun">.</span><span class="pln">random</span><span class="pun">(</span><span class="pln">train_labels</span><span class="pun">.</span><span class="pln">shape</span><span class="pun">))</span><span class="pln"><br>train_data </span><span class="pun">=</span><span class="pln"> train_data</span><span class="pun">[</span><span class="pln">order</span><span class="pun">]</span><span class="pln"><br>train_labels </span><span class="pun">=</span><span class="pln"> train_labels</span><span class="pun">[</span><span class="pln">order</span><span class="pun">]</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/boston_housing.npz
+57344/57026 [==============================] - 0s 0us/step
+</pre>
+
+<h3 id="examples_and_features">Examples and features</h3>
+
+<p>This dataset is much smaller than the others we've worked with so far: it has 506 total examples are split between 404 training examples and 102 test examples:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">print</span><span class="pun">(</span><span class="str">"Training set: {}"</span><span class="pun">.</span><span class="pln">format</span><span class="pun">(</span><span class="pln">train_data</span><span class="pun">.</span><span class="pln">shape</span><span class="pun">))</span><span class="pln"> &nbsp;</span><span class="com"># 404 examples, 13 features</span><span class="pln"><br></span><span class="kwd">print</span><span class="pun">(</span><span class="str">"Testing set: &nbsp;{}"</span><span class="pun">.</span><span class="pln">format</span><span class="pun">(</span><span class="pln">test_data</span><span class="pun">.</span><span class="pln">shape</span><span class="pun">))</span><span class="pln"> &nbsp; </span><span class="com"># 102 examples, 13 features</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>Training set: (404, 13)
+Testing set:  (102, 13)
+</pre>
+
+<p>The dataset contains 13 different features:</p>
+
+<ol>
+<li>Per capita crime rate.</li>
+<li>The proportion of residential land zoned for lots over 25,000 square feet.</li>
+<li>The proportion of non-retail business acres per town.</li>
+<li>Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).</li>
+<li>Nitric oxides concentration (parts per 10 million).</li>
+<li>The average number of rooms per dwelling.</li>
+<li>The proportion of owner-occupied units built before 1940.</li>
+<li>Weighted distances to five Boston employment centers.</li>
+<li>Index of accessibility to radial highways.</li>
+<li>Full-value property-tax rate per $10,000.</li>
+<li>Pupil-teacher ratio by town.</li>
+<li>1000 * (Bk - 0.63) ** 2 where Bk is the proportion of Black people by town.</li>
+<li>Percentage lower status of the population.</li>
+</ol>
+
+<p>Each one of these input data features is stored using a different scale. Some features are represented by a proportion between 0 and 1, other features are ranges between 1 and 12, some are ranges between 0 and 100, and so on. This is often the case with real-world data, and understanding how to explore and clean such data is an important skill to develop.</p>
+<aside class="key-point"><strong>Key Point:</strong><span> As a modeler and developer, think about how this data is used and the potential benefits and harm a model's predictions can cause. A model like this could reinforce societal biases and disparities. Is a feature relevant to the problem you want to solve or will it introduce bias? For more information, read about <a href="https://developers.google.com/machine-learning/fairness-overview/">ML fairness</a>.</span></aside><pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">print</span><span class="pun">(</span><span class="pln">train_data</span><span class="pun">[</span><span class="lit">0</span><span class="pun">])</span><span class="pln"> &nbsp;</span><span class="com"># Display sample features, notice the different scales</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>[7.8750e-02 4.5000e+01 3.4400e+00 0.0000e+00 4.3700e-01 6.7820e+00
+ 4.1100e+01 3.7886e+00 5.0000e+00 3.9800e+02 1.5200e+01 3.9387e+02
+ 6.6800e+00]
+</pre>
+
+<p>Use the <a href="https://pandas.pydata.org/">pandas</a> library to display the first few rows of the dataset in a nicely formatted table:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">import</span><span class="pln"> pandas </span><span class="kwd">as</span><span class="pln"> pd<br><br>column_names </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[</span><span class="str">'CRIM'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'ZN'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'INDUS'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'CHAS'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'NOX'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'RM'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'AGE'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'DIS'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'RAD'</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="str">'TAX'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'PTRATIO'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'B'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'LSTAT'</span><span class="pun">]</span><span class="pln"><br><br>df </span><span class="pun">=</span><span class="pln"> pd</span><span class="pun">.</span><span class="typ">DataFrame</span><span class="pun">(</span><span class="pln">train_data</span><span class="pun">,</span><span class="pln"> columns</span><span class="pun">=</span><span class="pln">column_names</span><span class="pun">)</span><span class="pln"><br>df</span><span class="pun">.</span><span class="pln">head</span><span class="pun">()</span><span class="pln"><br></span></code></pre>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<div class="devsite-table-wrapper"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CRIM</th>
+      <th>ZN</th>
+      <th>INDUS</th>
+      <th>CHAS</th>
+      <th>NOX</th>
+      <th>RM</th>
+      <th>AGE</th>
+      <th>DIS</th>
+      <th>RAD</th>
+      <th>TAX</th>
+      <th>PTRATIO</th>
+      <th>B</th>
+      <th>LSTAT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.07875</td>
+      <td>45.0</td>
+      <td>3.44</td>
+      <td>0.0</td>
+      <td>0.437</td>
+      <td>6.782</td>
+      <td>41.1</td>
+      <td>3.7886</td>
+      <td>5.0</td>
+      <td>398.0</td>
+      <td>15.2</td>
+      <td>393.87</td>
+      <td>6.68</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.55587</td>
+      <td>0.0</td>
+      <td>18.10</td>
+      <td>0.0</td>
+      <td>0.718</td>
+      <td>3.561</td>
+      <td>87.9</td>
+      <td>1.6132</td>
+      <td>24.0</td>
+      <td>666.0</td>
+      <td>20.2</td>
+      <td>354.70</td>
+      <td>7.12</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.09604</td>
+      <td>40.0</td>
+      <td>6.41</td>
+      <td>0.0</td>
+      <td>0.447</td>
+      <td>6.854</td>
+      <td>42.8</td>
+      <td>4.2673</td>
+      <td>4.0</td>
+      <td>254.0</td>
+      <td>17.6</td>
+      <td>396.90</td>
+      <td>2.98</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.01870</td>
+      <td>85.0</td>
+      <td>4.15</td>
+      <td>0.0</td>
+      <td>0.429</td>
+      <td>6.516</td>
+      <td>27.7</td>
+      <td>8.5353</td>
+      <td>4.0</td>
+      <td>351.0</td>
+      <td>17.9</td>
+      <td>392.43</td>
+      <td>6.36</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.52693</td>
+      <td>0.0</td>
+      <td>6.20</td>
+      <td>0.0</td>
+      <td>0.504</td>
+      <td>8.725</td>
+      <td>83.0</td>
+      <td>2.8944</td>
+      <td>8.0</td>
+      <td>307.0</td>
+      <td>17.4</td>
+      <td>382.00</td>
+      <td>4.63</td>
+    </tr>
+  </tbody>
+</table></div>
+</div>
+
+<h3 id="labels">Labels</h3>
+
+<p>The labels are the house prices in thousands of dollars. (You may notice the mid-1970s prices.)</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">print</span><span class="pun">(</span><span class="pln">train_labels</span><span class="pun">[</span><span class="lit">0</span><span class="pun">:</span><span class="lit">10</span><span class="pun">])</span><span class="pln"> &nbsp;</span><span class="com"># Display first 10 entries</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>[32.  27.5 32.  23.1 50.  20.6 22.6 36.2 21.8 19.5]
+</pre>
+
+<h2 id="normalize_features"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Normalize features</h2>
+
+<p>It's recommended to normalize features that use different scales and ranges. For each feature, subtract the mean of the feature and divide by the standard deviation:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com"># Test data is *not* used when calculating the mean and std</span><span class="pln"><br><br>mean </span><span class="pun">=</span><span class="pln"> train_data</span><span class="pun">.</span><span class="pln">mean</span><span class="pun">(</span><span class="pln">axis</span><span class="pun">=</span><span class="lit">0</span><span class="pun">)</span><span class="pln"><br>std </span><span class="pun">=</span><span class="pln"> train_data</span><span class="pun">.</span><span class="pln">std</span><span class="pun">(</span><span class="pln">axis</span><span class="pun">=</span><span class="lit">0</span><span class="pun">)</span><span class="pln"><br>train_data </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="pln">train_data </span><span class="pun">-</span><span class="pln"> mean</span><span class="pun">)</span><span class="pln"> </span><span class="pun">/</span><span class="pln"> std<br>test_data </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="pln">test_data </span><span class="pun">-</span><span class="pln"> mean</span><span class="pun">)</span><span class="pln"> </span><span class="pun">/</span><span class="pln"> std<br><br></span><span class="kwd">print</span><span class="pun">(</span><span class="pln">train_data</span><span class="pun">[</span><span class="lit">0</span><span class="pun">])</span><span class="pln"> &nbsp;</span><span class="com"># First training sample, normalized</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>[-0.39725269  1.41205707 -1.12664623 -0.25683275 -1.027385    0.72635358
+ -1.00016413  0.02383449 -0.51114231 -0.04753316 -1.49067405  0.41584124
+ -0.83648691]
+</pre>
+
+<p>Although the model <em>might</em> converge without feature normalization, it makes training more difficult, and it makes the resulting model more dependent on the choice of units used in the input.</p>
+
+<h2 id="create_the_model"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Create the model</h2>
+
+<p>Let's build our model. Here, we'll use a <code>Sequential</code> model with two densely connected hidden layers, and an output layer that returns a single, continuous value. The model building steps are wrapped in a function, <code>build_model</code>, since we'll create a second model, later on.</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">def</span><span class="pln"> build_model</span><span class="pun">():</span><span class="pln"><br>&nbsp; model </span><span class="pun">=</span><span class="pln"> keras</span><span class="pun">.</span><span class="typ">Sequential</span><span class="pun">([</span><span class="pln"><br>&nbsp; &nbsp; keras</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="typ">Dense</span><span class="pun">(</span><span class="lit">64</span><span class="pun">,</span><span class="pln"> activation</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">relu</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;input_shape</span><span class="pun">=(</span><span class="pln">train_data</span><span class="pun">.</span><span class="pln">shape</span><span class="pun">[</span><span class="lit">1</span><span class="pun">],)),</span><span class="pln"><br>&nbsp; &nbsp; keras</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="typ">Dense</span><span class="pun">(</span><span class="lit">64</span><span class="pun">,</span><span class="pln"> activation</span><span class="pun">=</span><span class="pln">tf</span><span class="pun">.</span><span class="pln">nn</span><span class="pun">.</span><span class="pln">relu</span><span class="pun">),</span><span class="pln"><br>&nbsp; &nbsp; keras</span><span class="pun">.</span><span class="pln">layers</span><span class="pun">.</span><span class="typ">Dense</span><span class="pun">(</span><span class="lit">1</span><span class="pun">)</span><span class="pln"><br>&nbsp; </span><span class="pun">])</span><span class="pln"><br><br>&nbsp; optimizer </span><span class="pun">=</span><span class="pln"> tf</span><span class="pun">.</span><span class="pln">train</span><span class="pun">.</span><span class="typ">RMSPropOptimizer</span><span class="pun">(</span><span class="lit">0.001</span><span class="pun">)</span><span class="pln"><br><br>&nbsp; model</span><span class="pun">.</span><span class="pln">compile</span><span class="pun">(</span><span class="pln">loss</span><span class="pun">=</span><span class="str">'mse'</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; optimizer</span><span class="pun">=</span><span class="pln">optimizer</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; metrics</span><span class="pun">=[</span><span class="str">'mae'</span><span class="pun">])</span><span class="pln"><br>&nbsp; </span><span class="kwd">return</span><span class="pln"> model<br><br>model </span><span class="pun">=</span><span class="pln"> build_model</span><span class="pun">()</span><span class="pln"><br>model</span><span class="pun">.</span><span class="pln">summary</span><span class="pun">()</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+dense (Dense)                (None, 64)                896       
+_________________________________________________________________
+dense_1 (Dense)              (None, 64)                4160      
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 65        
+=================================================================
+Total params: 5,121
+Trainable params: 5,121
+Non-trainable params: 0
+_________________________________________________________________
+</pre>
+
+<h2 id="train_the_model"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Train the model</h2>
+
+<p>The model is trained for 500 epochs, and record the training and validation accuracy in the <code>history</code> object.</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com"># Display training progress by printing a single dot for each completed epoch</span><span class="pln"><br></span><span class="kwd">class</span><span class="pln"> </span><span class="typ">PrintDot</span><span class="pun">(</span><span class="pln">keras</span><span class="pun">.</span><span class="pln">callbacks</span><span class="pun">.</span><span class="typ">Callback</span><span class="pun">):</span><span class="pln"><br>&nbsp; </span><span class="kwd">def</span><span class="pln"> on_epoch_end</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> epoch</span><span class="pun">,</span><span class="pln"> logs</span><span class="pun">):</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> epoch </span><span class="pun">%</span><span class="pln"> </span><span class="lit">100</span><span class="pln"> </span><span class="pun">==</span><span class="pln"> </span><span class="lit">0</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">print</span><span class="pun">(</span><span class="str">''</span><span class="pun">)</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">print</span><span class="pun">(</span><span class="str">'.'</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">end</span><span class="pun">=</span><span class="str">''</span><span class="pun">)</span><span class="pln"><br><br>EPOCHS </span><span class="pun">=</span><span class="pln"> </span><span class="lit">500</span><span class="pln"><br><br></span><span class="com"># Store training stats</span><span class="pln"><br>history </span><span class="pun">=</span><span class="pln"> model</span><span class="pun">.</span><span class="pln">fit</span><span class="pun">(</span><span class="pln">train_data</span><span class="pun">,</span><span class="pln"> train_labels</span><span class="pun">,</span><span class="pln"> epochs</span><span class="pun">=</span><span class="pln">EPOCHS</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; validation_split</span><span class="pun">=</span><span class="lit">0.2</span><span class="pun">,</span><span class="pln"> verbose</span><span class="pun">=</span><span class="lit">0</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; callbacks</span><span class="pun">=[</span><span class="typ">PrintDot</span><span class="pun">()])</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>
+....................................................................................................
+....................................................................................................
+....................................................................................................
+....................................................................................................
+....................................................................................................</pre>
+
+<p>Visualize the model's training progress using the stats stored in the <code>history</code> object. We want to use this data to determine how long to train <em>before</em> the model stops making progress.</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="kwd">import</span><span class="pln"> matplotlib</span><span class="pun">.</span><span class="pln">pyplot </span><span class="kwd">as</span><span class="pln"> plt<br><br><br></span><span class="kwd">def</span><span class="pln"> plot_history</span><span class="pun">(</span><span class="pln">history</span><span class="pun">):</span><span class="pln"><br>&nbsp; plt</span><span class="pun">.</span><span class="pln">figure</span><span class="pun">()</span><span class="pln"><br>&nbsp; plt</span><span class="pun">.</span><span class="pln">xlabel</span><span class="pun">(</span><span class="str">'Epoch'</span><span class="pun">)</span><span class="pln"><br>&nbsp; plt</span><span class="pun">.</span><span class="pln">ylabel</span><span class="pun">(</span><span class="str">'Mean Abs Error [1000$]'</span><span class="pun">)</span><span class="pln"><br>&nbsp; plt</span><span class="pun">.</span><span class="pln">plot</span><span class="pun">(</span><span class="pln">history</span><span class="pun">.</span><span class="pln">epoch</span><span class="pun">,</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">array</span><span class="pun">(</span><span class="pln">history</span><span class="pun">.</span><span class="pln">history</span><span class="pun">[</span><span class="str">'mean_absolute_error'</span><span class="pun">]),</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;label</span><span class="pun">=</span><span class="str">'Train Loss'</span><span class="pun">)</span><span class="pln"><br>&nbsp; plt</span><span class="pun">.</span><span class="pln">plot</span><span class="pun">(</span><span class="pln">history</span><span class="pun">.</span><span class="pln">epoch</span><span class="pun">,</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">array</span><span class="pun">(</span><span class="pln">history</span><span class="pun">.</span><span class="pln">history</span><span class="pun">[</span><span class="str">'val_mean_absolute_error'</span><span class="pun">]),</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;label </span><span class="pun">=</span><span class="pln"> </span><span class="str">'Val loss'</span><span class="pun">)</span><span class="pln"><br>&nbsp; plt</span><span class="pun">.</span><span class="pln">legend</span><span class="pun">()</span><span class="pln"><br>&nbsp; plt</span><span class="pun">.</span><span class="pln">ylim</span><span class="pun">([</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">5</span><span class="pun">])</span><span class="pln"><br><br>plot_history</span><span class="pun">(</span><span class="pln">history</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p>This graph shows little improvement in the model after about 200 epochs. Let's update the <code>model.fit</code> method to automatically stop training when the validation score doesn't improve. We'll use a <em>callback</em> that tests a training condition for  every epoch. If a set amount of epochs elapses without showing improvement, then automatically stop the training.</p>
+
+<p>You can learn more about this callback <a href="https://www.tensorflow.org/versions/master/api_docs/python/tf/keras/callbacks/EarlyStopping">here</a>.</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">model </span><span class="pun">=</span><span class="pln"> build_model</span><span class="pun">()</span><span class="pln"><br><br></span><span class="com"># The patience parameter is the amount of epochs to check for improvement</span><span class="pln"><br>early_stop </span><span class="pun">=</span><span class="pln"> keras</span><span class="pun">.</span><span class="pln">callbacks</span><span class="pun">.</span><span class="typ">EarlyStopping</span><span class="pun">(</span><span class="pln">monitor</span><span class="pun">=</span><span class="str">'val_loss'</span><span class="pun">,</span><span class="pln"> patience</span><span class="pun">=</span><span class="lit">20</span><span class="pun">)</span><span class="pln"><br><br>history </span><span class="pun">=</span><span class="pln"> model</span><span class="pun">.</span><span class="pln">fit</span><span class="pun">(</span><span class="pln">train_data</span><span class="pun">,</span><span class="pln"> train_labels</span><span class="pun">,</span><span class="pln"> epochs</span><span class="pun">=</span><span class="pln">EPOCHS</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; validation_split</span><span class="pun">=</span><span class="lit">0.2</span><span class="pun">,</span><span class="pln"> verbose</span><span class="pun">=</span><span class="lit">0</span><span class="pun">,</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; callbacks</span><span class="pun">=[</span><span class="pln">early_stop</span><span class="pun">,</span><span class="pln"> </span><span class="typ">PrintDot</span><span class="pun">()])</span><span class="pln"><br><br>plot_history</span><span class="pun">(</span><span class="pln">history</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>
+....................................................................................................
+......................................................</pre>
+
+<p><img src="./Predict house prices_ regression  _  TensorFlow_files/output_24_1.png" alt="png"></p>
+
+<p>The graph shows the average error is about \$2,500 dollars. Is this good? Well, $2,500 is not an insignificant amount when some of the labels are only $15,000.</p>
+
+<p>Let's see how did the model performs on the test set:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pun">[</span><span class="pln">loss</span><span class="pun">,</span><span class="pln"> mae</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> model</span><span class="pun">.</span><span class="pln">evaluate</span><span class="pun">(</span><span class="pln">test_data</span><span class="pun">,</span><span class="pln"> test_labels</span><span class="pun">,</span><span class="pln"> verbose</span><span class="pun">=</span><span class="lit">0</span><span class="pun">)</span><span class="pln"><br><br></span><span class="kwd">print</span><span class="pun">(</span><span class="str">"Testing set Mean Abs Error: ${:7.2f}"</span><span class="pun">.</span><span class="pln">format</span><span class="pun">(</span><span class="pln">mae </span><span class="pun">*</span><span class="pln"> </span><span class="lit">1000</span><span class="pun">))</span><span class="pln"><br></span></code></pre>
+<pre style="max-height:300px; overflow:auto"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div></div>Testing set Mean Abs Error: $2692.92
+</pre>
+
+<h2 id="predict"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Predict</h2>
+
+<p>Finally, predict some housing prices using data in the testing set:</p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">test_predictions </span><span class="pun">=</span><span class="pln"> model</span><span class="pun">.</span><span class="pln">predict</span><span class="pun">(</span><span class="pln">test_data</span><span class="pun">).</span><span class="pln">flatten</span><span class="pun">()</span><span class="pln"><br><br>plt</span><span class="pun">.</span><span class="pln">scatter</span><span class="pun">(</span><span class="pln">test_labels</span><span class="pun">,</span><span class="pln"> test_predictions</span><span class="pun">)</span><span class="pln"><br>plt</span><span class="pun">.</span><span class="pln">xlabel</span><span class="pun">(</span><span class="str">'True Values [1000$]'</span><span class="pun">)</span><span class="pln"><br>plt</span><span class="pun">.</span><span class="pln">ylabel</span><span class="pun">(</span><span class="str">'Predictions [1000$]'</span><span class="pun">)</span><span class="pln"><br>plt</span><span class="pun">.</span><span class="pln">axis</span><span class="pun">(</span><span class="str">'equal'</span><span class="pun">)</span><span class="pln"><br>plt</span><span class="pun">.</span><span class="pln">xlim</span><span class="pun">(</span><span class="pln">plt</span><span class="pun">.</span><span class="pln">xlim</span><span class="pun">())</span><span class="pln"><br>plt</span><span class="pun">.</span><span class="pln">ylim</span><span class="pun">(</span><span class="pln">plt</span><span class="pun">.</span><span class="pln">ylim</span><span class="pun">())</span><span class="pln"><br>_ </span><span class="pun">=</span><span class="pln"> plt</span><span class="pun">.</span><span class="pln">plot</span><span class="pun">([-</span><span class="lit">100</span><span class="pun">,</span><span class="pln"> </span><span class="lit">100</span><span class="pun">],</span><span class="pln"> </span><span class="pun">[-</span><span class="lit">100</span><span class="pun">,</span><span class="pln"> </span><span class="lit">100</span><span class="pun">])</span><span class="pln"><br></span></code></pre>
+<p><img src="./Predict house prices_ regression  _  TensorFlow_files/output_28_0.png" alt="png"></p>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="pln">error </span><span class="pun">=</span><span class="pln"> test_predictions </span><span class="pun">-</span><span class="pln"> test_labels<br>plt</span><span class="pun">.</span><span class="pln">hist</span><span class="pun">(</span><span class="pln">error</span><span class="pun">,</span><span class="pln"> bins </span><span class="pun">=</span><span class="pln"> </span><span class="lit">50</span><span class="pun">)</span><span class="pln"><br>plt</span><span class="pun">.</span><span class="pln">xlabel</span><span class="pun">(</span><span class="str">"Prediction Error [1000$]"</span><span class="pun">)</span><span class="pln"><br>_ </span><span class="pun">=</span><span class="pln"> plt</span><span class="pun">.</span><span class="pln">ylabel</span><span class="pun">(</span><span class="str">"Count"</span><span class="pun">)</span><span class="pln"><br></span></code></pre>
+<p><img src="./Predict house prices_ regression  _  TensorFlow_files/output_29_0.png" alt="png"></p>
+
+<h2 id="conclusion"><a href="https://www.tensorflow.org/tutorials/keras/basic_regression#top_of_page" class="devsite-back-to-top-link material-icons" data-title="Back to top"></a>Conclusion</h2>
+
+<p>This notebook introduced a few techniques to handle a regression problem.</p>
+
+<ul>
+<li>Mean Squared Error (MSE) is a common loss function used for regression problems (different than classification problems).</li>
+<li>Similarly, evaluation metrics used for regression differ from classification. A common regression metric is Mean Absolute Error (MAE).</li>
+<li>When input data features have values with different ranges, each feature should be scaled independently.</li>
+<li>If there is not much training data, prefer a small network with few hidden layers to avoid overfitting.</li>
+<li>Early stopping is a useful technique to prevent overfitting.</li>
+</ul>
+<pre class="prettyprint lang-python"><div class="devsite-code-button-wrapper"><div class="devsite-code-button gc-analytics-event material-icons devsite-dark-code-button" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></div><div class="devsite-code-button gc-analytics-event material-icons devsite-click-to-copy-button" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="Click to copy"></div></div><code><span class="com">#@title MIT License</span><span class="pln"><br></span><span class="com">#</span><span class="pln"><br></span><span class="com"># Copyright (c) 2017 François Chollet</span><span class="pln"><br></span><span class="com">#</span><span class="pln"><br></span><span class="com"># Permission is hereby granted, free of charge, to any person obtaining a</span><span class="pln"><br></span><span class="com"># copy of this software and associated documentation files (the "Software"),</span><span class="pln"><br></span><span class="com"># to deal in the Software without restriction, including without limitation</span><span class="pln"><br></span><span class="com"># the rights to use, copy, modify, merge, publish, distribute, sublicense,</span><span class="pln"><br></span><span class="com"># and/or sell copies of the Software, and to permit persons to whom the</span><span class="pln"><br></span><span class="com"># Software is furnished to do so, subject to the following conditions:</span><span class="pln"><br></span><span class="com">#</span><span class="pln"><br></span><span class="com"># The above copyright notice and this permission notice shall be included in</span><span class="pln"><br></span><span class="com"># all copies or substantial portions of the Software.</span><span class="pln"><br></span><span class="com">#</span><span class="pln"><br></span><span class="com"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span><span class="pln"><br></span><span class="com"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span><span class="pln"><br></span><span class="com"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span><span class="pln"><br></span><span class="com"># THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span><span class="pln"><br></span><span class="com"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING</span><span class="pln"><br></span><span class="com"># FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER</span><span class="pln"><br></span><span class="com"># DEALINGS IN THE SOFTWARE.</span><span class="pln"><br></span></code></pre>
+
+  </div>
+  
+
+  
+        
+  
+
+
+
+
+
+
+
+        
+<div class="devsite-content-footer nocontent">
+  
+  
+    <p>Except as otherwise noted, the content of this page is licensed under the <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>, and code samples are licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. For details, see our <a href="https://developers.google.com/terms/site-policies">Site Policies</a>. Java is a registered trademark of Oracle and/or its affiliates.</p>
+  
+
+  
+    
+    <p class="devsite-content-footer-date" itemprop="datePublished" content="2018-09-28T19:41:30.256949">
+      
+      Last updated September 28, 2018.
+    </p>
+  
+
+</div>
+
+        </article>
+      </article>
+  
+
+        </div>
+      
+
+<footer class="devsite-footer-linkboxes nocontent
+               devsite-footer-linkboxes-all-backup
+               "><nav class="devsite-full-site-width"><ul class="devsite-footer-linkboxes-list"><li class="devsite-footer-linkbox devsite-footer-linkbox-backup"><h3 class="devsite-footer-linkbox-heading">Stay Connected</h3><ul class="devsite-footer-linkbox-list"><li class="devsite-footer-linkbox-item"><a href="https://medium.com/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Blog Link">
+                Blog
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://github.com/tensorflow/" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer GitHub Link">
+                GitHub
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://twitter.com/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Twitter Link">
+                Twitter
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://youtube.com/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer YouTube Link">
+                YouTube
+            </a></li></ul></li><li class="devsite-footer-linkbox devsite-footer-linkbox-backup"><h3 class="devsite-footer-linkbox-heading">Support</h3><ul class="devsite-footer-linkbox-list"><li class="devsite-footer-linkbox-item"><a href="https://github.com/tensorflow/tensorflow/issues" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Issue Tracker Link">
+                Issue Tracker
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://github.com/tensorflow/tensorflow/blob/master/RELEASE.md" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Release Notes Link">
+                Release Notes
+            </a></li><li class="devsite-footer-linkbox-item"><a href="https://stackoverflow.com/questions/tagged/tensorflow" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Stack Overflow Link">
+                Stack Overflow
+            </a></li></ul></li></ul></nav></footer><footer class="devsite-utility-footer"><nav class="devsite-utility-footer-nav devsite-nav devsite-full-site-width"><div class="devsite-utility-footer-nav-left"><form class="devsite-utility-footer-language" action="https://www.tensorflow.org/i18n/setlang/" method="post"><input type="hidden" name="xsrf_token" value="qgLCB3d5dekP8Xa1flU98_TXfVRLgh1ivlne2l_P6Rg6MTUzOTA3Mzg0MDY3ODIxNw"><input type="hidden" name="next" value="/tutorials/keras/basic_regression"><select class="devsite-utility-footer-language-select kd-select" name="language" track-type="languageSelector" track-name="click" style="display: none;"><option value="en" selected="selected" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="en">
+            English
+          </option><option value="zh-cn" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="zh-cn">
+            简体中文
+          </option></select><span class="kd-button kd-menubutton kd-select" track-type="languageSelector" track-name="click"><div class="label">
+            English
+          </div><div class="kd-disclosureindicator"></div></span></form><span class="devsite-utility-footer-links"><a class="devsite-utility-footer-link gc-analytics-event" href="https://policies.google.com/terms" data-category="Site-Wide Custom Events" data-label="Footer terms link" data-footer-link-id="terms">Terms
+         </a><a class="devsite-utility-footer-link gc-analytics-event" href="https://policies.google.com/privacy" data-category="Site-Wide Custom Events" data-label="Footer privacy link" data-footer-link-id="privacy">Privacy
+         </a></span></div></nav></footer></div><script async="" defer="" src="./Predict house prices_ regression  _  TensorFlow_files/api.js"></script><script src="./Predict house prices_ regression  _  TensorFlow_files/saved_resource"></script><script src="./Predict house prices_ regression  _  TensorFlow_files/script_foot_closure.js"></script><script src="./Predict house prices_ regression  _  TensorFlow_files/script_foot.js"></script><script>
+        (function($) {
+          
+          devsite.devsite.Init($, {'ENABLE_BLOCKED_VIDEO_PLACEHOLDER': 0, 'SITE_NAME': 'tensorflow', 'FULL_SITE_SEARCH_ENABLED': 1, 'ENABLE_CLOUDTRACK': 0, 'VTAGS_ENABLED': 0, 'HISTORY_ENABLED': 0, 'SIDEBAR_MINI_ENABLED': 0, 'VERSION_HASH': '1e1304016d', 'SCRIPTSAFE_DOMAIN': 'tensorflow-dot-google-developers.appspot.com', 'ENABLE_BLOCKED_LINK_TOOLTIP': 0, 'ALLOWED_HOSTS': ['.android.com', '.appspot.com', '.gonglchuangl.net', '.google.cn', '.google.com', '.googleplex.com', '.tensorflow.org', '.devsitetest.how'], 'BLOCK_RSS_FEEDS': 0},
+                               '[]','en',
+                               true, '',
+                               {"f62218c009ec029abef196bba5aa34cf": true, "8de7a048f21618359bd37f5ce44be073": false, "098dafe57affddc137df300142652cfd": false, "8e03e230de0bd8a6fe173fdf172e8b3f": true, "cb025a64a50094835616312f4774a53d": true, "51470233c56fc1fde50f00b73c52b216": false, "d169d485cf24243a263783dbe42029b1": true, "039e5d84b87fd75807ffb37b7f1bbf2c": true, "700def1a83e356c06c0925afb05de4b0": false, "6749dcb526ce9bde6993550c7d928d24": true}, '/',
+                               'https://www.tensorflow.org/');
+        })(jQuery);
+
+        
+        devsite.localInit = function() {
+          
+        };
+
+      </script><script>
+      $('.devsite-utility-footer-language-select').each(function() {
+        $(this).change(function(){$('.devsite-utility-footer-language').submit();});
+      });
+      </script></div><span id="devsite-request-elapsed" data-request-elapsed="506.289958954"></span>
+<ul class="kd-menulist devsite-hidden"><li class="kd-menulistitem devsite-selected-option" value="en" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="en">
+            English
+          </li><li class="kd-menulistitem" value="zh-cn" track-type="languageSelector" track-name="changed" track-metadata-original-language="en" track-metadata-selected-language="zh-cn">
+            简体中文
+          </li></ul><script type="text/javascript" async="" src="./Predict house prices_ regression  _  TensorFlow_files/1e6ab715a3a95d4603.js"></script><script type="text/javascript" src="./Predict house prices_ regression  _  TensorFlow_files/lat"></script><script type="text/javascript" src="./Predict house prices_ regression  _  TensorFlow_files/lt"></script></body></html>
